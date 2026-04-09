@@ -1,26 +1,97 @@
 @import "tailwindcss";
 
+/* ─── DAWN Design System ─────────────────────────────────────────────────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --dawn-navy: #0D1B3E;
+  --dawn-teal: #00A896;
+  --dawn-sky: #E8F4FD;
+  --dawn-amber: #F59E0B;
+  --dawn-green: #10B981;
+  --dawn-red: #EF4444;
+  --dawn-purple: #7C3AED;
+  --dawn-surface: #FAFAFA;
+  --dawn-border: #E5E7EB;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  /* Brand Colors */
+  --color-dawn-navy: #0D1B3E;
+  --color-dawn-teal: #00A896;
+  --color-dawn-sky: #E8F4FD;
+  --color-dawn-amber: #F59E0B;
+  --color-dawn-green: #10B981;
+  --color-dawn-red: #EF4444;
+  --color-dawn-purple: #7C3AED;
+  --color-dawn-surface: #FAFAFA;
+  --color-dawn-border: #E5E7EB;
+
+  /* Fonts */
+  --font-sans: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+  --font-serif: var(--font-dm-serif), 'DM Serif Display', Georgia, serif;
+
+  /* Animations */
+  --animate-fade-in-up: fade-in-up 0.3s ease-out both;
+  --animate-typing-dot: typing-dot 1.2s ease-in-out infinite;
+  --animate-slide-in-right: slide-in-right 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-pulse-ring: pulse-ring 1.5s ease-out infinite;
+  --animate-slide-in-bottom: slide-in-bottom 0.3s ease-out both;
+  --animate-progress: progress-fill 0.6s ease-out both;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Keyframes ──────────────────────────────────────────────────────────────── */
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%            { transform: translateY(-6px); }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0   rgba(0, 168, 150, 0.4); }
+  70%  { box-shadow: 0 0 0 8px rgba(0, 168, 150, 0); }
+  100% { box-shadow: 0 0 0 0   rgba(0, 168, 150, 0); }
+}
+
+@keyframes slide-in-bottom {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes progress-fill {
+  from { width: 0%; }
+}
+
+/* ─── Base Styles ────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+  background-color: #FAFAFA;
+  color: #0D1B3E;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #D1D5DB; }

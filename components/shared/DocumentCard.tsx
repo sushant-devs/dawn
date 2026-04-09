@@ -1,0 +1,91 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { FileText, BookOpen, Award, ShieldCheck } from 'lucide-react';
+import type { DocumentCard as DocumentCardType } from '@/lib/types';
+
+interface DocumentCardProps extends DocumentCardType {
+  onSelect: (id: string) => void;
+}
+
+const TYPE_CONFIG = {
+  CSR: { icon: FileText, color: 'bg-blue-100 text-blue-700', border: 'border-blue-200' },
+  Publication: { icon: BookOpen, color: 'bg-purple-100 text-purple-700', border: 'border-purple-200' },
+  'Brand Standard': { icon: Award, color: 'bg-dawn-teal/10 text-dawn-teal', border: 'border-dawn-teal/20' },
+  Regulatory: { icon: ShieldCheck, color: 'bg-dawn-amber/10 text-dawn-amber', border: 'border-dawn-amber/20' },
+};
+
+function getRelevanceColor(score: number) {
+  if (score >= 90) return 'bg-dawn-green';
+  if (score >= 80) return 'bg-dawn-amber';
+  return 'bg-gray-400';
+}
+
+function getRelevanceBadgeColor(score: number) {
+  if (score >= 90) return 'text-dawn-green';
+  if (score >= 80) return 'text-dawn-amber';
+  return 'text-gray-500';
+}
+
+export default function DocumentCard({ id, title, type, relevance, keyFinding, selected, onSelect }: DocumentCardProps) {
+  const cfg = TYPE_CONFIG[type];
+  const Icon = cfg.icon;
+  const [barWidth, setBarWidth] = useState(0);
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      setTimeout(() => setBarWidth(relevance), 100);
+    }
+  }, [relevance]);
+
+  return (
+    <div
+      onClick={() => onSelect(id)}
+      className={`relative cursor-pointer rounded-xl border bg-white p-4 transition-all duration-200 hover:shadow-md ${
+        selected ? 'border-dawn-teal shadow-sm ring-1 ring-dawn-teal/30' : 'border-dawn-border hover:border-dawn-teal/40'
+      }`}
+    >
+      {/* Header */}
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${cfg.color} border ${cfg.border}`}>
+          <Icon size={10} />
+          {type}
+        </span>
+        <span className={`text-xs font-semibold ${getRelevanceBadgeColor(relevance)}`}>
+          {relevance}%
+        </span>
+      </div>
+
+      {/* Relevance bar */}
+      <div className="w-full bg-gray-100 rounded-full h-1 mb-3">
+        <div
+          className={`h-1 rounded-full transition-all duration-500 ease-out ${getRelevanceColor(relevance)}`}
+          style={{ width: `${barWidth}%` }}
+        />
+      </div>
+
+      {/* Title */}
+      <h4 className="text-sm font-semibold text-dawn-navy mb-1 leading-tight">{title}</h4>
+
+      {/* Key finding */}
+      <p className="text-xs text-gray-500 italic line-clamp-2 leading-relaxed">{keyFinding}</p>
+
+      {/* Checkbox indicator */}
+      <div className="absolute bottom-3 right-3">
+        <div
+          className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200 ${
+            selected ? 'bg-dawn-teal border-dawn-teal' : 'border-gray-300 bg-white'
+          }`}
+        >
+          {selected && (
+            <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+              <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
