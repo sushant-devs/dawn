@@ -26,9 +26,9 @@ export const STORYLINE: StorylineStep[] = [
     id: 'step-1',
     stage: 'finder',
     userMessage:
-      'Search for clinical evidence on Hemlibra HAVEN trials - efficacy, ABR reduction, and prophylaxis.',
+      'I want to gather Hemlibra evidence. Should we include HAVEN 1–4 trial data as the reference set for efficacy and prophylaxis?',
     agentResponse: {
-      text: 'Searched across the evidence vault using semantic understanding. Found **6 highly relevant documents** across HAVEN 1–4 clinical data, brand standards, and regulatory materials. Select the documents to include, then send the next message to build your brief.',
+      text: 'I recommend including HAVEN 1–4 evidence, especially the ABR reduction and prophylaxis insights from HAVEN 4 and HAVEN 1. Found **6 highly relevant documents** across clinical data, brand standards, and regulatory materials. Select the documents to include, then confirm and I will fetch the evidence for your brief.',
       documentCards: HAVEN_DOCUMENTS,
     },
   },
@@ -37,9 +37,9 @@ export const STORYLINE: StorylineStep[] = [
   {
     id: 'step-2',
     stage: 'brief',
-    userMessage: 'Create the campaign brief using the selected HAVEN documents.',
+    userMessage: 'Yes, include HAVEN 1–4 trial data and build the campaign brief from those documents.',
     agentResponse: {
-      text: "I've pre-populated your campaign brief from the selected evidence. All key messages, mandatory safety inclusions, and deliverable specifications have been extracted and structured. Review and confirm before we begin content generation.",
+      text: "I've fetched the selected HAVEN 1–4 documents and extracted the recommended core claims. The brief now includes HAVEN 4 median ABR, HAVEN 1 inhibitor data, and brand/regulatory callouts. Review and confirm before content generation.",
       actionButton: {
         label: 'Open Brief Builder →',
         modal: 'briefBuilder',
@@ -53,9 +53,9 @@ export const STORYLINE: StorylineStep[] = [
     id: 'step-3',
     stage: 'creator',
     userMessage:
-      'Generate the poster, HCP email, digital detail aid, and patient leaflet content using the approved brief.',
+      'Generate the master creative assets and adapt the German regional content from the approved brief, showing the source data used for localization.',
     agentResponse: {
-      text: 'Generating all 5 campaign assets from the approved brief. Each asset is personalized for its target audience and pre-loaded with HAVEN clinical data and mandatory safety information.',
+      text: 'Generating all 5 campaign assets from the approved brief. Master English content is used as the primary source, with German local adaptation guided by German medical poster rules, regional HCP communication conventions, and Hemlibra brand standards. I recommend reviewing the German adaptations against local ISI and regulatory guidance.',
       contentAssets: [
         { id: 'poster',   title: 'Poster - HAVEN 4 Data', persona: 'Clinical Researcher', language: 'EN (US)', wordCount: 420 },
         { id: 'email-us', title: 'HCP Email (US)',                  persona: 'Empathetic Specialist', language: 'EN (US)', wordCount: 285 },
@@ -114,9 +114,9 @@ export const STORYLINE: StorylineStep[] = [
   {
     id: 'step-5',
     stage: 'mlr',
-    userMessage: 'Submit all assets for MLR compliance review.',
+    userMessage: 'Run an internal pre-MLR review on the generated assets to identify any claims needing revision before final approval.',
     agentResponse: {
-      text: 'All assets submitted to the MLR Review Engine. AI pre-screening complete. 2 assets passed Tier 1 auto-approval; 3 require medical/legal reviewer attention.',
+      text: 'I completed an internal pre-MLR scan. This tool identifies claims that may require revision and provides references for each flagged item. Tier 1 assets are lower-risk claims with clean substantiation, while Tier 2 assets require higher scrutiny and more documented support. Final approval is handled by Veeva Promomat, and Sarah will receive a notification once the asset is approved.',
       mlrTable: [
         { asset: 'Poster',   tier: 'Tier 2', aiPreScreen: '2 flags', status: 'Pending' },
         { asset: 'HCP Email (US)',     tier: 'Tier 1', aiPreScreen: 'Clean',   status: 'Passed'     },
@@ -126,7 +126,7 @@ export const STORYLINE: StorylineStep[] = [
       ],
       statusSummary: { total: 5, passed: 2, pending: 3, flagged: 3 },
       actionButton: {
-        label: 'Open MLR Checker →',
+        label: 'Open MLR Pre-Screen →',
         modal: 'mlrChecker',
       },
     },
@@ -149,9 +149,9 @@ export const STORYLINE: StorylineStep[] = [
   {
     id: 'step-7',
     stage: 'distribution',
-    userMessage: 'Distribute all approved assets across email, CRM, and other channels.',
+    userMessage: 'Distribute all approved assets once the Veeva Promomat approval notification is received.',
     agentResponse: {
-      text: 'All 5 assets are confirmed **Passed** status. Distribution channels configured and ready for review. Veeva Vault integration active - assets packaged and metadata-tagged.',
+      text: 'All 5 assets are confirmed **Passed** status in the pre-screen. Veeva Vault integration is active and metadata-tagged. Once Veeva Promomat approves, Sarah will get a notification and we can move forward with distribution planning.',
       statusSummary: { total: 5, passed: 5, pending: 0, flagged: 0 },
       actionButton: {
         label: 'Open Distribution Hub →',

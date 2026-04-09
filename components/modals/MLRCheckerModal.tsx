@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { X, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { X, CheckCircle, XCircle } from 'lucide-react';
 import { MLR_ASSETS } from '@/lib/mockData';
 import StatusPill from '@/components/shared/StatusPill';
 import type { MLRAssetDetail } from '@/lib/types';
@@ -27,7 +27,7 @@ function AnnotatedContent({ asset }: { asset: MLRAssetDetail }) {
   const [tooltip, setTooltip] = useState<string | null>(null);
 
   // Build annotated text
-  let text = asset.content;
+  const text = asset.content;
   const lines = text.split('\n');
 
   return (
@@ -67,26 +67,11 @@ function AnnotatedContent({ asset }: { asset: MLRAssetDetail }) {
 
 export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalProps) {
   const [selectedAsset, setSelectedAsset] = useState<MLRAssetDetail>(MLR_ASSETS[0]);
-  const [assetStatuses, setAssetStatuses] = useState<Record<string, 'Passed' | 'Pending' | 'Flagged' | 'Rejected'>>(
-    Object.fromEntries(MLR_ASSETS.map((a) => [a.id, a.status]))
-  );
 
-  const updateStatus = (id: string, status: 'Passed' | 'Pending' | 'Flagged' | 'Rejected') => {
-    setAssetStatuses((prev) => ({ ...prev, [id]: status }));
-  };
-
-  const allResolved = Object.values(assetStatuses).every((s) => s === 'Passed' || s === 'Rejected');
-  const passedCount = Object.values(assetStatuses).filter((s) => s === 'Passed').length;
-  const pendingCount = Object.values(assetStatuses).filter((s) => s === 'Pending').length;
-
-  const batchApproveTier1 = () => {
-    const tier1 = MLR_ASSETS.filter((a) => a.tier === 'Tier 1');
-    setAssetStatuses((prev) => {
-      const next = { ...prev };
-      tier1.forEach((a) => { next[a.id] = 'Passed'; });
-      return next;
-    });
-  };
+  const passedCount = MLR_ASSETS.filter((a) => a.status === 'Passed').length;
+  const pendingCount = MLR_ASSETS.filter((a) => a.status === 'Pending').length;
+  const tier1Count = MLR_ASSETS.filter((a) => a.tier === 'Tier 1').length;
+  const tier2Count = MLR_ASSETS.filter((a) => a.tier === 'Tier 2').length;
 
   return (
     <div className="fixed inset-0 z-50 flex">
@@ -99,8 +84,8 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
               <span className="text-white font-serif text-xs font-bold">D</span>
             </div>
             <div>
-              <h2 className="font-serif text-dawn-navy text-lg">MLR Checker</h2>
-              <p className="text-xs text-gray-400">Stage 5 — Compliance Review</p>
+              <h2 className="font-serif text-dawn-navy text-lg">MLR Pre-Screen</h2>
+              <p className="text-xs text-gray-400">Stage 5 — Internal Pre-Screen</p>
             </div>
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy"><X size={20} /></button>
@@ -111,11 +96,9 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
           <span className="bg-dawn-navy/10 text-dawn-navy rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">5 Assets</span>
           <span className="bg-dawn-green/10 text-dawn-green rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">{passedCount} Passed</span>
           <span className="bg-dawn-amber/10 text-dawn-amber rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">{pendingCount} Pending</span>
-          <span className="bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">Tier 1: 1</span>
-          <span className="bg-purple-100 text-purple-700 rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">Tier 2: 4</span>
-          <button onClick={batchApproveTier1} className="ml-auto whitespace-nowrap text-xs bg-dawn-green text-white rounded-full px-3 py-1 font-medium hover:bg-dawn-green/90 transition-colors">
-            Batch Approve Tier 1
-          </button>
+          <span className="bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">Tier 1: {tier1Count}</span>
+          <span className="bg-purple-100 text-purple-700 rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">Tier 2: {tier2Count}</span>
+          <span className="ml-auto bg-dawn-sky text-dawn-navy rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">Pre-screen only</span>
         </div>
 
         {/* Body */}
@@ -123,7 +106,6 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
           {/* Asset list */}
           <div className="w-64 border-r border-dawn-border bg-gray-50 overflow-y-auto shrink-0">
             {MLR_ASSETS.map((asset) => {
-              const status = assetStatuses[asset.id];
               return (
                 <div
                   key={asset.id}
@@ -139,7 +121,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
                       <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${asset.tier === 'Tier 1' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'}`}>
                         {asset.tier}
                       </span>
-                      <StatusPill status={status} size="sm" />
+                      <StatusPill status={asset.status} size="sm" />
                     </div>
                   </div>
                 </div>
@@ -212,40 +194,16 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
               </div>
             </div>
 
-            {/* Review actions */}
-            <div className="flex items-center gap-2">
-              <p className="text-xs text-gray-500 mr-2">Review decision:</p>
-              <button
-                onClick={() => updateStatus(selectedAsset.id, 'Passed')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${assetStatuses[selectedAsset.id] === 'Passed' ? 'bg-dawn-green text-white' : 'border border-dawn-green text-dawn-green hover:bg-dawn-green/5'}`}
-              >
-                <CheckCircle size={12} /> Approve
-              </button>
-              <button
-                onClick={() => updateStatus(selectedAsset.id, 'Pending')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${assetStatuses[selectedAsset.id] === 'Pending' ? 'bg-dawn-amber text-white' : 'border border-dawn-amber text-dawn-amber hover:bg-dawn-amber/5'}`}
-              >
-                <AlertCircle size={12} /> Approve with Changes
-              </button>
-              <button
-                onClick={() => updateStatus(selectedAsset.id, 'Rejected')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${assetStatuses[selectedAsset.id] === 'Rejected' ? 'bg-dawn-red text-white' : 'border border-dawn-red text-dawn-red hover:bg-dawn-red/5'}`}
-              >
-                <XCircle size={12} /> Reject
-              </button>
+            <div className="bg-dawn-sky/20 border border-dawn-teal/30 rounded-xl p-4 text-xs text-dawn-navy">
+              This is an internal pre-MLR screen. Final medical/legal approval is performed by Veeva Promomat outside this tool, and Sarah will receive a notification when the asset is approved.
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-dawn-border bg-white flex items-center">
-          {allResolved && (
-            <div className="flex items-center gap-2 text-dawn-green text-sm font-medium">
-              <CheckCircle size={16} />
-              All Assets Reviewed — Proceed to Distribution ✓
-            </div>
-          )}
-          <div className="ml-auto flex gap-3">
+        <div className="px-6 py-4 border-t border-dawn-border bg-white flex items-center justify-between">
+          <p className="text-xs text-gray-500">Internal pre-screen complete. Final approval occurs in Veeva Promomat.</p>
+          <div className="flex gap-3">
             <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors">Cancel</button>
             <button onClick={onConfirm} className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm">
               Confirm & Continue →
