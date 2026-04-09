@@ -5,6 +5,29 @@ import { X, Bold, Italic, List, Copy, RotateCcw, RefreshCw } from 'lucide-react'
 import { GENERATED_ASSETS } from '@/lib/mockData';
 import StatusPill from '@/components/shared/StatusPill';
 
+const CONTENT_REFERENCES: Record<string, { source: string; regional: string[] }> = {
+  poster: {
+    source: 'Poster - HAVEN 4 Data (EN master)',
+    regional: ['Brand Guidelines', 'Master creative asset', 'Global HCP messaging'],
+  },
+  'email-us': {
+    source: 'HCP Email (US) (EN master)',
+    regional: ['Hemlibra ISI', 'Brand Guidelines', 'Global HCP email best practices'],
+  },
+  'email-de': {
+    source: 'HCP Email (US) (EN master)',
+    regional: ['German medical poster rules', 'German HCP communication conventions', 'Hemlibra Fachinformation / ISI'],
+  },
+  leaflet: {
+    source: 'Patient Leaflet (EN master)',
+    regional: ['Hemlibra ISI', 'Patient-friendly readability guidance'],
+  },
+  dda: {
+    source: 'Digital Detail Aid (EN master)',
+    regional: ['Brand Guidelines', 'Field force presentation standards', 'Hemlibra ISI'],
+  },
+};
+
 interface ContentEditorModalProps {
   onConfirm: () => void;
   onClose: () => void;
@@ -87,9 +110,11 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
                 <StatusPill status={asset.status as 'Passed' | 'Pending' | 'Flagged'} size="sm" />
               </div>
               <div>
-                <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1.5">References Used</p>
+                <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1.5">Master source</p>
+                <p className="text-xs font-medium text-dawn-navy mb-2">{CONTENT_REFERENCES[asset.id]?.source || 'Master content source'}</p>
+                <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1.5">Regional adaptation references</p>
                 <div className="flex flex-wrap gap-1">
-                  {['HAVEN 4 CSR', 'Hemlibra ISI', 'Brand Guide'].map((r) => (
+                  {(CONTENT_REFERENCES[asset.id]?.regional ?? []).map((r) => (
                     <span key={r} className="bg-dawn-teal/10 text-dawn-teal rounded px-1.5 py-0.5 text-[10px]">{r}</span>
                   ))}
                 </div>

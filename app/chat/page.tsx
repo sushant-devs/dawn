@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { BarChart3 } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { useDAWN } from '@/context/DAWNContext';
 import ChatContainer from '@/components/chat/ChatContainer';
 import ChatInput from '@/components/chat/ChatInput';
@@ -52,7 +52,7 @@ export default function ChatPage() {
 
         <div className="flex items-center gap-3">
           <button className="w-8 h-8 rounded-lg border border-dawn-border flex items-center justify-center text-gray-400 hover:text-dawn-navy hover:border-dawn-navy/30 transition-colors">
-            <BarChart3 size={16} />
+            <Bell size={16} />
           </button>
           <div className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center">
             <span className="text-white text-xs font-semibold">SC</span>
