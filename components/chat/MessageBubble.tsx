@@ -65,35 +65,20 @@ function CampaignSummaryCard({ data }: { data: NonNullable<AgentResponseContent[
 }
 
 // Document grid
-function DocumentGrid({ docs, selectedIds, onSelect }: { docs: DocType[]; selectedIds: string[]; onSelect: (id: string) => void }) {
+function DocumentGrid({ docs }: { docs: DocType[] }) {
   const handlePreview = (filePath: string, title: string) => {
     // Open PDF in new window
     window.open(filePath, '_blank');
   };
 
-  const selectedCount = docs.filter(doc => selectedIds.includes(doc.id)).length;
-  const totalCount = docs.length;
-
   return (
     <div className="mt-3">
-      {/* Summary Header */}
-      <div className="mb-3 flex items-center justify-between px-2">
-        <p className="text-xs text-gray-500">
-          {selectedCount} of {totalCount} documents selected
-        </p>
-        <p className="text-xs text-dawn-teal font-medium">
-          Click cards to select/deselect
-        </p>
-      </div>
-
       {/* Document Grid */}
       <div className="grid grid-cols-2 gap-2">
         {docs.map((doc) => (
           <DocumentCard
             key={doc.id}
             {...doc}
-            selected={selectedIds.includes(doc.id)}
-            onSelect={onSelect}
             onPreview={handlePreview}
           />
         ))}
@@ -160,35 +145,38 @@ function ContentAssetsBlock({ assets }: { assets: NonNullable<AgentResponseConte
 function ImageVariationsBlock({ variations }: { variations: NonNullable<AgentResponseContent['imageVariations']> }) {
   const [selected, setSelected] = useState(variations[0]?.id);
   return (
-    <div className="mt-3 flex gap-3 overflow-x-auto pb-1">
+    <div className="mt-3 grid grid-cols-3 gap-3">
       {variations.map((v) => (
         <div
           key={v.id}
           onClick={() => setSelected(v.id)}
-          className={`shrink-0 w-52 rounded-xl overflow-hidden border-2 cursor-pointer transition-all duration-200 ${
+          className={`rounded-xl overflow-hidden border-2 cursor-pointer transition-all duration-200 ${
             selected === v.id ? 'border-dawn-teal shadow-lg' : 'border-dawn-border hover:border-dawn-teal/50'
           }`}
         >
-          {/* Mock poster */}
-          <div
-            className="h-32 flex flex-col items-center justify-center relative"
-            style={{ background: v.gradient }}
-          >
+          {/* Template Image */}
+          <div className="relative h-40 bg-gray-100">
+            <img
+              src={v.image}
+              alt={v.title}
+              className="w-full h-full object-cover"
+            />
             {selected === v.id && (
-              <div className="absolute top-2 right-2 w-5 h-5 bg-dawn-teal rounded-full flex items-center justify-center">
+              <div className="absolute top-2 right-2 w-5 h-5 bg-dawn-teal rounded-full flex items-center justify-center shadow-md">
                 <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
                   <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
             )}
-            <p className="text-white font-serif text-base font-bold text-center px-3 leading-tight">{v.headline}</p>
-            <p className="text-white/70 text-[10px] mt-1 text-center px-3">{v.subline}</p>
-            <div className="absolute bottom-2 left-3 right-3 h-px bg-white/20" />
-            <p className="absolute bottom-1 left-0 right-0 text-center text-white/50 text-[8px]">HEMLIBRA® | Roche</p>
           </div>
-          <div className="bg-white px-3 py-2">
-            <p className="text-xs font-medium text-dawn-navy truncate">{v.title}</p>
-            <p className="text-[10px] text-gray-400">Click to select</p>
+          <div className="bg-white px-3 py-2.5">
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-xs font-semibold text-dawn-navy">{v.title}</p>
+              <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-dawn-sky text-dawn-navy font-medium">
+                {v.type}
+              </span>
+            </div>
+            <p className="text-[10px] text-gray-600 leading-relaxed">{v.description}</p>
           </div>
         </div>
       ))}
@@ -387,8 +375,6 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
           {resp.documentCards && (
             <DocumentGrid
               docs={resp.documentCards}
-              selectedIds={state.selectedDocuments}
-              onSelect={(id) => dispatch({ type: 'TOGGLE_DOCUMENT', payload: id })}
             />
           )}
 

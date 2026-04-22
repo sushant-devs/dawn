@@ -8,9 +8,10 @@ import type { ChatMessage } from '@/lib/types';
 interface ChatContainerProps {
   messages: ChatMessage[];
   isTyping: boolean;
+  typingMessage?: string;
 }
 
-export default function ChatContainer({ messages, isTyping }: ChatContainerProps) {
+export default function ChatContainer({ messages, isTyping, typingMessage }: ChatContainerProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function ChatContainer({ messages, isTyping }: ChatContainerProps
       {messages.map((msg) => (
         <MessageBubble key={msg.id} message={msg} />
       ))}
-      {isTyping && <TypingIndicator />}
+      {isTyping && <TypingIndicator message={typingMessage} />}
       <div ref={bottomRef} />
     </div>
   );

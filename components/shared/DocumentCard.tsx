@@ -5,7 +5,6 @@ import { FileText, BookOpen, Award, ShieldCheck, Eye } from 'lucide-react';
 import type { DocumentCard as DocumentCardType } from '@/lib/types';
 
 interface DocumentCardProps extends DocumentCardType {
-  onSelect: (id: string) => void;
   onPreview?: (filePath: string, title: string) => void;
 }
 
@@ -28,7 +27,7 @@ function getRelevanceBadgeColor(score: number) {
   return 'text-gray-500';
 }
 
-export default function DocumentCard({ id, title, type, relevance, keyFinding, selected, filePath, pageCount, onSelect, onPreview }: DocumentCardProps) {
+export default function DocumentCard({ id, title, type, relevance, keyFinding, filePath, pageCount, onPreview }: DocumentCardProps) {
   const cfg = TYPE_CONFIG[type];
   const Icon = cfg.icon;
   const [barWidth, setBarWidth] = useState(0);
@@ -50,10 +49,7 @@ export default function DocumentCard({ id, title, type, relevance, keyFinding, s
 
   return (
     <div
-      onClick={() => onSelect(id)}
-      className={`relative cursor-pointer rounded-xl border bg-white p-4 transition-all duration-200 hover:shadow-md ${
-        selected ? 'border-dawn-teal shadow-sm ring-1 ring-dawn-teal/30' : 'border-dawn-border hover:border-dawn-teal/40'
-      }`}
+      className="relative rounded-xl border bg-white p-4 transition-all duration-200 hover:shadow-md border-dawn-border hover:border-dawn-teal/40"
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-2 mb-2">
@@ -97,21 +93,6 @@ export default function DocumentCard({ id, title, type, relevance, keyFinding, s
           Preview Document
         </button>
       )}
-
-      {/* Checkbox indicator */}
-      <div className="absolute bottom-3 right-3">
-        <div
-          className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-200 ${
-            selected ? 'bg-dawn-teal border-dawn-teal' : 'border-gray-300 bg-white'
-          }`}
-        >
-          {selected && (
-            <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
-              <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          )}
-        </div>
-      </div>
     </div>
   );
 }

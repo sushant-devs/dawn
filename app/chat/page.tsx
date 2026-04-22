@@ -130,7 +130,7 @@ export default function ChatPage() {
         ) : (
           /* Active chat */
           <>
-            <ChatContainer messages={state.messages} isTyping={state.isAgentTyping} />
+            <ChatContainer messages={state.messages} isTyping={state.isAgentTyping} typingMessage={state.typingMessage} />
 
             {/* Input bar */}
             <div className="px-6 py-4 bg-white border-t border-dawn-border">

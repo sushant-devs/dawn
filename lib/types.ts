@@ -87,9 +87,9 @@ export interface ContentGenerationAsset {
 export interface ImageVariation {
   id: string;
   title: string;
-  gradient: string;
-  headline: string;
-  subline: string;
+  image: string;
+  description: string;
+  type: string;
 }
 
 export interface TemplateCard {
@@ -236,8 +236,8 @@ export interface DAWNState {
   currentStage: Stage;
   completedStages: Stage[];
   activeModal: ModalType | null;
-  selectedDocuments: string[];
   isAgentTyping: boolean;
+  typingMessage: string;
   prePopulatedMessage: string;
   hasStarted: boolean;
   waitingForModalConfirm: boolean;
@@ -250,11 +250,12 @@ export type DAWNAction =
   | { type: 'SEND_USER_MESSAGE'; payload: string }
   | { type: 'ADD_AGENT_MESSAGE'; payload: ChatMessage }
   | { type: 'SET_TYPING'; payload: boolean }
+  | { type: 'SET_TYPING_MESSAGE'; payload: string }
   | { type: 'OPEN_MODAL'; payload: ModalType }
   | { type: 'CLOSE_MODAL' }
   | { type: 'CONFIRM_MODAL' }
   | { type: 'ADVANCE_STEP' }
-  | { type: 'TOGGLE_DOCUMENT'; payload: string }
+  | { type: 'AUTO_ADVANCE_STEP' }
   | { type: 'SET_BRIEF_MODE'; payload: 'manual' | 'auto' }
   | { type: 'SET_TEMPLATE'; payload: { assetType: string; templateId: string } };
 
@@ -266,6 +267,9 @@ export interface StorylineStep {
   userMessage: string;
   agentResponse: AgentResponseContent;
   triggersModal?: ModalType;
+  autoAdvance?: boolean;
+  autoAdvanceAfterModal?: boolean;
+  thinkingMessage?: string;
 }
 
 export interface Asset {
