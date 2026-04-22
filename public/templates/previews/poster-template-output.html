@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEMLIBRA – Scientific Congress Poster Template</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #E8401C;
+    --blue: #0099CC;
+    --dark: #2C2C2C;
+    --mid: #555555;
+    --light-gray: #F4F5F7;
+    --border: #D8DCE2;
+    --white: #FFFFFF;
+    --section-head-bg: #E8401C;
+    --section-head-text: #FFFFFF;
+    --accent-line: #0099CC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #e0e4ea;
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── Outer wrapper ── */
+  .poster {
+    width: 1189px; /* A0 landscape at 72dpi ≈ 3370 × 2384. Scaled for screen: 1189×842 */
+    min-height: 842px;
+    background: var(--white);
+    box-shadow: 0 8px 48px rgba(0,0,0,.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Top accent bar ── */
+  .poster::before {
+    content: '';
+    display: block;
+    height: 6px;
+    background: linear-gradient(90deg, var(--orange) 0%, var(--blue) 100%);
+    flex-shrink: 0;
+  }
+
+  /* ════════════════════════
+     HEADER
+  ════════════════════════ */
+  .poster-header {
+    display: grid;
+    grid-template-columns: 180px 1fr 180px;
+    align-items: center;
+    padding: 18px 28px 14px;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+    background: var(--white);
+  }
+
+  .logo-block img {
+    height: 54px;
+    display: block;
+  }
+
+  .title-block {
+    text-align: center;
+  }
+
+  .poster-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16.5px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.35;
+    margin-bottom: 6px;
+  }
+
+  .poster-authors {
+    font-size: 10.5px;
+    font-weight: 400;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  .poster-affiliations {
+    font-size: 9.5px;
+    color: #888;
+    margin-top: 3px;
+    font-style: italic;
+  }
+
+  .congress-block {
+    text-align: right;
+  }
+
+  .congress-badge {
+    display: inline-block;
+    border: 1.5px solid var(--orange);
+    border-radius: 4px;
+    padding: 6px 10px;
+    text-align: center;
+  }
+
+  .congress-badge .conf-name {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: .6px;
+  }
+
+  .congress-badge .conf-detail {
+    font-size: 8.5px;
+    color: var(--mid);
+    margin-top: 2px;
+  }
+
+  /* ════════════════════════
+     BODY GRID
+  ════════════════════════ */
+  .poster-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0;
+    flex: 1;
+    padding: 0 0 0 0;
+  }
+
+  /* ── Section card ── */
+  .section {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section:nth-child(3n) { border-right: none; }
+
+  .section-head {
+    background: var(--section-head-bg);
+    color: var(--section-head-text);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-head.blue { background: var(--blue); }
+  .section-head.dark  { background: var(--dark); }
+
+  .section-head .num {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .section-body {
+    padding: 10px 12px;
+    flex: 1;
+    font-size: 9.5px;
+    line-height: 1.6;
+    color: var(--dark);
+  }
+
+  /* placeholder blocks */
+  .placeholder-text {
+    background: var(--light-gray);
+    border-radius: 3px;
+    height: 10px;
+    margin-bottom: 5px;
+  }
+  .placeholder-text.short  { width: 65%; }
+  .placeholder-text.medium { width: 85%; }
+  .placeholder-text.full   { width: 100%; }
+  .placeholder-text.xshort { width: 40%; }
+
+  /* chart placeholder */
+  .chart-placeholder {
+    background: var(--light-gray);
+    border: 1.5px dashed var(--border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    color: #aaa;
+    font-size: 9px;
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  .chart-placeholder svg { opacity: .35; }
+
+  .table-placeholder {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5px;
+    margin-top: 6px;
+  }
+
+  .table-placeholder th {
+    background: var(--orange);
+    color: #fff;
+    padding: 4px 6px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .table-placeholder td {
+    padding: 4px 6px;
+    border-bottom: 1px solid var(--border);
+    color: #666;
+    font-style: italic;
+  }
+
+  .table-placeholder tr:nth-child(even) td { background: var(--light-gray); }
+
+  /* ── Wide sections spanning 2 cols ── */
+  .span2 {
+    grid-column: span 2;
+    border-right: 1px solid var(--border);
+  }
+
+  .span2:last-child { border-right: none; }
+
+  /* ── Bottom row: narrow col for refs + disclosures ── */
+  .poster-footer-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-section {
+    padding: 8px 12px;
+    border-right: 1px solid var(--border);
+  }
+
+  .footer-section:last-child { border-right: none; }
+
+  .footer-label {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    color: var(--orange);
+    margin-bottom: 4px;
+    padding-bottom: 3px;
+    border-bottom: 1.5px solid var(--orange);
+    display: inline-block;
+  }
+
+  .footer-section p,
+  .footer-section ol {
+    font-size: 8px;
+    line-height: 1.55;
+    color: #777;
+    font-style: italic;
+  }
+
+  .footer-section ol { padding-left: 12px; }
+
+  /* ── Bottom branding bar ── */
+  .poster-brand-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 28px;
+    background: var(--dark);
+    flex-shrink: 0;
+  }
+
+  .brand-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-bar-left img {
+    height: 22px;
+    filter: brightness(0) invert(1);
+    opacity: .85;
+  }
+
+  .brand-bar-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(255,255,255,.3);
+  }
+
+  .brand-bar-tagline {
+    font-size: 8.5px;
+    color: rgba(255,255,255,.6);
+    letter-spacing: .4px;
+  }
+
+  .brand-bar-right {
+    font-size: 8px;
+    color: rgba(255,255,255,.45);
+    text-align: right;
+  }
+
+  /* ── Pill tags ── */
+  .pill {
+    display: inline-block;
+    background: rgba(232,64,28,.1);
+    color: var(--orange);
+    border: 1px solid rgba(232,64,28,.25);
+    border-radius: 20px;
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    margin-right: 3px;
+    margin-bottom: 4px;
+  }
+
+  .pill.blue-pill {
+    background: rgba(0,153,204,.08);
+    color: var(--blue);
+    border-color: rgba(0,153,204,.25);
+  }
+
+  /* ── Key finding callout ── */
+  .callout {
+    background: linear-gradient(135deg, rgba(232,64,28,.07), rgba(0,153,204,.07));
+    border-left: 3px solid var(--orange);
+    border-radius: 0 4px 4px 0;
+    padding: 7px 10px;
+    margin-top: 6px;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--dark);
+    font-style: italic;
+  }
+
+  /* ── Stat highlight ── */
+  .stat-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .stat-box {
+    flex: 1;
+    background: var(--light-gray);
+    border-top: 2.5px solid var(--orange);
+    border-radius: 3px;
+    padding: 6px 8px;
+    text-align: center;
+  }
+
+  .stat-box.blue-stat { border-top-color: var(--blue); }
+
+  .stat-box .stat-val {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+  }
+
+  .stat-box.blue-stat .stat-val { color: var(--blue); }
+
+  .stat-box .stat-lbl {
+    font-size: 7.5px;
+    color: var(--mid);
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  /* ── Instruction label (screen only) ── */
+  .edit-hint {
+    font-size: 8px;
+    color: #aaa;
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  /* ── Print styles ── */
+  @media print {
+    body { background: none; padding: 0; }
+    .poster { box-shadow: none; width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="poster">
+
+  <!-- TOP HEADER -->
+  <div class="poster-header">
+    <!-- Logo -->
+    <div class="logo-block">
+      <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png"
+           alt="HEMLIBRA® (emicizumab-kxwh)"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <!-- Fallback rendered logo text if URL unavailable -->
+      <div style="display:none; font-family:'Source Sans 3',sans-serif;">
+        <span style="color:#E8401C;font-size:20px;font-weight:900;letter-spacing:-1px;">HEMLIBRA</span><sup style="color:#E8401C;font-size:10px;">®</sup><br>
+        <span style="color:#888;font-size:8px;">emicizumab-kxwh</span><br>
+        <span style="color:#aaa;font-size:7.5px;">injection for subcutaneous use</span>
+      </div>
+    </div>
+
+    <!-- Title & Authors -->
+    <div class="title-block">
+      <div class="poster-title">
+        HEMLIBRA® (EMICIZUMAB-KXWH) ACHIEVES ZERO MEDIAN ABR WITH MONTHLY DOSING
+      </div>
+      <div class="poster-authors">
+        Author A. Name¹, Author B. Name², Author C. Name³, Author D. Name⁴, Corresponding Author E. Name⁵
+      </div>
+      <div class="poster-affiliations">
+        ¹Institution Name, City, Country &nbsp;|&nbsp; ²Institution Name, City, Country &nbsp;|&nbsp;
+        ³Institution Name, City, Country &nbsp;|&nbsp; ⁴Institution Name, City, Country
+      </div>
+    </div>
+
+    <!-- Congress badge -->
+    <div class="congress-block">
+      <div class="congress-badge">
+        <div class="conf-name">Congress / Conference Name</div>
+        <div class="conf-detail">City, Country · Month DD–DD, YYYY</div>
+        <div class="conf-detail" style="margin-top:3px;color:#E8401C;font-weight:600;">Abstract #XXXX</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY GRID — 3 columns -->
+  <div class="poster-body">
+
+    <!-- ① BACKGROUND -->
+    <div class="section">
+      <div class="section-head">
+        <span class="num">1</span> Background
+      </div>
+      <div class="section-body">
+        <span class="pill">Hemophilia A</span>
+        <span class="pill blue-pill">Prophylaxis</span>
+
+        <p style="font-size:9.5px;color:var(--dark);line-height:1.6;margin-top:6px;">
+          Hemophilia A with or without inhibitors requires effective prophylaxis to prevent joint damage and bleeding episodes. Hemlibra, a bispecific antibody mimicking factor VIII, demonstrated sustained efficacy in the HAVEN clinical program.
+        </p>
+
+        <div class="callout">
+          "Monthly subcutaneous prophylaxis represents a paradigm shift in hemophilia A management."
+        </div>
+      </div>
+    </div>
+
+    <!-- ② METHODS -->
+    <div class="section">
+      <div class="section-head blue">
+        <span class="num">2</span> Methods
+      </div>
+      <div class="section-body">
+        <div style="font-size:8.5px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px;">Study Design</div>
+        <p style="font-size:9.5px;line-height:1.6;margin-bottom:8px;">
+          HAVEN 4 enrolled adults and adolescents with hemophilia A (with or without FVIII inhibitors). Patients received emicizumab 3 mg/kg Q4W subcutaneously.
+        </p>
+
+        <div style="font-size:8.5px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.6px;margin:8px 0 4px;">Primary Endpoint</div>
+        <p style="font-size:9.5px;line-height:1.6;">
+          The primary endpoint was annualized bleed rate (ABR).
+        </p>
+      </div>
+    </div>
+
+    <!-- ③ RESULTS – chart -->
+    <div class="section">
+      <div class="section-head">
+        <span class="num">3</span> Results — Primary Endpoint
+      </div>
+      <div class="section-body">
+        <!-- Stat highlights -->
+        <div class="stat-row" style="margin-top:0;">
+          <div class="stat-box blue-stat">
+            <div class="stat-val">0.0</div>
+            <div class="stat-lbl">Median ABR<br>(IQR 0.0–1.69)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">56%</div>
+            <div class="stat-lbl">Zero Treated<br>Bleeds</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">57%</div>
+            <div class="stat-lbl">Zero Total<br>Bleeds</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <ul style="font-size:9px;line-height:1.6;padding-left:12px;">
+            <li>56% of patients achieved zero treated bleeds</li>
+            <li>57.1% achieved zero total bleeds</li>
+            <li>Consistent efficacy regardless of inhibitor status</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ RESULTS – benefits (spans 2 cols) -->
+    <div class="section span2">
+      <div class="section-head">
+        <span class="num">4</span> Clinical Benefits &amp; Treatment Burden Reduction
+      </div>
+      <div class="section-body" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:8.5px;font-weight:700;color:var(--orange);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">Treatment Burden</div>
+          <div class="stat-row" style="margin-top:0;">
+            <div class="stat-box">
+              <div class="stat-val" style="font-size:14px;">156</div>
+              <div class="stat-lbl">Annual IV<br>Infusions</div>
+            </div>
+            <div class="stat-box blue-stat">
+              <div class="stat-val" style="font-size:14px;">13</div>
+              <div class="stat-lbl">SC Injections<br>Per Year</div>
+            </div>
+          </div>
+          <p style="font-size:8.5px;color:var(--mid);margin-top:6px;font-style:italic;">
+            Monthly subcutaneous Hemlibra prophylaxis reduces treatment burden from up to 156 annual IV infusions to just 13 subcutaneous injections per year.
+          </p>
+        </div>
+        <div>
+          <div style="font-size:8.5px;font-weight:700;color:var(--blue);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">Key Results</div>
+          <ul style="font-size:9px;line-height:1.7;padding-left:12px;">
+            <li>Median treated ABR: 0.0 (IQR 0.0–1.69)</li>
+            <li>56% of patients achieved zero treated bleeds</li>
+            <li>57.1% achieved zero total bleeds</li>
+            <li>Consistent efficacy regardless of inhibitor status</li>
+          </ul>
+          <div class="callout" style="margin-top:6px;">
+            Sustained, near-elimination of bleeds achieved with convenient monthly dosing
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ SAFETY -->
+    <div class="section">
+      <div class="section-head dark">
+        <span class="num">5</span> Important Safety Information
+      </div>
+      <div class="section-body">
+        <div style="font-size:8.5px;font-weight:700;color:var(--dark);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;">
+          WARNING: THROMBOTIC MICROANGIOPATHY (TMA) AND THROMBOEMBOLISM
+        </div>
+        
+        <p style="font-size:9px;line-height:1.6;color:var(--dark);">
+          Cases of TMA were reported when aPCC (>100 U/kg/24h cumulative) was administered to patients receiving Hemlibra.
+        </p>
+      </div>
+    </div>
+
+  </div><!-- /poster-body -->
+
+  <!-- CONCLUSION row (full width) -->
+  <div style="border-top:1px solid var(--border);display:flex;">
+    <div style="flex:1;padding:9px 14px;border-right:1px solid var(--border);">
+      <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--orange);margin-bottom:5px;display:flex;align-items:center;gap:5px;">
+        <span style="width:16px;height:16px;border-radius:50%;background:var(--orange);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:8px;">6</span>
+        Conclusions
+      </div>
+      <ul style="font-size:9px;line-height:1.7;color:var(--dark);padding-left:14px;">
+        <li>Monthly subcutaneous Hemlibra prophylaxis provides sustained, near-elimination of bleeds in patients with hemophilia A.</li>
+        <li>Treatment burden is dramatically reduced from up to 156 annual IV infusions to just 13 subcutaneous injections per year.</li>
+        <li>Efficacy is consistent regardless of inhibitor status, with over half of patients achieving zero treated bleeds.</li>
+        <li>These results support emicizumab-kxwh as an effective prophylactic option for hemophilia A patients.</li>
+      </ul>
+      <div class="callout" style="margin-top:6px;font-size:8.5px;">
+        These data reinforce emicizumab-kxwh as a paradigm-shifting prophylactic option for hemophilia A patients.
+      </div>
+    </div>
+    <div style="width:260px;padding:9px 12px;background:var(--light-gray);">
+      <div style="font-size:8.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue);margin-bottom:5px;">QR / Contact</div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:52px;height:52px;border:1.5px dashed #bbb;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:7.5px;color:#bbb;text-align:center;flex-shrink:0;">QR<br>Code</div>
+        <div>
+          <p style="font-size:8.5px;color:var(--mid);line-height:1.6;">Corresponding author:<br>
+          <strong style="color:var(--dark);">Author Name, MD</strong><br>
+          email@institution.edu<br>
+          <span style="color:#aaa;">For reprint / supplementary data</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER ROW — References + Disclosures -->
+  <div class="poster-footer-row">
+    <div class="footer-section">
+      <div class="footer-label">References</div>
+      <ol>
+        <li>HAVEN 4 Clinical Study Report. Emicizumab prophylaxis in hemophilia A patients.</li>
+        <li>Additional clinical trial references as appropriate.</li>
+        <li>Supporting literature for hemophilia A treatment burden.</li>
+        <li>Safety and efficacy publications from HAVEN clinical program.</li>
+        <li>Relevant hemophilia A prophylaxis guidelines and recommendations.</li>
+      </ol>
+    </div>
+    <div class="footer-section">
+      <div class="footer-label">Disclosures &amp; Funding</div>
+      <p>
+        This study was funded by [Sponsor Name]. Author disclosures and funding information available upon request.
+        Please refer to full prescribing information including Boxed Warning for complete safety information.<br><br>
+        <strong style="color:#888;">Medical writing support</strong> was provided by professional medical writers,
+        funded by the study sponsor.
+      </p>
+    </div>
+  </div>
+
+  <!-- BRAND BAR -->
+  <div class="poster-brand-bar">
+    <div class="brand-bar-left">
+      <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png"
+           alt="HEMLIBRA"
+           onerror="this.style.display='none'">
+      <div class="brand-bar-divider"></div>
+      <span class="brand-bar-tagline">emicizumab-kxwh · injection for subcutaneous use · 150 mg/mL</span>
+    </div>
+    <div class="brand-bar-right">
+      HEMLIBRA® is a registered trademark of Genentech / Roche.<br>
+      For use at [Congress Name], [Year]. Not for promotional distribution.
+    </div>
+  </div>
+
+</div><!-- /poster -->
+
+</body>
+</html>

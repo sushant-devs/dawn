@@ -22,7 +22,7 @@ function formatTime(date: Date) {
 function RichText({ text }: { text: string }) {
   const parts = text.split(/(\*\*[^*]+\*\*)/g);
   return (
-    <p className="text-sm text-gray-700 leading-relaxed">
+    <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
       {parts.map((part, i) =>
         part.startsWith('**') ? (
           <strong key={i} className="font-semibold text-dawn-navy">
@@ -66,16 +66,38 @@ function CampaignSummaryCard({ data }: { data: NonNullable<AgentResponseContent[
 
 // Document grid
 function DocumentGrid({ docs, selectedIds, onSelect }: { docs: DocType[]; selectedIds: string[]; onSelect: (id: string) => void }) {
+  const handlePreview = (filePath: string, title: string) => {
+    // Open PDF in new window
+    window.open(filePath, '_blank');
+  };
+
+  const selectedCount = docs.filter(doc => selectedIds.includes(doc.id)).length;
+  const totalCount = docs.length;
+
   return (
-    <div className="mt-3 grid grid-cols-2 gap-2">
-      {docs.map((doc) => (
-        <DocumentCard
-          key={doc.id}
-          {...doc}
-          selected={selectedIds.includes(doc.id)}
-          onSelect={onSelect}
-        />
-      ))}
+    <div className="mt-3">
+      {/* Summary Header */}
+      <div className="mb-3 flex items-center justify-between px-2">
+        <p className="text-xs text-gray-500">
+          {selectedCount} of {totalCount} documents selected
+        </p>
+        <p className="text-xs text-dawn-teal font-medium">
+          Click cards to select/deselect
+        </p>
+      </div>
+
+      {/* Document Grid */}
+      <div className="grid grid-cols-2 gap-2">
+        {docs.map((doc) => (
+          <DocumentCard
+            key={doc.id}
+            {...doc}
+            selected={selectedIds.includes(doc.id)}
+            onSelect={onSelect}
+            onPreview={handlePreview}
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -388,6 +410,21 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
           {/* Metrics */}
           {resp.metrics && <MetricsBlock metrics={resp.metrics} />}
 
+          {/* Recommendation - shown after all content */}
+          {resp.recommendation && (
+            <div className="mt-4 bg-dawn-amber/5 border-l-2 border-dawn-amber rounded-r-lg px-4 py-3">
+              <p className="text-xs font-semibold text-dawn-amber mb-1 uppercase tracking-wide flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg>
+                Recommendation
+              </p>
+              <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{resp.recommendation}</p>
+            </div>
+          )}
+
           {/* Action button */}
           {resp.actionButton && (
             <button
@@ -395,7 +432,6 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
               className="mt-4 inline-flex items-center gap-2 bg-dawn-teal text-white rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-dawn-teal/90 transition-all duration-200 shadow-sm hover:shadow-md"
             >
               {resp.actionButton.label}
-              <ExternalLink size={14} />
             </button>
           )}
         </div>

@@ -17,6 +17,8 @@ const initialState: DAWNState = {
   prePopulatedMessage: '',
   hasStarted: false,
   waitingForModalConfirm: false,
+  briefMode: null,
+  selectedTemplates: {},
 };
 
 // ─── Reducer ──────────────────────────────────────────────────────────────────
@@ -87,7 +89,15 @@ function dawnReducer(state: DAWNState, action: DAWNAction): DAWNState {
       return { ...state, activeModal: null };
 
     case 'CONFIRM_MODAL': {
-      const nextIndex = state.currentStepIndex + 1;
+      const currentStep = STORYLINE[state.currentStepIndex];
+      let nextIndex = state.currentStepIndex + 1;
+
+      // If we just completed manual brief input (step-3a), skip to template selection (step-4)
+      if (currentStep?.id === 'step-3a') {
+        // Skip step-3b (auto brief) and go to step-4 (template selection)
+        nextIndex = state.currentStepIndex + 2;
+      }
+
       const nextStep = STORYLINE[nextIndex];
       return {
         ...state,
@@ -116,6 +126,33 @@ function dawnReducer(state: DAWNState, action: DAWNAction): DAWNState {
       return { ...state, selectedDocuments: selected };
     }
 
+    case 'SET_BRIEF_MODE': {
+      // Determine which step to go to based on mode
+      const nextIndex = action.payload === 'manual'
+        ? state.currentStepIndex + 1  // Go to step-3a (manual brief)
+        : state.currentStepIndex + 2;  // Go to step-3b (auto brief)
+      const nextStep = STORYLINE[nextIndex];
+
+      return {
+        ...state,
+        briefMode: action.payload,
+        activeModal: null,
+        waitingForModalConfirm: false,
+        currentStepIndex: nextIndex,
+        prePopulatedMessage: nextStep ? nextStep.userMessage : '',
+      };
+    }
+
+    case 'SET_TEMPLATE': {
+      return {
+        ...state,
+        selectedTemplates: {
+          ...state.selectedTemplates,
+          [action.payload.assetType]: action.payload.templateId,
+        },
+      };
+    }
+
     default:
       return state;
   }
@@ -130,6 +167,7 @@ interface DAWNContextType {
   openModal: (modal: ModalType) => void;
   confirmModal: () => void;
   closeModal: () => void;
+  setBriefMode: (mode: 'manual' | 'auto') => void;
 }
 
 const DAWNContext = createContext<DAWNContextType | null>(null);
@@ -172,8 +210,12 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'CLOSE_MODAL' });
   }, []);
 
+  const setBriefMode = useCallback((mode: 'manual' | 'auto') => {
+    dispatch({ type: 'SET_BRIEF_MODE', payload: mode });
+  }, []);
+
   return (
-    <DAWNContext.Provider value={{ state, dispatch, sendMessage, openModal, confirmModal, closeModal }}>
+    <DAWNContext.Provider value={{ state, dispatch, sendMessage, openModal, confirmModal, closeModal, setBriefMode }}>
       {children}
     </DAWNContext.Provider>
   );

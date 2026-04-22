@@ -3,21 +3,28 @@
 export type Stage =
   | 'setup'
   | 'finder'
+  | 'briefMode'
+  | 'manualBrief'
   | 'brief'
+  | 'templateSelection'
   | 'creator'
   | 'imagegen'
   | 'mlr'
-  | 'laylens'
   | 'distribution'
   | 'effectiveness';
 
 export type ModalType =
+  | 'briefModeSelector'
+  | 'manualBriefInput'
   | 'briefBuilder'
+  | 'templateSelector'
   | 'contentEditor'
   | 'imageGen'
   | 'mlrChecker'
   | 'distribution'
-  | 'effectiveness';
+  | 'effectiveness'
+  | 'notifications'
+  | 'plsGenerator';
 
 export type MessageRole = 'user' | 'agent';
 
@@ -30,6 +37,8 @@ export interface DocumentCard {
   relevance: number; // 0–100
   keyFinding: string;
   selected?: boolean;
+  filePath?: string;
+  pageCount?: number;
 }
 
 export interface TableData {
@@ -83,15 +92,42 @@ export interface ImageVariation {
   subline: string;
 }
 
+export interface TemplateCard {
+  id: string;
+  title: string;
+  description: string;
+  preview: string;
+  category: string;
+  features: string[];
+  recommended: boolean;
+}
+
 export interface PLSQualityScore {
   dimension: string;
   score: number;
 }
 
+export interface NotificationData {
+  type: 'mlr-approved' | 'info' | 'warning';
+  title: string;
+  message: string;
+  timestamp: string;
+  details?: MLRApprovalDetails;
+}
+
+export interface MLRApprovalDetails {
+  approvedAssets: MLRTableRow[];
+  approver: string;
+  approvalDate: string;
+  comments?: string;
+}
+
 export interface AgentResponseContent {
   text: string;
+  recommendation?: string;
   campaignSummary?: CampaignSummaryCard;
   documentCards?: DocumentCard[];
+  templateCards?: TemplateCard[];
   contentAssets?: ContentGenerationAsset[];
   imageVariations?: ImageVariation[];
   mlrTable?: MLRTableRow[];
@@ -100,6 +136,7 @@ export interface AgentResponseContent {
   metrics?: MetricBlock[];
   statusSummary?: StatusSummary;
   actionButton?: ActionButton;
+  notification?: NotificationData;
 }
 
 export interface ChatMessage {
@@ -204,6 +241,8 @@ export interface DAWNState {
   prePopulatedMessage: string;
   hasStarted: boolean;
   waitingForModalConfirm: boolean;
+  briefMode: 'manual' | 'auto' | null;
+  selectedTemplates: Record<string, string>;
 }
 
 export type DAWNAction =
@@ -215,7 +254,9 @@ export type DAWNAction =
   | { type: 'CLOSE_MODAL' }
   | { type: 'CONFIRM_MODAL' }
   | { type: 'ADVANCE_STEP' }
-  | { type: 'TOGGLE_DOCUMENT'; payload: string };
+  | { type: 'TOGGLE_DOCUMENT'; payload: string }
+  | { type: 'SET_BRIEF_MODE'; payload: 'manual' | 'auto' }
+  | { type: 'SET_TEMPLATE'; payload: { assetType: string; templateId: string } };
 
 // ─── Storyline Types ──────────────────────────────────────────────────────────
 
@@ -235,4 +276,43 @@ export interface Asset {
   language: string;
   content: string;
   status: 'Passed' | 'Pending' | 'Flagged';
+}
+
+// ─── Template Types ───────────────────────────────────────────────────────────
+
+export interface ContentTemplate {
+  id: string;
+  name: string;
+  type: 'email' | 'poster' | 'leaflet' | 'dda' | 'social';
+  description: string;
+  structure: string[];
+  recommended: boolean;
+  preview: string;
+}
+
+export interface TemplateRecommendation {
+  assetType: string;
+  recommendedTemplates: ContentTemplate[];
+}
+
+// ─── Medical Prompt Library Types ─────────────────────────────────────────────
+
+export interface MedicalPrompt {
+  id: string;
+  title: string;
+  category: 'Efficacy' | 'Safety' | 'MOA' | 'Dosing' | 'Patient Support' | 'Custom';
+  prompt: string;
+  variables: string[];
+  description: string;
+  isFavorite?: boolean;
+  usageCount?: number;
+  lastUsed?: string;
+  tags?: string[];
+}
+
+export interface PromptFeedback {
+  promptId: string;
+  rating: number;
+  comment: string;
+  timestamp: string;
 }

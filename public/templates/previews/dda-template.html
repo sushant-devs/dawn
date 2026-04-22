@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEMLIBRA® — Digital Detail Aid</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   TOKENS & RESET
+═══════════════════════════════════════════ */
+:root {
+  --or:   #E8401C;
+  --or2:  #c93110;
+  --bl:   #0099CC;
+  --bl2:  #006f96;
+  --dark: #1A1A2E;
+  --mid:  #4A5568;
+  --soft: #F7F8FA;
+  --bdr:  #E2E6ED;
+  --white:#FFFFFF;
+  --grad-or: linear-gradient(135deg,#E8401C 0%,#ff6b3d 100%);
+  --grad-bl: linear-gradient(135deg,#0099CC 0%,#00c4ff 100%);
+  --shadow-card: 0 4px 24px rgba(0,0,0,.09);
+  --shadow-lg:   0 12px 48px rgba(0,0,0,.16);
+  --r:    8px;
+  --transition: .38s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:var(--dark);color:var(--dark)}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+
+/* ═══════════════════════════════════════════
+   SHELL
+═══════════════════════════════════════════ */
+#shell{
+  width:100vw;height:100vh;
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+
+/* ─── TOP NAV BAR ─── */
+#topbar{
+  height:56px;min-height:56px;
+  background:var(--white);
+  border-bottom:1px solid var(--bdr);
+  display:flex;align-items:center;
+  padding:0 24px;gap:0;
+  position:relative;z-index:100;
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+#topbar .logo img{height:32px;display:block}
+#topbar .logo .fallback-logo{
+  display:none;
+  font-family:'Playfair Display',serif;
+}
+#topbar .logo .fallback-logo .hl-name{color:var(--or);font-size:22px;font-weight:900;letter-spacing:-1px}
+#topbar .logo .fallback-logo sup{color:var(--or);font-size:11px;vertical-align:super}
+
+#topbar .divider{width:1px;height:28px;background:var(--bdr);margin:0 20px}
+
+/* Module nav pills */
+#module-nav{
+  display:flex;align-items:center;gap:4px;flex:1;
+  overflow-x:auto;scrollbar-width:none;
+}
+#module-nav::-webkit-scrollbar{display:none}
+
+.mnav-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:20px;
+  font-size:12px;font-weight:500;
+  color:var(--mid);
+  transition:all .22s ease;
+  white-space:nowrap;border:1.5px solid transparent;
+  position:relative;
+}
+.mnav-btn .step-dot{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--bdr);color:#999;
+  font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .22s ease;flex-shrink:0;
+}
+.mnav-btn:hover{color:var(--or);background:rgba(232,64,28,.05)}
+.mnav-btn.active{
+  color:var(--or);background:rgba(232,64,28,.08);
+  border-color:rgba(232,64,28,.25);
+}
+.mnav-btn.active .step-dot{background:var(--or);color:#fff}
+.mnav-btn.visited .step-dot{background:var(--bl);color:#fff}
+
+.mnav-arrow{color:var(--bdr);font-size:10px;margin:0 2px}
+
+#topbar .isi-pill{
+  margin-left:auto;
+  padding:5px 12px;border-radius:20px;
+  font-size:10.5px;font-weight:600;
+  background:var(--dark);color:#fff;
+  letter-spacing:.3px;flex-shrink:0;
+  transition:background .2s;
+}
+#topbar .isi-pill:hover{background:var(--or)}
+
+/* ─── MAIN SLIDE AREA ─── */
+#slide-area{
+  flex:1;overflow:hidden;position:relative;
+}
+
+/* ─── SLIDES ─── */
+.slide{
+  position:absolute;inset:0;
+  opacity:0;pointer-events:none;
+  transform:translateX(40px);
+  transition:opacity var(--transition), transform var(--transition);
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color: rgba(232,64,28,.3) transparent;
+}
+.slide.active{
+  opacity:1;pointer-events:all;
+  transform:translateX(0);
+}
+.slide.exit{
+  opacity:0;transform:translateX(-40px);
+}
+
+/* ─── BOTTOM NAV ─── */
+#bottombar{
+  height:52px;min-height:52px;
+  background:var(--white);
+  border-top:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  z-index:100;
+}
+.nav-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 20px;border-radius:6px;
+  font-size:12.5px;font-weight:600;
+  transition:all .18s ease;
+}
+.nav-btn.prev{color:var(--mid);border:1.5px solid var(--bdr)}
+.nav-btn.prev:hover{border-color:var(--or);color:var(--or)}
+.nav-btn.next{background:var(--grad-or);color:#fff;box-shadow:0 4px 14px rgba(232,64,28,.35)}
+.nav-btn.next:hover{box-shadow:0 6px 20px rgba(232,64,28,.45);transform:translateY(-1px)}
+
+.slide-counter{
+  font-size:11px;color:#aaa;font-weight:500;letter-spacing:.4px;
+}
+.slide-counter span{color:var(--or);font-weight:700}
+
+/* progress bar */
+#progress-bar{
+  position:absolute;bottom:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--or),var(--bl));
+  transition:width .4s ease;
+  border-radius:0 2px 2px 0;
+}
+
+/* ═══════════════════════════════════════════
+   SLIDE LAYOUTS
+═══════════════════════════════════════════ */
+
+/* ── TITLE SLIDE ── */
+.title-slide{
+  background: linear-gradient(150deg,#0d1b2e 0%, #1a2f4a 50%, #0e1e30 100%);
+  display:flex;flex-direction:column;
+  min-height:100%;
+  position:relative;overflow:hidden;
+}
+.title-slide::before{
+  content:'';position:absolute;
+  top:-120px;right:-80px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(232,64,28,.18) 0%,transparent 70%);
+  border-radius:50%;
+}
+.title-slide::after{
+  content:'';position:absolute;
+  bottom:-100px;left:-60px;
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(0,153,204,.14) 0%,transparent 70%);
+  border-radius:50%;
+}
+.title-slide .ts-content{
+  flex:1;display:flex;flex-direction:column;
+  justify-content:center;padding:48px 64px;
+  position:relative;z-index:2;
+}
+.title-slide .ts-logo img{height:52px;margin-bottom:40px}
+.title-slide .ts-logo .fl-wrap{display:none}
+.title-slide .ts-logo .fl-name{
+  font-family:'Playfair Display',serif;font-size:36px;
+  font-weight:900;color:var(--or);letter-spacing:-1px;margin-bottom:4px;
+}
+.title-slide .ts-sup{color:var(--or);font-size:16px;vertical-align:super}
+.title-slide .ts-sub{color:rgba(255,255,255,.6);font-size:13px}
+.title-slide h1{
+  font-family:'Playfair Display',serif;
+  font-size:38px;font-weight:900;
+  color:#fff;line-height:1.2;
+  max-width:640px;margin-bottom:20px;
+}
+.title-slide h1 em{color:var(--or);font-style:normal}
+.title-slide .ts-sub-title{
+  font-size:15px;color:rgba(255,255,255,.6);
+  font-weight:300;margin-bottom:40px;max-width:520px;line-height:1.6;
+}
+.title-slide .ts-pills{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:48px}
+.ts-pill{
+  padding:6px 16px;border-radius:20px;
+  font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
+}
+.ts-pill.or{background:rgba(232,64,28,.18);color:#ff8a72;border:1px solid rgba(232,64,28,.3)}
+.ts-pill.bl{background:rgba(0,153,204,.18);color:#5dd4f5;border:1px solid rgba(0,153,204,.3)}
+.ts-pill.wh{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15)}
+
+.title-slide .ts-menu-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  max-width:680px;
+}
+.ts-menu-card{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--r);
+  padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+  transition:all .22s ease;cursor:pointer;
+}
+.ts-menu-card:hover{
+  background:rgba(232,64,28,.12);
+  border-color:rgba(232,64,28,.4);
+  transform:translateY(-2px);
+}
+.ts-menu-card .mc-icon{
+  width:34px;height:34px;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.ts-menu-card .mc-label{font-size:11.5px;font-weight:600;color:#fff;line-height:1.3}
+.ts-menu-card .mc-num{font-size:9px;color:rgba(255,255,255,.4);margin-top:1px}
+
+.title-slide .ts-footer{
+  padding:16px 64px;
+  border-top:1px solid rgba(255,255,255,.07);
+  display:flex;justify-content:space-between;align-items:center;
+  position:relative;z-index:2;
+}
+.ts-footer-copy{font-size:9.5px;color:rgba(255,255,255,.3);line-height:1.5}
+
+/* ── GENERIC MODULE SLIDE ── */
+.module-slide{
+  background:var(--soft);
+  display:flex;flex-direction:column;
+  min-height:100%;
+}
+.module-header{
+  padding:28px 48px 24px;
+  background:var(--white);
+  border-bottom:1px solid var(--bdr);
+  display:flex;align-items:flex-start;justify-content:space-between;
+}
+.mh-left{}
+.module-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 10px;border-radius:20px;
+  font-size:10px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.module-tag.or{background:rgba(232,64,28,.1);color:var(--or)}
+.module-tag.bl{background:rgba(0,153,204,.1);color:var(--bl)}
+.module-tag.dk{background:rgba(26,26,46,.08);color:var(--dark)}
+.module-tag .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.module-title{
+  font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:700;color:var(--dark);
+  line-height:1.2;margin-bottom:6px;
+}
+.module-subtitle{font-size:13px;color:var(--mid);font-weight:300;line-height:1.5;max-width:580px}
+
+.mh-logo img{height:28px;opacity:.75}
+
+.module-body{
+  flex:1;padding:28px 48px;
+  display:grid;gap:20px;
+}
+
+/* ── CARD ── */
+.card{
+  background:var(--white);
+  border-radius:var(--r);
+  border:1px solid var(--bdr);
+  overflow:hidden;
+  box-shadow:var(--shadow-card);
+}
+.card-head{
+  padding:12px 16px;
+  font-size:10.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.8px;
+  display:flex;align-items:center;gap:8px;
+}
+.card-head.or{background:var(--or);color:#fff}
+.card-head.bl{background:var(--bl);color:#fff}
+.card-head.dk{background:var(--dark);color:#fff}
+.card-head.or-lt{background:rgba(232,64,28,.08);color:var(--or);border-bottom:1px solid rgba(232,64,28,.12)}
+.card-head.bl-lt{background:rgba(0,153,204,.08);color:var(--bl);border-bottom:1px solid rgba(0,153,204,.12)}
+.card-body{padding:16px}
+.card-body p{font-size:12.5px;line-height:1.7;color:var(--mid)}
+.card-body ul{padding-left:16px}
+.card-body li{font-size:12.5px;line-height:1.7;color:var(--mid);margin-bottom:4px}
+.card-body li::marker{color:var(--or)}
+
+/* ── STAT BOXES ── */
+.stat-grid{display:grid;gap:14px}
+.stat-box{
+  background:var(--white);border-radius:var(--r);
+  border:1px solid var(--bdr);
+  padding:16px;text-align:center;
+  box-shadow:var(--shadow-card);
+  position:relative;overflow:hidden;
+}
+.stat-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--grad-or);
+}
+.stat-box.bl-stat::before{background:var(--grad-bl)}
+.stat-val{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:900;color:var(--or);line-height:1;
+  margin-bottom:4px;
+}
+.stat-box.bl-stat .stat-val{color:var(--bl)}
+.stat-lbl{font-size:10px;color:var(--mid);line-height:1.4;font-weight:500}
+
+/* ── CHART PLACEHOLDER ── */
+.chart-ph{
+  background:var(--soft);
+  border:2px dashed var(--bdr);
+  border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:8px;
+  color:#bbb;font-size:11px;font-style:italic;
+  min-height:140px;
+}
+.chart-ph svg{opacity:.3}
+
+/* ── CALLOUT ── */
+.callout{
+  border-left:4px solid var(--or);
+  background:rgba(232,64,28,.05);
+  border-radius:0 var(--r) var(--r) 0;
+  padding:12px 16px;
+  font-size:12.5px;color:var(--dark);
+  font-weight:500;line-height:1.6;
+  font-style:italic;
+}
+.callout.bl{border-left-color:var(--bl);background:rgba(0,153,204,.05)}
+
+/* ── STEP LIST ── */
+.step-list{display:flex;flex-direction:column;gap:10px}
+.step-item{
+  display:flex;align-items:flex-start;gap:12px;
+}
+.step-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--or);color:#fff;
+  font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.step-num.bl{background:var(--bl)}
+.step-content .sc-title{font-size:12.5px;font-weight:600;color:var(--dark);margin-bottom:2px}
+.step-content .sc-body{font-size:11.5px;color:var(--mid);line-height:1.5}
+
+/* ── MOA DIAGRAM ── */
+.moa-diagram{
+  background:var(--white);border-radius:var(--r);
+  border:1px solid var(--bdr);padding:20px;
+  box-shadow:var(--shadow-card);
+}
+.moa-flow{
+  display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;
+}
+.moa-node{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  width:110px;text-align:center;
+}
+.moa-circle{
+  width:70px;height:70px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;border:2px solid;
+  position:relative;
+}
+.moa-circle.or{background:rgba(232,64,28,.1);border-color:rgba(232,64,28,.3)}
+.moa-circle.bl{background:rgba(0,153,204,.1);border-color:rgba(0,153,204,.3)}
+.moa-circle.dk{background:rgba(26,26,46,.06);border-color:rgba(26,26,46,.15)}
+.moa-label{font-size:10px;font-weight:600;color:var(--dark);line-height:1.3}
+.moa-sub{font-size:9px;color:var(--mid)}
+.moa-arrow{
+  font-size:20px;color:var(--bdr);margin:0 4px;margin-bottom:24px;
+  flex-shrink:0;
+}
+
+/* ── DOSING TABLE ── */
+.dose-table{width:100%;border-collapse:collapse;font-size:12px}
+.dose-table thead tr{background:var(--or)}
+.dose-table thead th{
+  color:#fff;padding:10px 14px;text-align:left;
+  font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+}
+.dose-table tbody td{
+  padding:10px 14px;border-bottom:1px solid var(--bdr);color:var(--mid);
+}
+.dose-table tbody tr:nth-child(even) td{background:var(--soft)}
+.dose-table tbody tr:hover td{background:rgba(232,64,28,.04)}
+
+/* ── ISI SLIDE ── */
+.isi-slide{
+  background:#fff;
+  min-height:100%;
+  display:flex;flex-direction:column;
+}
+.isi-header{
+  background:var(--dark);
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.isi-header h2{
+  font-family:'Playfair Display',serif;
+  color:#fff;font-size:18px;font-weight:700;
+}
+.isi-header .isi-badge{
+  background:var(--or);color:#fff;
+  font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  padding:5px 12px;border-radius:4px;
+}
+.isi-body{padding:28px 48px;flex:1}
+.isi-section{margin-bottom:20px}
+.isi-section-title{
+  font-size:11px;font-weight:700;color:var(--or);
+  text-transform:uppercase;letter-spacing:.8px;
+  margin-bottom:8px;padding-bottom:6px;
+  border-bottom:1.5px solid rgba(232,64,28,.2);
+}
+.isi-body p,.isi-body li{font-size:11px;line-height:1.7;color:var(--mid)}
+.isi-body ul{padding-left:16px;margin-top:4px}
+.isi-body li{margin-bottom:2px}
+.isi-footer-note{
+  padding:14px 48px;
+  background:var(--soft);
+  border-top:1px solid var(--bdr);
+  font-size:9.5px;color:#aaa;line-height:1.6;
+}
+
+/* ── SUPPORT SLIDE ── */
+.support-icon-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+}
+.support-card{
+  background:var(--white);border-radius:var(--r);
+  border:1px solid var(--bdr);padding:20px 16px;
+  text-align:center;
+  box-shadow:var(--shadow-card);
+  transition:all .22s ease;cursor:pointer;
+}
+.support-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 28px rgba(0,0,0,.12);
+  border-color:var(--or);
+}
+.support-card .sc-icon{
+  font-size:30px;margin-bottom:10px;
+}
+.support-card .sc-name{
+  font-size:12.5px;font-weight:700;color:var(--dark);margin-bottom:4px;
+}
+.support-card .sc-desc{font-size:10.5px;color:var(--mid);line-height:1.5}
+
+/* ── ISI MODAL ── */
+#isi-modal{
+  position:fixed;inset:0;z-index:999;
+  background:rgba(0,0,0,.6);
+  display:none;align-items:flex-end;
+  backdrop-filter:blur(2px);
+}
+#isi-modal.open{display:flex}
+#isi-modal-inner{
+  background:#fff;
+  width:100%;max-height:60vh;
+  border-radius:12px 12px 0 0;
+  overflow-y:auto;padding:24px 40px;
+  animation: slideUp .3s ease;
+}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+#isi-modal-inner h3{
+  font-family:'Playfair Display',serif;
+  font-size:18px;color:var(--dark);margin-bottom:16px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+#isi-modal-inner h3 button{
+  font-size:20px;color:#aaa;padding:4px;
+  transition:color .2s;
+}
+#isi-modal-inner h3 button:hover{color:var(--or)}
+
+/* ── RESPONSIVE HELPERS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.grid-1-2{display:grid;grid-template-columns:1fr 2fr;gap:18px}
+.grid-2-1{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+.flex-col{display:flex;flex-direction:column;gap:12px}
+
+/* Scrollbar */
+.slide::-webkit-scrollbar{width:4px}
+.slide::-webkit-scrollbar-track{background:transparent}
+.slide::-webkit-scrollbar-thumb{background:rgba(232,64,28,.25);border-radius:2px}
+</style>
+</head>
+<body>
+
+<div id="shell">
+
+  <!-- TOP NAV BAR -->
+  <div id="topbar">
+    <div class="logo">
+      <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png"
+           alt="HEMLIBRA"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="fallback-logo" style="display:none;align-items:flex-end;gap:1px">
+        <span class="hl-name">HEMLIBRA</span><sup>®</sup>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div id="module-nav">
+      <button class="mnav-btn active" data-slide="0">
+        <span class="step-dot">1</span> Title
+      </button>
+      <span class="mnav-arrow">›</span>
+      <button class="mnav-btn" data-slide="1">
+        <span class="step-dot">2</span> MOA
+      </button>
+      <span class="mnav-arrow">›</span>
+      <button class="mnav-btn" data-slide="2">
+        <span class="step-dot">3</span> Efficacy
+      </button>
+      <span class="mnav-arrow">›</span>
+      <button class="mnav-btn" data-slide="3">
+        <span class="step-dot">4</span> Safety
+      </button>
+      <span class="mnav-arrow">›</span>
+      <button class="mnav-btn" data-slide="4">
+        <span class="step-dot">5</span> Dosing
+      </button>
+      <span class="mnav-arrow">›</span>
+      <button class="mnav-btn" data-slide="5">
+        <span class="step-dot">6</span> Patient Support
+      </button>
+      <span class="mnav-arrow">›</span>
+      <button class="mnav-btn" data-slide="6">
+        <span class="step-dot">7</span> ISI
+      </button>
+    </div>
+
+    <button class="isi-pill" onclick="openISI()">⚠ Important Safety Info</button>
+  </div>
+
+  <!-- SLIDE AREA -->
+  <div id="slide-area">
+
+    <!-- ════════════════════════════════
+         SLIDE 0 — TITLE
+    ════════════════════════════════ -->
+    <div class="slide active" id="slide-0">
+      <div class="title-slide">
+        <div class="ts-content">
+          <!-- Logo -->
+          <div class="ts-logo">
+            <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png"
+                 alt="HEMLIBRA"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            <div class="fl-wrap">
+              <div class="fl-name">HEMLIBRA<span class="ts-sup">®</span></div>
+              <div class="ts-sub">emicizumab-kxwh · injection for subcutaneous use · 150 mg/mL</div>
+            </div>
+          </div>
+
+          <h1>A <em>New Standard</em> in Hemophilia A Prophylaxis</h1>
+          <p class="ts-sub-title">
+            A comprehensive overview of emicizumab-kxwh — mechanism of action, clinical efficacy,
+            safety profile, dosing guidance, and patient support resources.
+          </p>
+          <div class="ts-pills">
+            <span class="ts-pill or">Prophylaxis</span>
+            <span class="ts-pill bl">Hemophilia A</span>
+            <span class="ts-pill wh">With or Without Inhibitors</span>
+            <span class="ts-pill wh">Subcutaneous · Q1W / Q2W / Q4W</span>
+          </div>
+
+          <!-- Quick-jump module grid -->
+          <div class="ts-menu-grid">
+            <div class="ts-menu-card" onclick="goToSlide(1)">
+              <div class="mc-icon" style="background:rgba(232,64,28,.15)">🔬</div>
+              <div><div class="mc-label">Mechanism of Action</div><div class="mc-num">Module 2</div></div>
+            </div>
+            <div class="ts-menu-card" onclick="goToSlide(2)">
+              <div class="mc-icon" style="background:rgba(0,153,204,.15)">📊</div>
+              <div><div class="mc-label">Efficacy Data</div><div class="mc-num">Module 3</div></div>
+            </div>
+            <div class="ts-menu-card" onclick="goToSlide(3)">
+              <div class="mc-icon" style="background:rgba(255,255,255,.08)">🛡️</div>
+              <div><div class="mc-label">Safety Profile</div><div class="mc-num">Module 4</div></div>
+            </div>
+            <div class="ts-menu-card" onclick="goToSlide(4)">
+              <div class="mc-icon" style="background:rgba(232,64,28,.15)">💉</div>
+              <div><div class="mc-label">Dosing & Admin</div><div class="mc-num">Module 5</div></div>
+            </div>
+            <div class="ts-menu-card" onclick="goToSlide(5)">
+              <div class="mc-icon" style="background:rgba(0,153,204,.15)">🤝</div>
+              <div><div class="mc-label">Patient Support</div><div class="mc-num">Module 6</div></div>
+            </div>
+            <div class="ts-menu-card" onclick="goToSlide(6)">
+              <div class="mc-icon" style="background:rgba(255,255,255,.08)">📋</div>
+              <div><div class="mc-label">ISI</div><div class="mc-num">Module 7</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ts-footer">
+          <div class="ts-footer-copy">
+            HEMLIBRA® (emicizumab-kxwh) · For use by trained healthcare professionals only<br>
+            Please see full Prescribing Information and Important Safety Information
+          </div>
+          <div style="text-align:right">
+            <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png"
+                 alt="HEMLIBRA" style="height:22px;filter:brightness(0) invert(1);opacity:.35"
+                 onerror="this.style.display='none'">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         SLIDE 1 — MOA
+    ════════════════════════════════ -->
+    <div class="slide" id="slide-1">
+      <div class="module-slide">
+        <div class="module-header">
+          <div class="mh-left">
+            <div class="module-tag or"><span class="dot"></span> Module 2 of 7</div>
+            <div class="module-title">Mechanism of Action</div>
+            <div class="module-subtitle">
+              How emicizumab-kxwh mimics activated factor VIII to restore hemostasis
+            </div>
+          </div>
+          <div class="mh-logo">
+            <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png" alt="HEMLIBRA"
+                 onerror="this.style.display='none'">
+          </div>
+        </div>
+
+        <div class="module-body" style="grid-template-rows:auto auto">
+
+          <!-- MOA Diagram -->
+          <div class="moa-diagram">
+            <div style="font-size:10.5px;font-weight:700;color:var(--or);text-transform:uppercase;letter-spacing:.7px;margin-bottom:16px">Coagulation Cascade — Emicizumab Bridging Action</div>
+            <div class="moa-flow">
+              <div class="moa-node">
+                <div class="moa-circle or">🩸</div>
+                <div class="moa-label">Injury / Vascular Damage</div>
+              </div>
+              <div class="moa-arrow">→</div>
+              <div class="moa-node">
+                <div class="moa-circle dk">⚡</div>
+                <div class="moa-label">Factor IXa Activation</div>
+                <div class="moa-sub">Intrinsic pathway</div>
+              </div>
+              <div class="moa-arrow">→</div>
+              <div class="moa-node">
+                <div class="moa-circle bl" style="border-color:var(--or);background:rgba(232,64,28,.12);">
+                  <span style="font-size:11px;font-weight:800;color:var(--or);">EMI</span>
+                </div>
+                <div class="moa-label">Emicizumab Bridges IXa + X</div>
+                <div class="moa-sub" style="color:var(--or);font-weight:600">Key action</div>
+              </div>
+              <div class="moa-arrow">→</div>
+              <div class="moa-node">
+                <div class="moa-circle bl">🔗</div>
+                <div class="moa-label">Factor Xa Generated</div>
+              </div>
+              <div class="moa-arrow">→</div>
+              <div class="moa-node">
+                <div class="moa-circle dk">🩺</div>
+                <div class="moa-label">Thrombin → Fibrin Clot</div>
+                <div class="moa-sub">Hemostasis restored</div>
+              </div>
+            </div>
+            <div class="callout" style="margin-top:16px;">
+              Emicizumab-kxwh is a bispecific antibody that bridges Factor IXa and Factor X,
+              substituting for the cofactor activity of activated Factor VIII — without requiring FVIII itself.
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-head or">What Makes It Different</div>
+              <div class="card-body">
+                <div class="step-list">
+                  <div class="step-item">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                      <div class="sc-title">Bispecific Antibody</div>
+                      <div class="sc-body">Simultaneously binds Factor IXa and Factor X, bringing them into proximity to activate Factor X.</div>
+                    </div>
+                  </div>
+                  <div class="step-item">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                      <div class="sc-title">FVIII-Independent</div>
+                      <div class="sc-body">Works regardless of inhibitor status — effective in patients with and without anti-FVIII inhibitors.</div>
+                    </div>
+                  </div>
+                  <div class="step-item">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                      <div class="sc-title">Subcutaneous Delivery</div>
+                      <div class="sc-body">Convenient SC injection eliminates need for IV infusion, reducing treatment burden significantly.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex-col">
+              <div class="card">
+                <div class="card-head bl-lt">Half-Life &amp; PK Profile</div>
+                <div class="card-body">
+                  <div class="stat-grid" style="grid-template-columns:1fr 1fr">
+                    <div class="stat-box">
+                      <div class="stat-val">~4–5</div>
+                      <div class="stat-lbl">Weeks<br>Half-life</div>
+                    </div>
+                    <div class="stat-box bl-stat">
+                      <div class="stat-val">SC</div>
+                      <div class="stat-lbl">Route of<br>Administration</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="callout bl">
+                Long half-life enables once-weekly, every-2-week, or every-4-week subcutaneous dosing —
+                a significant reduction from standard prophylaxis regimens.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         SLIDE 2 — EFFICACY
+    ════════════════════════════════ -->
+    <div class="slide" id="slide-2">
+      <div class="module-slide">
+        <div class="module-header">
+          <div class="mh-left">
+            <div class="module-tag bl"><span class="dot"></span> Module 3 of 7</div>
+            <div class="module-title">Clinical Efficacy</div>
+            <div class="module-subtitle">
+              HAVEN clinical program — efficacy outcomes across patient populations
+            </div>
+          </div>
+          <div class="mh-logo">
+            <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png" alt="HEMLIBRA"
+                 onerror="this.style.display='none'">
+          </div>
+        </div>
+
+        <div class="module-body" style="grid-template-rows:auto auto">
+
+          <!-- Key stats row -->
+          <div class="grid-3">
+            <div class="stat-box">
+              <div class="stat-val">~87%</div>
+              <div class="stat-lbl">Reduction in treated bleeds<br>vs. no prophylaxis (HAVEN 3)</div>
+            </div>
+            <div class="stat-box bl-stat">
+              <div class="stat-val">~63%</div>
+              <div class="stat-lbl">Patients achieved zero<br>treated bleeds (HAVEN 1)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val">~79%</div>
+              <div class="stat-lbl">Reduction in ABR vs.<br>prior FVIII prophylaxis</div>
+            </div>
+          </div>
+
+          <div class="grid-1-2">
+            <!-- Study cards -->
+            <div class="flex-col">
+              <div class="card">
+                <div class="card-head or">HAVEN Studies</div>
+                <div class="card-body">
+                  <div class="step-list">
+                    <div class="step-item">
+                      <div class="step-num">1</div>
+                      <div class="step-content">
+                        <div class="sc-title">HAVEN 1</div>
+                        <div class="sc-body">Adults/adolescents with inhibitors — Q1W prophylaxis vs. no/prior prophylaxis</div>
+                      </div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-num bl">2</div>
+                      <div class="step-content">
+                        <div class="sc-title">HAVEN 2</div>
+                        <div class="sc-body">Pediatric patients (&lt;12 years) with inhibitors — Q1W or Q2W</div>
+                      </div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-num">3</div>
+                      <div class="step-content">
+                        <div class="sc-title">HAVEN 3</div>
+                        <div class="sc-body">Adults/adolescents without inhibitors — Q1W and Q2W dosing</div>
+                      </div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-num bl">4</div>
+                      <div class="step-content">
+                        <div class="sc-title">HAVEN 4</div>
+                        <div class="sc-body">All Hemophilia A patients — Q4W dosing schedule</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chart + table -->
+            <div class="flex-col">
+              <div class="chart-ph" style="min-height:160px">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span>[ Insert ABR Comparison Chart — HAVEN 1/3/4 ]</span>
+                <span style="font-size:9.5px">Kaplan–Meier or annualized bleed rate bar chart</span>
+              </div>
+
+              <div class="card">
+                <div class="card-head bl-lt">ABR Summary Across Indications</div>
+                <div class="card-body" style="padding:0">
+                  <table class="dose-table" style="font-size:11px">
+                    <thead>
+                      <tr>
+                        <th>Study</th><th>Population</th><th>Median ABR</th><th>95% CI</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>HAVEN 1</td><td>Adults + inhibitors</td><td>[X.X]</td><td>[X.X–X.X]</td></tr>
+                      <tr><td>HAVEN 2</td><td>Pediatric + inhibitors</td><td>[X.X]</td><td>[X.X–X.X]</td></tr>
+                      <tr><td>HAVEN 3</td><td>Adults, no inhibitors</td><td>[X.X]</td><td>[X.X–X.X]</td></tr>
+                      <tr><td>HAVEN 4</td><td>All Hemophilia A</td><td>[X.X]</td><td>[X.X–X.X]</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         SLIDE 3 — SAFETY
+    ════════════════════════════════ -->
+    <div class="slide" id="slide-3">
+      <div class="module-slide">
+        <div class="module-header">
+          <div class="mh-left">
+            <div class="module-tag dk"><span class="dot" style="background:var(--dark)"></span> Module 4 of 7</div>
+            <div class="module-title">Safety Profile</div>
+            <div class="module-subtitle">
+              Pooled safety data from HAVEN 1–4 and post-marketing experience
+            </div>
+          </div>
+          <div class="mh-logo">
+            <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png" alt="HEMLIBRA"
+                 onerror="this.style.display='none'">
+          </div>
+        </div>
+
+        <div class="module-body" style="grid-template-rows:auto auto">
+
+          <div class="grid-3">
+            <div class="stat-box">
+              <div class="stat-val">[XX%]</div>
+              <div class="stat-lbl">Injection site reactions<br>(most common AE)</div>
+            </div>
+            <div class="stat-box bl-stat">
+              <div class="stat-val">[X%]</div>
+              <div class="stat-lbl">Serious adverse<br>events reported</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val">[X%]</div>
+              <div class="stat-lbl">Treatment<br>discontinuations</div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="flex-col">
+              <div class="card">
+                <div class="card-head or">Most Common Adverse Events (≥5%)</div>
+                <div class="card-body">
+                  <div class="chart-ph" style="min-height:110px">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="10" width="4" height="11"/><rect x="10" y="6" width="4" height="15"/><rect x="17" y="2" width="4" height="19"/></svg>
+                    <span>[ Insert AE Frequency Bar Chart ]</span>
+                  </div>
+                  <ul style="margin-top:10px">
+                    <li>Injection site reactions (pain, redness, swelling)</li>
+                    <li>Headache</li>
+                    <li>Fatigue</li>
+                    <li>Arthralgia</li>
+                    <li>Upper respiratory tract infection</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="callout">
+                No new safety signals identified beyond those in the current Prescribing Information.
+                Overall safety profile was consistent across all HAVEN studies.
+              </div>
+            </div>
+
+            <div class="flex-col">
+              <div class="card">
+                <div class="card-head dk">Warnings &amp; Precautions</div>
+                <div class="card-body">
+                  <div class="step-list">
+                    <div class="step-item">
+                      <div class="step-num" style="background:var(--or2);font-size:12px">⚠</div>
+                      <div class="step-content">
+                        <div class="sc-title">Thrombotic Microangiopathy (TMA)</div>
+                        <div class="sc-body">Risk when used with activated prothrombin complex concentrate (aPCC). Monitor and discontinue if TMA suspected.</div>
+                      </div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-num" style="background:var(--or2);font-size:12px">⚠</div>
+                      <div class="step-content">
+                        <div class="sc-title">Thromboembolism</div>
+                        <div class="sc-body">Cases reported when used with aPCC. Avoid use of aPCC with emicizumab unless benefit outweighs risk.</div>
+                      </div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-num bl">ℹ</div>
+                      <div class="step-content">
+                        <div class="sc-title">Coagulation Test Interference</div>
+                        <div class="sc-body">Emicizumab can interfere with intrinsic pathway-based clotting assays. Consult lab guidance.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-head bl-lt">Special Populations</div>
+                <div class="card-body">
+                  <ul>
+                    <li><strong>Pediatric:</strong> Safety/efficacy established (HAVEN 2; ≥1 month of age)</li>
+                    <li><strong>Renal/Hepatic impairment:</strong> No dose adjustment required (mild-moderate)</li>
+                    <li><strong>Pregnancy/Lactation:</strong> Limited data; risk cannot be excluded</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         SLIDE 4 — DOSING
+    ════════════════════════════════ -->
+    <div class="slide" id="slide-4">
+      <div class="module-slide">
+        <div class="module-header">
+          <div class="mh-left">
+            <div class="module-tag or"><span class="dot"></span> Module 5 of 7</div>
+            <div class="module-title">Dosing &amp; Administration</div>
+            <div class="module-subtitle">
+              Flexible subcutaneous dosing regimens — once weekly, every 2 weeks, or every 4 weeks
+            </div>
+          </div>
+          <div class="mh-logo">
+            <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png" alt="HEMLIBRA"
+                 onerror="this.style.display='none'">
+          </div>
+        </div>
+
+        <div class="module-body">
+
+          <!-- Dosing table -->
+          <div class="card">
+            <div class="card-head or">Recommended Dosing Regimens</div>
+            <div class="card-body" style="padding:0">
+              <table class="dose-table">
+                <thead>
+                  <tr>
+                    <th>Phase</th>
+                    <th>Dose</th>
+                    <th>Frequency</th>
+                    <th>Duration</th>
+                    <th>Route</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Loading (Q1W)</strong></td>
+                    <td>3 mg/kg</td>
+                    <td>Once weekly</td>
+                    <td>First 4 weeks</td>
+                    <td>Subcutaneous</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Maintenance — Q1W</strong></td>
+                    <td>1.5 mg/kg</td>
+                    <td>Once weekly</td>
+                    <td>Ongoing</td>
+                    <td>Subcutaneous</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Maintenance — Q2W</strong></td>
+                    <td>3 mg/kg</td>
+                    <td>Every 2 weeks</td>
+                    <td>Ongoing</td>
+                    <td>Subcutaneous</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Maintenance — Q4W</strong></td>
+                    <td>6 mg/kg</td>
+                    <td>Every 4 weeks</td>
+                    <td>Ongoing</td>
+                    <td>Subcutaneous</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="flex-col">
+              <div class="card">
+                <div class="card-head bl-lt">Administration Steps</div>
+                <div class="card-body">
+                  <div class="step-list">
+                    <div class="step-item">
+                      <div class="step-num bl">1</div>
+                      <div class="step-content">
+                        <div class="sc-title">Preparation</div>
+                        <div class="sc-body">Remove from refrigerator 15–30 min before use. Do not shake. Inspect for particulates.</div>
+                      </div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-num bl">2</div>
+                      <div class="step-content">
+                        <div class="sc-title">Site Selection</div>
+                        <div class="sc-body">Abdomen, upper arm, or thigh. Rotate injection sites. Avoid areas with skin lesions.</div>
+                      </div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-num bl">3</div>
+                      <div class="step-content">
+                        <div class="sc-title">Injection</div>
+                        <div class="sc-body">Insert needle at 45–90° angle. Inject slowly. Press firmly — do not rub injection site.</div>
+                      </div>
+                    </div>
+                    <div class="step-item">
+                      <div class="step-num bl">4</div>
+                      <div class="step-content">
+                        <div class="sc-title">Storage</div>
+                        <div class="sc-body">Refrigerate at 2–8°C (36–46°F). Protect from light. Do not freeze or shake.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex-col">
+              <div class="card">
+                <div class="card-head or-lt">Available Presentations</div>
+                <div class="card-body">
+                  <div class="stat-grid" style="grid-template-columns:1fr 1fr;gap:10px">
+                    <div class="stat-box" style="padding:12px">
+                      <div class="stat-val" style="font-size:18px">30 mg</div>
+                      <div class="stat-lbl">/ 1 mL vial</div>
+                    </div>
+                    <div class="stat-box bl-stat" style="padding:12px">
+                      <div class="stat-val" style="font-size:18px">60 mg</div>
+                      <div class="stat-lbl">/ 0.4 mL vial</div>
+                    </div>
+                    <div class="stat-box" style="padding:12px">
+                      <div class="stat-val" style="font-size:18px">105 mg</div>
+                      <div class="stat-lbl">/ 0.7 mL vial</div>
+                    </div>
+                    <div class="stat-box bl-stat" style="padding:12px">
+                      <div class="stat-val" style="font-size:18px">150 mg</div>
+                      <div class="stat-lbl">/ 1 mL vial</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="callout">
+                If a dose is missed: administer as soon as possible within the dosing window.
+                Do not double doses. Resume regular schedule.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         SLIDE 5 — PATIENT SUPPORT
+    ════════════════════════════════ -->
+    <div class="slide" id="slide-5">
+      <div class="module-slide">
+        <div class="module-header">
+          <div class="mh-left">
+            <div class="module-tag bl"><span class="dot"></span> Module 6 of 7</div>
+            <div class="module-title">Patient Support Program</div>
+            <div class="module-subtitle">
+              Comprehensive resources to help patients start and stay on therapy
+            </div>
+          </div>
+          <div class="mh-logo">
+            <img src="http://192.168.10.50:4566/bucket-dam/HEMLIBRA_logo.png" alt="HEMLIBRA"
+                 onerror="this.style.display='none'">
+          </div>
+        </div>
+
+        <div class="module-body">
+          <!-- Support icon grid -->
+          <div class="support-icon-grid">
+            <div class="support-card">
+              <div class="sc-icon">💊</div>
+              <div class="sc-name">Co-pay Assistance</div>
+              <div class="sc-desc">Eligible commercially insured patients may pay as little as $[X]/month. Covers out-of-pocket costs.</div>
+            </div>
+            <div class="support-card">
+              <div class="sc-icon">📞</div>
+              <div class="sc-name">Case Manager Access</div>
+              <div class="sc-desc">Dedicated case managers provide personalized support from enrollment through treatment initiation.</div>
+            </div>
+            <div class="support-card">
+              <div class="sc-icon">🎓</div>
+              <div class="sc-name">Injection Training</div>
+              <div class="sc-desc">Nurse educators provide at-home training on self-injection technique and device handling.</div>
+            </div>
+            <div class="support-card">
+              <div class="sc-icon">🔄</div>
+              <div class="sc-name">Prior Authorization Support</div>
+              <div class="sc-desc">Hub team assists with PA submissions, appeals, and insurance navigation on behalf of the practice.</div>
+            </div>
+            <div class="support-card">
+              <div class="sc-icon">📦</div>
+              <div class="sc-name">Free Drug Program</div>
+              <div class="sc-desc">Uninsured or underinsured patients may qualify for free product through the patient assistance program.</div>
+            </div>
+            <div class="support-card">
+              <div class="sc-icon">📱</div>
+              <div class="sc-name">Digital Tools</div>
+              <div class="sc-desc">App-based adherence reminders, injection logs, and bleed tracking for patients and caregivers.</div>
+            </div>
+          </div>
+
+          <!-- Enrollment callout -->
+          <div class="card">
+            <div class="card-head bl">Enrollment &amp; Contact</div>
+            <div class="card-body">
+              <div class="grid-3">
+                <div>
+                  <div style="font-size:10.5px;font-weight:700;color:var(--bl);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Hub Phone</div>
+                  <div style="font-size:15px;font-weight:700;color:var(--dark)">[1-800-XXX-XXXX]</div>
+                  <div style="font-size:10px;color:var(--mid)">Mon–Fri, 8am–8pm ET</div>
+                </div>
+                <div>
+                  <div style="font-size:10.5px;font-weight:700;color:var(--bl);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Enrollment Form</div>
+                  <div style="font-size:13px;font-weight:600;color:var(--dark)">[www.hemlibra-support.com]</div>
+                  <div style="font-size:10px;color:var(--mid)">Online enrollment portal</div>
+                </div>
+                <div>
+                  <div style="font-size:10.5px;font-weight:700;color:var(--bl);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Fax</div>
+                  <div style="font-size:15px;font-weight:700;color:var(--dark)">[1-800-XXX-XXXX]</div>
+                  <div style="font-size:10px;color:var(--mid)">Available 24/7</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════
+         SLIDE 6 — ISI
+    ════════════════════════════════ -->
+    <div class="slide" id="slide-6">
+      <div class="isi-slide">
+        <div class="isi-header">
+          <h2>Important Safety Information</h2>
+          <div class="isi-badge">Full ISI — Please Read</div>
+        </div>
+
+        <div class="isi-body">
+
+          <div class="isi-section">
+            <div class="isi-section-title">⚠ Warnings &amp; Precautions</div>
+            <p><strong>Thrombotic Microangiopathy (TMA):</strong> Cases of TMA, some serious, have been reported following use of emicizumab with activated prothrombin complex concentrate (aPCC; FEIBA). Monitor for signs/symptoms. Discontinue aPCC and hold emicizumab if TMA is diagnosed.</p>
+            <p style="margin-top:6px"><strong>Thromboembolism:</strong> Serious thromboembolic events have been reported when emicizumab was used concomitantly with aPCC. Use aPCC with caution; avoid doses &gt;100 U/kg/24 hours for &gt;24 hours.</p>
+          </div>
+
+          <div class="isi-section">
+            <div class="isi-section-title">Contraindications</div>
+            <p>No contraindications are identified in the current U.S. Prescribing Information.</p>
+          </div>
+
+          <div class="isi-section">
+            <div class="isi-section-title">Adverse Reactions</div>
+            <p>The most common adverse reactions (≥5%) in clinical trials were:</p>
+            <ul>
+              <li>Injection site reactions (pain, erythema, pruritus, swelling)</li>
+              <li>Headache</li>
+              <li>Arthralgia</li>
+              <li>Fatigue</li>
+              <li>Upper respiratory tract infection</li>
+            </ul>
+          </div>
+
+          <div class="isi-section">
+            <div class="isi-section-title">Drug Interactions</div>
+            <p>Emicizumab may interfere with activated partial thromboplastin time (aPTT)-based clotting assays and Bethesda assays for FVIII inhibitors. Consult laboratory guidance for appropriate test selection in patients on emicizumab therapy.</p>
+          </div>
+
+          <div class="isi-section">
+            <div class="isi-section-title">Use in Specific Populations</div>
+            <ul>
+              <li><strong>Pregnancy:</strong> No adequate data. Based on mechanism of action, potential risk to fetus. Advise patients of reproductive potential.</li>
+              <li><strong>Lactation:</strong> Unknown if present in human milk. Consider developmental and health benefits of breastfeeding.</li>
+              <li><strong>Pediatric Use:</strong> Safety and efficacy established in patients ≥1 month of age (HAVEN 2).</li>
+              <li><strong>Renal/Hepatic Impairment:</strong> No dose adjustment required for mild-to-moderate impairment.</li>
+            </ul>
+          </div>
+
+          <div class="isi-section">
+            <div class="isi-section-title">Indication</div>
+            <p>HEMLIBRA® (emicizumab-kxwh) is indicated for routine prophylaxis to prevent or reduce the frequency of bleeding episodes in adults and pediatric patients with Hemophilia A with or without Factor VIII inhibitors.</p>
+          </div>
+
+        </div>
+
+        <div class="isi-footer-note">
+          HEMLIBRA® (emicizumab-kxwh) injection for subcutaneous use, 150 mg/mL. This is not a complete list of safety information.
+          Please see full Prescribing Information at [PI URL]. Rx only.
+          HEMLIBRA® is a registered trademark of Genentech, Inc. / F. Hoffmann-La Roche Ltd.
+          © [Year] Genentech, Inc. All rights reserved. [Job Code] [Date]
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /slide-area -->
+
+  <!-- BOTTOM NAV -->
+  <div id="bottombar">
+    <button class="nav-btn prev" id="btn-prev" onclick="navigate(-1)">
+      ← Previous
+    </button>
+    <div class="slide-counter" id="slide-counter">
+      Slide <span id="cur-num">1</span> of <span>7</span>
+    </div>
+    <button class="nav-btn next" id="btn-next" onclick="navigate(1)">
+      Next →
+    </button>
+    <div id="progress-bar" style="width:14.28%"></div>
+  </div>
+
+</div><!-- /shell -->
+
+<!-- ISI Quick-access Modal -->
+<div id="isi-modal">
+  <div id="isi-modal-inner">
+    <h3>
+      Important Safety Information
+      <button onclick="closeISI()">✕</button>
+    </h3>
+    <p style="font-size:12px;color:var(--or);font-weight:600;margin-bottom:12px;">⚠ KEY WARNINGS</p>
+    <p style="font-size:11.5px;line-height:1.7;color:var(--mid)">
+      <strong>Thrombotic Microangiopathy (TMA) and Thromboembolism:</strong> Cases reported with concomitant use of activated prothrombin complex concentrate (aPCC). Avoid aPCC doses &gt;100 U/kg/24 hours for &gt;24 hours. Monitor for signs/symptoms of TMA and thromboembolic events.
+      <br><br>
+      <strong>Most common adverse reactions (≥5%):</strong> Injection site reactions, headache, arthralgia, fatigue, upper respiratory tract infections.
+      <br><br>
+      <strong>Indication:</strong> HEMLIBRA® (emicizumab-kxwh) is indicated for routine prophylaxis to prevent or reduce the frequency of bleeding episodes in adults and pediatric patients with Hemophilia A with or without Factor VIII inhibitors.
+      <br><br>
+      Please see full Prescribing Information. Rx only.
+    </p>
+    <div style="margin-top:16px;display:flex;gap:10px">
+      <button onclick="goToSlide(6);closeISI()" style="padding:8px 18px;background:var(--or);color:#fff;border-radius:6px;font-size:12px;font-weight:600">View Full ISI →</button>
+      <button onclick="closeISI()" style="padding:8px 18px;border:1.5px solid var(--bdr);color:var(--mid);border-radius:6px;font-size:12px;font-weight:600">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOTAL = 7;
+let current = 0;
+let visited = new Set([0]);
+
+const slides     = document.querySelectorAll('.slide');
+const navBtns    = document.querySelectorAll('.mnav-btn');
+const progressBar= document.getElementById('progress-bar');
+const curNumEl   = document.getElementById('cur-num');
+const btnPrev    = document.getElementById('btn-prev');
+const btnNext    = document.getElementById('btn-next');
+
+function goToSlide(n) {
+  if (n < 0 || n >= TOTAL) return;
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit');
+  setTimeout(() => slides[current].classList.remove('exit'), 400);
+
+  current = n;
+  visited.add(current);
+  slides[current].classList.add('active');
+
+  // Scroll slide to top
+  slides[current].scrollTop = 0;
+
+  updateUI();
+}
+
+function navigate(dir) {
+  goToSlide(current + dir);
+}
+
+function updateUI() {
+  navBtns.forEach((btn, i) => {
+    btn.classList.remove('active', 'visited');
+    if (i === current) btn.classList.add('active');
+    else if (visited.has(i)) btn.classList.add('visited');
+  });
+
+  progressBar.style.width = ((current + 1) / TOTAL * 100) + '%';
+  curNumEl.textContent     = current + 1;
+  btnPrev.style.visibility = current === 0        ? 'hidden' : 'visible';
+  btnNext.textContent      = current === TOTAL-1  ? 'Restart ↺' : 'Next →';
+  if (current === TOTAL-1) {
+    btnNext.onclick = () => goToSlide(0);
+  } else {
+    btnNext.onclick = () => navigate(1);
+  }
+}
+
+function openISI()  { document.getElementById('isi-modal').classList.add('open'); }
+function closeISI() { document.getElementById('isi-modal').classList.remove('open'); }
+
+// Close modal on backdrop click
+document.getElementById('isi-modal').addEventListener('click', function(e){
+  if (e.target === this) closeISI();
+});
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown')  navigate(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')    navigate(-1);
+  if (e.key === 'Escape') closeISI();
+});
+
+// Attach nav button clicks
+navBtns.forEach((btn, i) => {
+  btn.addEventListener('click', () => goToSlide(i));
+});
+
+updateUI();
+</script>
+</body>
+</html>

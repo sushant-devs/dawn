@@ -1,20 +1,44 @@
 'use client';
 
-import { useEffect } from 'react';
-import { Bell } from 'lucide-react';
+import { useEffect, useState, useMemo } from 'react';
+import { Bell, FileText } from 'lucide-react';
 import { useDAWN } from '@/context/DAWNContext';
 import ChatContainer from '@/components/chat/ChatContainer';
 import ChatInput from '@/components/chat/ChatInput';
 import QuickChips from '@/components/chat/QuickChips';
+import BriefModeSelectorModal from '@/components/modals/BriefModeSelectorModal';
+import ManualBriefInputModal from '@/components/modals/ManualBriefInputModal';
 import BriefBuilderModal from '@/components/modals/BriefBuilderModal';
+import TemplateSelectorModal from '@/components/modals/TemplateSelectorModal';
 import ContentEditorModal from '@/components/modals/ContentEditorModal';
 import ImageGenModal from '@/components/modals/ImageGenModal';
 import MLRCheckerModal from '@/components/modals/MLRCheckerModal';
 import DistributionModal from '@/components/modals/DistributionModal';
 import EffectivenessModal from '@/components/modals/EffectivenessModal';
+import NotificationModal from '@/components/modals/NotificationModal';
+import PLSGeneratorModal from '@/components/modals/PLSGeneratorModal';
+import type { AgentResponseContent, NotificationData } from '@/lib/types';
 
 export default function ChatPage() {
-  const { state, dispatch, sendMessage, confirmModal, closeModal } = useDAWN();
+  const { state, dispatch, sendMessage, confirmModal, closeModal, setBriefMode } = useDAWN();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showPLSModal, setShowPLSModal] = useState(false);
+
+  // Find the latest notification from messages
+  const latestNotification = useMemo(() => {
+    for (let i = state.messages.length - 1; i >= 0; i--) {
+      const msg = state.messages[i];
+      if (msg.role === 'agent') {
+        const content = msg.content as AgentResponseContent;
+        if (content.notification) {
+          return content.notification;
+        }
+      }
+    }
+    return null;
+  }, [state.messages]);
+
+  const hasNotifications = !!latestNotification;
 
   // Auto-start: show first pre-populated message after 1s
   useEffect(() => {
@@ -51,8 +75,26 @@ export default function ChatPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="w-8 h-8 rounded-lg border border-dawn-border flex items-center justify-center text-gray-400 hover:text-dawn-navy hover:border-dawn-navy/30 transition-colors">
+          <button
+            onClick={() => setShowPLSModal(true)}
+            className="w-8 h-8 rounded-lg border border-dawn-border text-gray-600 hover:text-dawn-navy hover:border-dawn-navy/30 hover:bg-gray-50 flex items-center justify-center transition-colors"
+            title="Generate PLS"
+          >
+            <FileText size={16} />
+          </button>
+          <button
+            onClick={() => hasNotifications && setShowNotifications(true)}
+            className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-colors relative ${
+              hasNotifications
+                ? 'border-dawn-teal bg-dawn-teal/5 text-dawn-teal hover:bg-dawn-teal/10'
+                : 'border-dawn-border text-gray-400 hover:text-dawn-navy hover:border-dawn-navy/30'
+            }`}
+            disabled={!hasNotifications}
+          >
             <Bell size={16} />
+            {hasNotifications && (
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-dawn-red rounded-full border-2 border-white" />
+            )}
           </button>
           <div className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center">
             <span className="text-white text-xs font-semibold">SC</span>
@@ -110,8 +152,20 @@ export default function ChatPage() {
       </div>
 
       {/* Modals */}
+      {state.activeModal === 'briefModeSelector' && (
+        <BriefModeSelectorModal
+          onConfirm={(mode) => setBriefMode(mode)}
+          onClose={closeModal}
+        />
+      )}
+      {state.activeModal === 'manualBriefInput' && (
+        <ManualBriefInputModal onConfirm={confirmModal} onClose={closeModal} />
+      )}
       {state.activeModal === 'briefBuilder' && (
         <BriefBuilderModal onConfirm={confirmModal} onClose={closeModal} />
+      )}
+      {state.activeModal === 'templateSelector' && (
+        <TemplateSelectorModal onConfirm={confirmModal} onClose={closeModal} />
       )}
       {state.activeModal === 'contentEditor' && (
         <ContentEditorModal onConfirm={confirmModal} onClose={closeModal} />
@@ -127,6 +181,19 @@ export default function ChatPage() {
       )}
       {state.activeModal === 'effectiveness' && (
         <EffectivenessModal onConfirm={confirmModal} onClose={closeModal} />
+      )}
+
+      {/* Notification Modal */}
+      {showNotifications && latestNotification && (
+        <NotificationModal
+          notification={latestNotification}
+          onClose={() => setShowNotifications(false)}
+        />
+      )}
+
+      {/* PLS Generator Modal */}
+      {showPLSModal && (
+        <PLSGeneratorModal onClose={() => setShowPLSModal(false)} />
       )}
     </>
   );

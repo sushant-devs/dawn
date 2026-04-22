@@ -5,15 +5,16 @@ import { useDAWN } from '@/context/DAWNContext';
 import type { Stage } from '@/lib/types';
 
 const STAGES: { id: Stage; label: string; icon: React.ElementType; index: number }[] = [
-  { id: 'setup',          label: 'Campaign Setup',   icon: Settings,   index: 0 },
-  { id: 'finder',         label: 'Content Finder',   icon: Search,     index: 1 },
-  { id: 'brief',          label: 'Brief Builder',    icon: FileText,   index: 2 },
-  { id: 'creator',        label: 'Content Creator',  icon: Edit3,      index: 3 },
-  { id: 'imagegen',       label: 'Image Generator',  icon: Image,      index: 4 },
-  { id: 'mlr',            label: 'MLR Review',       icon: Shield,     index: 5 },
-  { id: 'laylens',        label: 'Laylens PLS',      icon: BookOpen,   index: 6 },
-  { id: 'distribution',   label: 'Distribution',     icon: Send,       index: 7 },
-  { id: 'effectiveness',  label: 'Effectiveness',    icon: BarChart2,  index: 8 },
+  { id: 'setup',              label: 'Campaign Setup',     icon: Settings,   index: 0 },
+  { id: 'finder',             label: 'Content Finder',     icon: Search,     index: 1 },
+  { id: 'briefMode',          label: 'Brief Mode',         icon: FileText,   index: 2 },
+  { id: 'brief',              label: 'Brief Builder',      icon: FileText,   index: 3 },
+  { id: 'templateSelection',  label: 'Template Selection', icon: BookOpen,   index: 4 },
+  { id: 'creator',            label: 'Content Creator',    icon: Edit3,      index: 5 },
+  { id: 'imagegen',           label: 'Image Generator',    icon: Image,      index: 6 },
+  { id: 'mlr',                label: 'MLR Review',         icon: Shield,     index: 7 },
+  { id: 'distribution',       label: 'Distribution',       icon: Send,       index: 8 },
+  { id: 'effectiveness',      label: 'Effectiveness',      icon: BarChart2,  index: 9 },
 ];
 
 export default function Sidebar() {

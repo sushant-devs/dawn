@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { FileText, BookOpen, Award, ShieldCheck } from 'lucide-react';
+import { FileText, BookOpen, Award, ShieldCheck, Eye } from 'lucide-react';
 import type { DocumentCard as DocumentCardType } from '@/lib/types';
 
 interface DocumentCardProps extends DocumentCardType {
   onSelect: (id: string) => void;
+  onPreview?: (filePath: string, title: string) => void;
 }
 
 const TYPE_CONFIG = {
@@ -27,7 +28,7 @@ function getRelevanceBadgeColor(score: number) {
   return 'text-gray-500';
 }
 
-export default function DocumentCard({ id, title, type, relevance, keyFinding, selected, onSelect }: DocumentCardProps) {
+export default function DocumentCard({ id, title, type, relevance, keyFinding, selected, filePath, pageCount, onSelect, onPreview }: DocumentCardProps) {
   const cfg = TYPE_CONFIG[type];
   const Icon = cfg.icon;
   const [barWidth, setBarWidth] = useState(0);
@@ -39,6 +40,13 @@ export default function DocumentCard({ id, title, type, relevance, keyFinding, s
       setTimeout(() => setBarWidth(relevance), 100);
     }
   }, [relevance]);
+
+  const handlePreview = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (filePath && onPreview) {
+      onPreview(filePath, title);
+    }
+  };
 
   return (
     <div
@@ -53,9 +61,16 @@ export default function DocumentCard({ id, title, type, relevance, keyFinding, s
           <Icon size={10} />
           {type}
         </span>
-        <span className={`text-xs font-semibold ${getRelevanceBadgeColor(relevance)}`}>
-          {relevance}%
-        </span>
+        <div className="flex items-center gap-2">
+          {pageCount && (
+            <span className="text-[10px] text-gray-400">
+              {pageCount} pages
+            </span>
+          )}
+          <span className={`text-xs font-semibold ${getRelevanceBadgeColor(relevance)}`}>
+            {relevance}%
+          </span>
+        </div>
       </div>
 
       {/* Relevance bar */}
@@ -71,6 +86,17 @@ export default function DocumentCard({ id, title, type, relevance, keyFinding, s
 
       {/* Key finding */}
       <p className="text-xs text-gray-500 italic line-clamp-2 leading-relaxed">{keyFinding}</p>
+
+      {/* Preview button */}
+      {filePath && onPreview && (
+        <button
+          onClick={handlePreview}
+          className="mt-2 inline-flex items-center gap-1 text-xs text-dawn-teal hover:text-dawn-teal/80 font-medium transition-colors"
+        >
+          <Eye size={12} />
+          Preview Document
+        </button>
+      )}
 
       {/* Checkbox indicator */}
       <div className="absolute bottom-3 right-3">

@@ -195,7 +195,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
             </div>
 
             <div className="bg-dawn-sky/20 border border-dawn-teal/30 rounded-xl p-4 text-xs text-dawn-navy">
-              This is an internal pre-MLR screen. Final medical/legal approval is performed by Veeva Promomat outside this tool, and Sarah will receive a notification when the asset is approved.
+              This is an internal MLR screen. Final medical/legal approval is performed by Veeva Promomat outside this tool, and Sarah will receive a notification when the asset is approved.
             </div>
           </div>
         </div>
