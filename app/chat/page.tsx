@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { Bell, FileText } from 'lucide-react';
+import { Bell, FileText, Sparkles, ShieldCheck } from 'lucide-react';
 import { useDAWN } from '@/context/DAWNContext';
 import ChatContainer from '@/components/chat/ChatContainer';
 import ChatInput from '@/components/chat/ChatInput';
@@ -60,14 +60,15 @@ export default function ChatPage() {
   return (
     <>
       {/* Top bar */}
-      <header className="flex items-center justify-between px-6 py-3 bg-white border-b border-dawn-border shrink-0">
+      <header className="shrink-0 border-b border-dawn-border/80 bg-white/90 backdrop-blur-xl">
+        <div className="mx-auto flex w-full items-center justify-between px-6 py-3">
         <div className="flex items-center gap-2">
           {/* Mobile logo */}
           <div className="flex md:hidden items-center gap-2">
             <div className="w-7 h-7 bg-dawn-navy rounded-lg flex items-center justify-center">
               <span className="text-white font-serif text-xs font-bold">D</span>
             </div>
-            <span className="font-serif text-dawn-navy text-lg">DAWN</span>
+            <span className="font-serif text-dawn-navy text-lg">AI</span>
           </div>
           <div className="hidden md:flex items-center gap-2 text-sm text-gray-400">
             <span className="font-medium text-dawn-navy">DAWN AI</span>
@@ -100,14 +101,19 @@ export default function ChatPage() {
             <span className="text-white text-xs font-semibold">SC</span>
           </div>
         </div>
+        </div>
       </header>
 
       {/* Chat area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50">
         {showWelcomeScreen ? (
           /* Welcome screen */
           <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-            <div className="w-full max-w-2xl text-center">
+            <div className="w-full max-w-3xl rounded-3xl border border-dawn-border/70 bg-white/85 p-8 text-center shadow-[0_24px_80px_rgba(13,27,62,0.08)] backdrop-blur">
+              {/* <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-dawn-navy/10 bg-dawn-navy/5 px-3 py-1 text-xs font-medium text-dawn-navy">
+                <ShieldCheck size={14} />
+                Enterprise-safe AI workspace
+              </div> */}
               <h1 className="font-serif text-4xl text-dawn-navy mb-2">
                 Hi Sarah, how can I help you today?
               </h1>
@@ -133,8 +139,8 @@ export default function ChatPage() {
             <ChatContainer messages={state.messages} isTyping={state.isAgentTyping} typingMessage={state.typingMessage} />
 
             {/* Input bar */}
-            <div className="px-6 py-4 bg-white border-t border-dawn-border">
-              <div className="max-w-3xl mx-auto">
+            <div className="border-t border-dawn-border/80 bg-white/90 px-6 py-4 backdrop-blur-xl">
+              <div className="mx-auto max-w-4xl">
                 <ChatInput
                   prePopulatedMessage={state.prePopulatedMessage}
                   onSend={handleSend}

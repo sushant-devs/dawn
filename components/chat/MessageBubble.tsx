@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { ExternalLink, ChevronDown, ChevronUp, CheckCircle, Copy, RefreshCw, Check } from 'lucide-react';
+import { TypeAnimation } from 'react-type-animation';
 import type { ChatMessage, AgentResponseContent, DocumentCard as DocType } from '@/lib/types';
 import DocumentCard from '@/components/shared/DocumentCard';
 import StatusPill from '@/components/shared/StatusPill';
@@ -9,7 +10,12 @@ import { useDAWN } from '@/context/DAWNContext';
 
 interface MessageBubbleProps {
   message: ChatMessage;
+  shouldStream?: boolean;
+  onStreamComplete?: (messageId: string) => void;
 }
+
+const MESSAGE_STREAM_SPEED = 70;
+const MESSAGE_STREAM_START_DELAY_MS = 250;
 
 function formatTime(date: Date) {
   const diff = Math.floor((Date.now() - date.getTime()) / 1000);
@@ -293,12 +299,15 @@ function StatusSummaryBlock({ summary }: { summary: NonNullable<AgentResponseCon
 
 // ─── Main MessageBubble ───────────────────────────────────────────────────────
 
-export default function MessageBubble({ message }: MessageBubbleProps) {
-  const { state, dispatch, openModal } = useDAWN();
+export default function MessageBubble({ message, shouldStream = true, onStreamComplete }: MessageBubbleProps) {
+  const { openModal } = useDAWN();
   const isUser = message.role === 'user';
   const content = message.content;
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [hasFinishedStreaming, setHasFinishedStreaming] = useState(false);
+  const [completedAgentLines, setCompletedAgentLines] = useState<string[]>([]);
+  const [currentAgentLineIndex, setCurrentAgentLineIndex] = useState(0);
 
   const getPlainText = (): string => {
     if (isUser) return content as string;
@@ -312,6 +321,21 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
       setTimeout(() => setCopied(false), 2000);
     });
   };
+
+  const streamText = isUser ? (content as string) : (content as AgentResponseContent).text;
+  const agentLines = isUser ? [] : ((content as AgentResponseContent).text.split('\n'));
+
+  useEffect(() => {
+    setHasFinishedStreaming(!shouldStream);
+    setCompletedAgentLines([]);
+    setCurrentAgentLineIndex(0);
+  }, [message.id, shouldStream]);
+
+  useEffect(() => {
+    if (hasFinishedStreaming && shouldStream) {
+      onStreamComplete?.(message.id);
+    }
+  }, [hasFinishedStreaming, shouldStream, onStreamComplete, message.id]);
 
   if (isUser) {
     return (
@@ -333,8 +357,23 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
           </div>
 
           <div>
-            <div className="bg-dawn-teal text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm">
-              <p className="text-sm leading-relaxed">{content as string}</p>
+            <div className="rounded-2xl rounded-tr-sm bg-gradient-to-br from-dawn-teal to-cyan-600 px-4 py-3 text-white shadow-[0_12px_28px_rgba(0,168,150,0.32)]">
+              {hasFinishedStreaming || !shouldStream ? (
+                <p className="text-sm leading-relaxed whitespace-pre-line">{content as string}</p>
+              ) : (
+                <TypeAnimation
+                  sequence={[
+                    MESSAGE_STREAM_START_DELAY_MS,
+                    streamText,
+                    () => setHasFinishedStreaming(true),
+                  ]}
+                  speed={MESSAGE_STREAM_SPEED}
+                  repeat={0}
+                  cursor={true}
+                  style={{ display: 'block', whiteSpace: 'pre-line' }}
+                  className="text-sm leading-relaxed"
+                />
+              )}
             </div>
             <p className="text-[10px] text-gray-400 text-right mt-1 pr-1">{formatTime(message.timestamp)}</p>
           </div>
@@ -353,7 +392,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
 
   return (
     <div
-      className="flex items-start gap-3 animate-fade-in-up max-w-2xl"
+      className="flex max-w-3xl items-start gap-3 animate-fade-in-up"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -364,40 +403,78 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
 
       <div className="flex-1 min-w-0">
         {/* Bubble */}
-        <div className="bg-white rounded-2xl rounded-tl-sm border border-dawn-border shadow-sm border-l-[3px] border-l-dawn-teal px-4 py-3">
+        <div className="rounded-2xl rounded-tl-sm border border-dawn-border bg-white px-4 py-3 shadow-sm border-l-[3px] border-l-dawn-teal">
           {/* Main text */}
-          <RichText text={resp.text} />
+          {hasFinishedStreaming || !shouldStream ? (
+            <RichText text={resp.text} />
+          ) : (
+            <div className="space-y-0.5">
+              {completedAgentLines.map((line, index) => (
+                line.trim() === '' ? (
+                  <div key={`line-gap-${index}`} className="h-3" />
+                ) : (
+                  <RichText key={`line-${index}`} text={line} />
+                )
+              ))}
+
+              {currentAgentLineIndex < agentLines.length && (
+                <TypeAnimation
+                  key={`${message.id}-${currentAgentLineIndex}`}
+                  sequence={[
+                    currentAgentLineIndex === 0 ? MESSAGE_STREAM_START_DELAY_MS : 120,
+                    agentLines[currentAgentLineIndex] ?? '',
+                    () => {
+                      const completedLine = agentLines[currentAgentLineIndex] ?? '';
+                      setCompletedAgentLines((prev) => [...prev, completedLine]);
+                      setCurrentAgentLineIndex((prev) => {
+                        const next = prev + 1;
+                        if (next >= agentLines.length) {
+                          setHasFinishedStreaming(true);
+                        }
+                        return next;
+                      });
+                    },
+                  ]}
+                  speed={MESSAGE_STREAM_SPEED}
+                  repeat={0}
+                  cursor={true}
+                  style={{ display: 'block', whiteSpace: 'pre-line' }}
+                  className="text-sm text-gray-700 leading-relaxed"
+                />
+              )}
+            </div>
+          )}
 
           {/* Campaign summary */}
-          {resp.campaignSummary && <CampaignSummaryCard data={resp.campaignSummary} />}
+          {(hasFinishedStreaming || !shouldStream) && resp.campaignSummary && <CampaignSummaryCard data={resp.campaignSummary} />}
 
           {/* Document cards */}
-          {resp.documentCards && (
+          {(hasFinishedStreaming || !shouldStream) && resp.documentCards && (
             <DocumentGrid
               docs={resp.documentCards}
             />
           )}
 
           {/* Content generation */}
-          {resp.contentAssets && <ContentAssetsBlock assets={resp.contentAssets} />}
+          {(hasFinishedStreaming || !shouldStream) && resp.contentAssets && <ContentAssetsBlock assets={resp.contentAssets} />}
 
           {/* Image variations */}
-          {resp.imageVariations && <ImageVariationsBlock variations={resp.imageVariations} />}
+          {(hasFinishedStreaming || !shouldStream) && resp.imageVariations && <ImageVariationsBlock variations={resp.imageVariations} />}
 
           {/* MLR table */}
-          {resp.mlrTable && <MLRTableBlock rows={resp.mlrTable} />}
+          {(hasFinishedStreaming || !shouldStream) && resp.mlrTable && <MLRTableBlock rows={resp.mlrTable} />}
 
           {/* Status summary */}
-          {resp.statusSummary && <StatusSummaryBlock summary={resp.statusSummary} />}
+          {(hasFinishedStreaming || !shouldStream) && resp.statusSummary && <StatusSummaryBlock summary={resp.statusSummary} />}
 
           {/* PLS scores */}
-          {resp.plsScores && <PLSScoresBlock scores={resp.plsScores} preview={resp.plsPreview} />}
+          {(hasFinishedStreaming || !shouldStream) && resp.plsScores && <PLSScoresBlock scores={resp.plsScores} preview={resp.plsPreview} />}
 
           {/* Metrics */}
-          {resp.metrics && <MetricsBlock metrics={resp.metrics} />}
+          {(hasFinishedStreaming || !shouldStream) && resp.metrics && <MetricsBlock metrics={resp.metrics} />}
 
           {/* Recommendation - shown after all content */}
-          {resp.recommendation && (
+          {(hasFinishedStreaming || !shouldStream) && resp.recommendation && (
             <div className="mt-4 bg-dawn-amber/5 border-l-2 border-dawn-amber rounded-r-lg px-4 py-3">
               <p className="text-xs font-semibold text-dawn-amber mb-1 uppercase tracking-wide flex items-center gap-1.5">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -412,7 +489,7 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
           )}
 
           {/* Action button */}
-          {resp.actionButton && (
+          {(hasFinishedStreaming || !shouldStream) && resp.actionButton && (
             <button
               onClick={handleAction}
               className="mt-4 inline-flex items-center gap-2 bg-dawn-teal text-white rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-dawn-teal/90 transition-all duration-200 shadow-sm hover:shadow-md"

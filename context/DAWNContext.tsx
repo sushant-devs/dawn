@@ -203,6 +203,19 @@ const DAWNContext = createContext<DAWNContextType | null>(null);
 
 export function DAWNProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(dawnReducer, initialState);
+  const getAgentTypingDelay = useCallback((thinkingMessage?: string) => {
+    if (!thinkingMessage) return 1500 + Math.random() * 700;
+
+    const isDetailedThinking = thinkingMessage.includes('\n');
+    if (!isDetailedThinking) return 1500 + Math.random() * 700;
+
+    const chars = thinkingMessage.length;
+    const lines = thinkingMessage.split('\n').length;
+
+    // Keep delay very close to stream duration to avoid post-stream idle time.
+    const estimatedStreamMs = (chars * 6) + (lines * 30) + 200;
+    return Math.max(estimatedStreamMs, 1200);
+  }, []);
 
   // Handle auto-advance steps (steps that should proceed without user input)
   React.useEffect(() => {
@@ -218,14 +231,7 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
       (prevStep?.autoAdvance || prevStep?.autoAdvanceAfterModal || twoPrevStep?.autoAdvanceAfterModal);
 
     if (shouldAutoTrigger && currentStep) {
-      // Calculate delay based on thinking message length
-      let delay = 2000 + Math.random() * 500;
-
-      if (currentStep.thinkingMessage) {
-        const lineCount = currentStep.thinkingMessage.split('\n').length;
-        // 500ms per line + 2 seconds buffer
-        delay = (lineCount * 500) + 2000;
-      }
+      const delay = getAgentTypingDelay(currentStep.thinkingMessage);
 
       const timer = setTimeout(() => {
         const agentMsg: ChatMessage = {
@@ -240,7 +246,7 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
 
       return () => clearTimeout(timer);
     }
-  }, [state.isAgentTyping, state.currentStepIndex]);
+  }, [state.isAgentTyping, state.currentStepIndex, getAgentTypingDelay]);
 
   const sendMessage = useCallback(
     (text: string) => {
@@ -249,12 +255,7 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
       const currentStep = STORYLINE[state.currentStepIndex];
       if (!currentStep) return;
 
-      // Simulate agent typing delay
-      // Use longer delay for detailed thinking messages (multiline)
-      const hasDetailedThinking = currentStep.thinkingMessage && currentStep.thinkingMessage.includes('\n');
-      const delay = hasDetailedThinking
-        ? 15000 + Math.random() * 2000  // 15-17 seconds for detailed messages (enough time to read through all lines)
-        : 1500 + Math.random() * 700;    // 1.5-2.2 seconds for simple messages
+      const delay = getAgentTypingDelay(currentStep.thinkingMessage);
 
       setTimeout(() => {
         const agentMsg: ChatMessage = {
@@ -267,7 +268,7 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
         dispatch({ type: 'ADD_AGENT_MESSAGE', payload: agentMsg });
       }, delay);
     },
-    [state.currentStepIndex]
+    [state.currentStepIndex, getAgentTypingDelay]
   );
 
   const openModal = useCallback((modal: ModalType) => {
