@@ -212,11 +212,11 @@ export const STORYLINE: StorylineStep[] = [
     agentResponse: {
       text: 'Master creative assets and visual directions generated. Content includes copy for all 5 assets with persona-based tone, and visual variations for poster design. Review, edit content, and select your preferred visual direction.',
       contentAssets: [
-        { id: 'poster',   title: 'Poster - HAVEN 4 Data', persona: 'Clinical Researcher', language: 'EN (US)', wordCount: 420 },
-        { id: 'email-us', title: 'HCP Email (US)',                  persona: 'Empathetic Specialist', language: 'EN (US)', wordCount: 285 },
-        { id: 'email-de', title: 'HCP Email (DE)',                  persona: 'Conservative Specialist', language: 'DE', wordCount: 298 },
-        { id: 'leaflet',  title: 'Patient Leaflet',                 persona: 'Patient-Friendly', language: 'EN (US)', wordCount: 350 },
-        { id: 'dda',      title: 'Digital Detail Aid',              persona: 'Innovator HCP', language: 'EN (US)', wordCount: 510 },
+        { id: 'poster', title: 'Poster - HAVEN 4 Data', persona: 'Clinical Researcher', language: 'EN (US)', wordCount: 420 },
+        { id: 'email-us', title: 'HCP Email (US)', persona: 'Empathetic Specialist', language: 'EN (US)', wordCount: 285 },
+        { id: 'email-de', title: 'HCP Email (DE)', persona: 'Conservative Specialist', language: 'DE', wordCount: 298 },
+        { id: 'leaflet', title: 'Patient Leaflet', persona: 'Patient-Friendly', language: 'EN (US)', wordCount: 350 },
+        { id: 'dda', title: 'Digital Detail Aid', persona: 'Innovator HCP', language: 'EN (US)', wordCount: 510 },
       ],
       imageVariations: [
         {
@@ -245,7 +245,7 @@ export const STORYLINE: StorylineStep[] = [
         label: 'Review & Edit Content + Visuals →',
         modal: 'contentEditor',
       },
-      },
+    },
     triggersModal: 'contentEditor',
     autoAdvanceAfterModal: true,
     thinkingMessage: `I'm creating your campaign content now. Let me walk you through what I'm doing...
@@ -324,11 +324,11 @@ Done! Your content is ready for review.`,
     agentResponse: {
       text: 'Internal MLR screen completed. It identifies flagged claims, explains tier risk, and shows what needs revision. Final approval is handled by Veeva Promomat, and you will receive a notification once the assets are approved.',
       mlrTable: [
-        { asset: 'Poster',   tier: 'Tier 2', aiPreScreen: '2 flags', status: 'Pending' },
-        { asset: 'HCP Email (US)',     tier: 'Tier 1', aiPreScreen: 'Clean',   status: 'Passed'     },
-        { asset: 'HCP Email (DE)',     tier: 'Tier 2', aiPreScreen: '1 flag',  status: 'Pending' },
-        { asset: 'Patient Leaflet',    tier: 'Tier 1', aiPreScreen: 'Clean',   status: 'Passed'     },
-        { asset: 'Digital Detail Aid', tier: 'Tier 2', aiPreScreen: '1 flag',  status: 'Pending' },
+        { asset: 'Poster', tier: 'Tier 2', aiPreScreen: '2 flags', status: 'Pending' },
+        { asset: 'HCP Email (US)', tier: 'Tier 1', aiPreScreen: 'Clean', status: 'Passed' },
+        { asset: 'HCP Email (DE)', tier: 'Tier 2', aiPreScreen: '1 flag', status: 'Pending' },
+        { asset: 'Patient Leaflet', tier: 'Tier 1', aiPreScreen: 'Clean', status: 'Passed' },
+        { asset: 'Digital Detail Aid', tier: 'Tier 2', aiPreScreen: '1 flag', status: 'Pending' },
       ],
       statusSummary: { total: 5, passed: 2, pending: 3, flagged: 3 },
       actionButton: {
@@ -450,10 +450,10 @@ MLR pre-screen complete. Your detailed results are ready.`,
     agentResponse: {
       text: 'Campaign performance dashboard ready. Here is the current performance summary across email, DDA, and patient channels.',
       metrics: [
-        { label: 'Email Open Rate', value: '34%',     trend: '↑ 8%',  trendUp: true,  benchmark: 'vs. 26% benchmark' },
-        { label: 'Email CTR',       value: '12.4%',   trend: '↑ 4.1%', trendUp: true, benchmark: 'vs. 8.3% benchmark' },
-        { label: 'DDA Engagement',  value: '4.2 min', trend: '↑ 1.1 min', trendUp: true, benchmark: 'vs. 3.1 min avg' },
-        { label: 'Rx Switches',     value: '223',     trend: '+47 MoM', trendUp: true,  benchmark: 'vs. 160 target' },
+        { label: 'Email Open Rate', value: '34%', trend: '↑ 8%', trendUp: true, benchmark: 'vs. 26% benchmark' },
+        { label: 'Email CTR', value: '12.4%', trend: '↑ 4.1%', trendUp: true, benchmark: 'vs. 8.3% benchmark' },
+        { label: 'DDA Engagement', value: '4.2 min', trend: '↑ 1.1 min', trendUp: true, benchmark: 'vs. 3.1 min avg' },
+        { label: 'Rx Switches', value: '223', trend: '+47 MoM', trendUp: true, benchmark: 'vs. 160 target' },
       ],
       actionButton: {
         label: 'Open Full Dashboard →',

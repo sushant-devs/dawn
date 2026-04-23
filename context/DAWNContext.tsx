@@ -203,6 +203,17 @@ const DAWNContext = createContext<DAWNContextType | null>(null);
 
 export function DAWNProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(dawnReducer, initialState);
+  const getUserMessageStreamDelay = useCallback((userText?: string) => {
+    if (!userText) return 0;
+
+    // Keep in sync with MessageBubble streaming cadence so thinking appears first.
+    const userMessageStreamStartDelayMs = 250;
+    const userMessageStreamSpeed = 70;
+    const estimatedStreamMs = userMessageStreamStartDelayMs + (userText.length * userMessageStreamSpeed);
+
+    return Math.max(estimatedStreamMs, 400);
+  }, []);
+
   const getAgentTypingDelay = useCallback((thinkingMessage?: string) => {
     if (!thinkingMessage) return 1500 + Math.random() * 700;
 
@@ -255,7 +266,9 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
       const currentStep = STORYLINE[state.currentStepIndex];
       if (!currentStep) return;
 
-      const delay = getAgentTypingDelay(currentStep.thinkingMessage);
+      const userStreamDelay = getUserMessageStreamDelay(text);
+      const thinkingDelay = getAgentTypingDelay(currentStep.thinkingMessage);
+      const delay = userStreamDelay + thinkingDelay;
 
       setTimeout(() => {
         const agentMsg: ChatMessage = {
@@ -268,7 +281,7 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
         dispatch({ type: 'ADD_AGENT_MESSAGE', payload: agentMsg });
       }, delay);
     },
-    [state.currentStepIndex, getAgentTypingDelay]
+    [state.currentStepIndex, getAgentTypingDelay, getUserMessageStreamDelay]
   );
 
   const openModal = useCallback((modal: ModalType) => {

@@ -377,6 +377,11 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
             </div>
             <p className="text-[10px] text-gray-400 text-right mt-1 pr-1">{formatTime(message.timestamp)}</p>
           </div>
+
+          {/* User avatar */}
+          <div className="w-8 h-8 rounded-full bg-dawn-teal flex items-center justify-center shrink-0 mt-0.5">
+            <span className="text-white font-serif text-xs font-bold">U</span>
+          </div>
         </div>
       </div>
     );
@@ -397,7 +402,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
       onMouseLeave={() => setHovered(false)}
     >
       {/* Avatar */}
-      <div className="w-8 h-8 rounded-full bg-dawn-navy flex items-center justify-center shrink-0 mt-0.5">
+      <div className="w-8 h-8 rounded-full bg-dawn-navy flex items-center justify-center shrink-0 self-end mb-1">
         <span className="text-white font-serif text-xs font-bold">D</span>
       </div>
 
