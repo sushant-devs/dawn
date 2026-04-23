@@ -10,16 +10,56 @@ interface TypingIndicatorProps {
 const THINKING_STREAM_SPEED = 99;
 const THINKING_STREAM_START_DELAY_MS = 300;
 
+function getDynamicThinkingTitle(message: string): string {
+  const lines = message
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  // Prefer explicit section-style headings if present.
+  const sectionTitle = lines.find((line) => line.endsWith(':'));
+  if (sectionTitle) return sectionTitle;
+
+  // Otherwise use the first meaningful line and keep it compact.
+  const firstLine = lines[0] ?? '';
+  if (!firstLine) return 'Working on it...';
+
+  return firstLine.length > 64 ? `${firstLine.slice(0, 61)}...` : firstLine;
+}
+
 export default function TypingIndicator({ message = 'DAWN is thinking…' }: TypingIndicatorProps) {
   // Check if message contains multiple lines (detailed thinking message)
   const isDetailedMessage = message.includes('\n');
 
   const [isMounted, setIsMounted] = useState(false);
+  const [dynamicTitle, setDynamicTitle] = useState('Working on it...');
 
   // Handle hydration
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!isDetailedMessage) {
+      setDynamicTitle('Working on it...');
+      return;
+    }
+
+    // Derive title from progressively visible content instead of static storyline labels.
+    const startTime = Date.now();
+    const tick = () => {
+      const elapsed = Date.now() - startTime;
+      const streamElapsed = Math.max(0, elapsed - THINKING_STREAM_START_DELAY_MS);
+      const visibleChars = Math.min(message.length, Math.floor(streamElapsed / THINKING_STREAM_SPEED));
+      const visibleText = message.slice(0, visibleChars);
+
+      setDynamicTitle(getDynamicThinkingTitle(visibleText));
+    };
+
+    tick();
+    const interval = setInterval(tick, 120);
+    return () => clearInterval(interval);
+  }, [message, isDetailedMessage]);
 
   // Prevent hydration mismatch by showing simple loader on server render
   if (!isMounted) {
@@ -68,7 +108,7 @@ export default function TypingIndicator({ message = 'DAWN is thinking…' }: Typ
                   />
                 ))}
               </div>
-              <span className="text-xs font-semibold text-dawn-navy">Generating content...</span>
+              <span className="text-xs font-semibold text-dawn-navy">{dynamicTitle}</span>
             </div>
             <div className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">
               <TypeAnimation

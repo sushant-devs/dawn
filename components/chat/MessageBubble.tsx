@@ -7,6 +7,7 @@ import type { ChatMessage, AgentResponseContent, DocumentCard as DocType } from 
 import DocumentCard from '@/components/shared/DocumentCard';
 import StatusPill from '@/components/shared/StatusPill';
 import { useDAWN } from '@/context/DAWNContext';
+import { STORYLINE } from '@/lib/storyline';
 
 interface MessageBubbleProps {
   message: ChatMessage;
@@ -305,6 +306,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
   const content = message.content;
   const [copied, setCopied] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [showThinkingMessage, setShowThinkingMessage] = useState(false);
   const [hasFinishedStreaming, setHasFinishedStreaming] = useState(false);
   const [completedAgentLines, setCompletedAgentLines] = useState<string[]>([]);
   const [currentAgentLineIndex, setCurrentAgentLineIndex] = useState(0);
@@ -329,6 +331,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
     setHasFinishedStreaming(!shouldStream);
     setCompletedAgentLines([]);
     setCurrentAgentLineIndex(0);
+    setShowThinkingMessage(false);
   }, [message.id, shouldStream]);
 
   useEffect(() => {
@@ -389,6 +392,9 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
 
   // Agent message
   const resp = content as AgentResponseContent;
+  const stepThinkingMessage =
+    typeof message.stepIndex === 'number' ? STORYLINE[message.stepIndex]?.thinkingMessage : undefined;
+  const hasThinkingMessage = !!stepThinkingMessage?.trim();
 
   const handleAction = () => {
     if (!resp.actionButton?.modal) return;
@@ -409,6 +415,27 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
       <div className="flex-1 min-w-0">
         {/* Bubble */}
         <div className="rounded-2xl rounded-tl-sm border border-dawn-border bg-white px-4 py-3 shadow-sm border-l-[3px] border-l-dawn-teal">
+          {/* Thinking message toggle + panel */}
+          {hasThinkingMessage && (
+            <div>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowThinkingMessage((prev) => !prev)}
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-gray-500 hover:text-dawn-navy hover:bg-gray-100 transition-colors text-[11px]"
+                >
+                  {showThinkingMessage ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                  <span>Tool Response</span>
+                </button>
+              </div>
+
+              {showThinkingMessage && (
+                <div className="mt-2 rounded-xl border border-dawn-border bg-slate-50 px-3 py-2">
+                  <p className="whitespace-pre-line text-xs leading-relaxed text-gray-600">{stepThinkingMessage}</p>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Main text */}
           {hasFinishedStreaming || !shouldStream ? (
             <RichText text={resp.text} />
