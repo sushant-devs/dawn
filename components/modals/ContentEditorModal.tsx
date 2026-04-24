@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { X, Bold, Italic, List, Copy, RotateCcw, RefreshCw } from 'lucide-react';
+import { X, Bold, Italic, List, Copy, RotateCcw, RefreshCw, Download, FileImage } from 'lucide-react';
 import { GENERATED_ASSETS } from '@/lib/mockData';
 import StatusPill from '@/components/shared/StatusPill';
 
@@ -222,6 +222,13 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
   const [contents, setContents] = useState(GENERATED_ASSETS.map((a) => a.content));
   const [selectedImage, setSelectedImage] = useState<string>('poster');
 
+  // Image editing states
+  const [contrast, setContrast] = useState(50);
+  const [brightness, setBrightness] = useState(50);
+  const [brandOverlay, setBrandOverlay] = useState(false);
+  const [isiFooter, setIsiFooter] = useState(true);
+  const [imageFormat, setImageFormat] = useState<'A0 Poster' | 'A4 Print' | 'Digital Banner'>('A0 Poster');
+
   const asset = GENERATED_ASSETS[activeTab];
   const currentContent = contents[activeTab];
 
@@ -250,14 +257,14 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
               <p className="text-xs text-gray-400">Stage 3 — Content & Visual Creator</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy"><X size={20} /></button>
+          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy cursor-pointer"><X size={20} /></button>
         </div>
 
         {/* View mode toggle */}
         <div className="flex items-center gap-2 px-6 py-3 bg-gray-50 border-b border-dawn-border">
           <button
             onClick={() => setViewMode('content')}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${
               viewMode === 'content'
                 ? 'bg-dawn-teal text-white shadow-sm'
                 : 'bg-white text-gray-600 hover:text-dawn-navy border border-dawn-border'
@@ -267,7 +274,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
           </button>
           <button
             onClick={() => setViewMode('images')}
-            className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${
               viewMode === 'images'
                 ? 'bg-dawn-teal text-white shadow-sm'
                 : 'bg-white text-gray-600 hover:text-dawn-navy border border-dawn-border'
@@ -287,7 +294,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
               <button
                 key={a.id}
                 onClick={() => setActiveTab(i)}
-                className={`shrink-0 px-4 py-2.5 text-xs font-medium border-b-2 transition-colors whitespace-nowrap ${
+                className={`shrink-0 px-4 py-2.5 text-xs font-medium border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
                   activeTab === i
                     ? 'border-dawn-teal text-dawn-teal'
                     : 'border-transparent text-gray-500 hover:text-dawn-navy'
@@ -332,7 +339,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
                 </div>
               </div>
               <div className="pt-2 space-y-2">
-                <button className="w-full flex items-center gap-2 text-xs text-dawn-teal border border-dawn-teal/30 rounded-lg px-3 py-2 hover:bg-dawn-teal/5 transition-colors">
+                <button className="w-full flex items-center gap-2 text-xs text-dawn-teal border border-dawn-teal/30 rounded-lg px-3 py-2 hover:bg-dawn-teal/5 transition-colors cursor-pointer">
                   <RefreshCw size={12} />
                   Regenerate
                 </button>
@@ -348,7 +355,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
                 <button
                   key={p}
                   onClick={() => setActivePersona(i)}
-                  className={`px-3 py-1.5 rounded-t-lg text-xs font-medium transition-colors ${
+                  className={`px-3 py-1.5 rounded-t-lg text-xs font-medium transition-colors cursor-pointer ${
                     activePersona === i ? 'bg-white border border-b-white border-dawn-border text-dawn-navy -mb-px z-10' : 'text-gray-400 hover:text-dawn-navy'
                   }`}
                 >
@@ -364,13 +371,13 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
                 { icon: Italic, title: 'Italic' },
                 { icon: List, title: 'List' },
               ].map(({ icon: Icon, title }) => (
-                <button key={title} title={title} className="p-1.5 rounded hover:bg-gray-100 text-gray-500 hover:text-dawn-navy transition-colors">
+                <button key={title} title={title} className="p-1.5 rounded hover:bg-gray-100 text-gray-500 hover:text-dawn-navy transition-colors cursor-pointer">
                   <Icon size={14} />
                 </button>
               ))}
               <div className="w-px h-4 bg-gray-200 mx-1" />
-              <button title="Copy" className="p-1.5 rounded hover:bg-gray-100 text-gray-500 transition-colors"><Copy size={14} /></button>
-              <button title="Undo" className="p-1.5 rounded hover:bg-gray-100 text-gray-500 transition-colors"><RotateCcw size={14} /></button>
+              <button title="Copy" className="p-1.5 rounded hover:bg-gray-100 text-gray-500 transition-colors cursor-pointer"><Copy size={14} /></button>
+              <button title="Undo" className="p-1.5 rounded hover:bg-gray-100 text-gray-500 transition-colors cursor-pointer"><RotateCcw size={14} /></button>
 
               {/* Flag indicator */}
               <div className="ml-auto flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">
@@ -422,10 +429,10 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
                 <span className="text-xs bg-dawn-green/10 text-dawn-green rounded-full px-2 py-0.5 font-medium">Grade 6.2</span>
               </div>
               <div className="flex gap-2">
-                <button className="text-xs text-gray-500 border border-dawn-border rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors">
+                <button className="text-xs text-gray-500 border border-dawn-border rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer">
                   Save Draft
                 </button>
-                <button className="text-xs bg-dawn-amber/10 text-dawn-amber border border-dawn-amber/30 rounded-lg px-3 py-1.5 hover:bg-dawn-amber/20 transition-colors">
+                <button className="text-xs bg-dawn-amber/10 text-dawn-amber border border-dawn-amber/30 rounded-lg px-3 py-1.5 hover:bg-dawn-amber/20 transition-colors cursor-pointer">
                   Mark Ready for MLR
                 </button>
               </div>
@@ -434,57 +441,216 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
         </div>
         ) : (
           /* Image Variations View */
-          <div className="flex-1 overflow-y-auto p-6">
-          <div className="max-w-5xl mx-auto space-y-4">
-            <div className="text-center mb-6">
-              <h3 className="text-lg font-serif text-dawn-navy mb-2">Template Previews</h3>
-              <p className="text-sm text-gray-600">
-                Visual templates generated for your campaign assets. Each template follows Hemlibra brand guidelines
-                and is optimized for its specific format.
-              </p>
+          <div className="flex-1 overflow-hidden flex">
+            {/* Left: Image gallery */}
+            <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+              <div className="max-w-4xl mx-auto space-y-4">
+                <div className="text-center mb-6">
+                  <h3 className="text-lg font-serif text-dawn-navy mb-2">Template Previews</h3>
+                  <p className="text-sm text-gray-600">
+                    Visual templates generated for your campaign assets. Each template follows Hemlibra brand guidelines
+                    and is optimized for its specific format.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {IMAGE_VARIATIONS.map((variant) => (
+                    <div
+                      key={variant.id}
+                      onClick={() => setSelectedImage(variant.id)}
+                      className={`cursor-pointer rounded-xl overflow-hidden border-2 transition-all ${
+                        selectedImage === variant.id
+                          ? 'border-dawn-teal shadow-lg scale-[1.02]'
+                          : 'border-gray-200 hover:border-dawn-teal/50'
+                      }`}
+                    >
+                      {/* Image preview */}
+                      <div className="relative h-64 bg-gray-100">
+                        <img
+                          src={variant.image}
+                          alt={variant.title}
+                          className="w-full h-full object-cover"
+                          style={{
+                            filter: selectedImage === variant.id
+                              ? `contrast(${contrast}%) brightness(${brightness}%)`
+                              : undefined
+                          }}
+                        />
+                        {selectedImage === variant.id && (
+                          <div className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-md">
+                            <div className="w-3 h-3 bg-dawn-teal rounded-full" />
+                          </div>
+                        )}
+                        {selectedImage === variant.id && brandOverlay && (
+                          <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-md">
+                            <p className="text-xs font-serif font-bold text-dawn-navy">Hemlibra</p>
+                            <p className="text-[8px] text-gray-500">emicizumab-kxwh</p>
+                          </div>
+                        )}
+                        {selectedImage === variant.id && isiFooter && (
+                          <div className="absolute bottom-0 left-0 right-0 bg-dawn-navy/90 backdrop-blur-sm px-3 py-2">
+                            <p className="text-white/80 text-[7px] leading-tight">
+                              IMPORTANT SAFETY INFORMATION: See full Prescribing Information including Boxed Warning. HEMLIBRA® (emicizumab-kxwh)
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Template info */}
+                      <div className="p-4 bg-white">
+                        <div className="flex items-center justify-between mb-1">
+                          <p className="text-sm font-semibold text-dawn-navy">{variant.title}</p>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-dawn-sky text-dawn-navy font-medium">
+                            {variant.type}
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-600">{variant.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Selected image details */}
+                {selectedImage && (
+                  <div className="mt-6 bg-white rounded-xl border border-dawn-border p-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-dawn-navy mb-1">
+                          {IMAGE_VARIATIONS.find(v => v.id === selectedImage)?.title}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          Format: {imageFormat}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-400">Width:</span>
+                          <input
+                            type="number"
+                            defaultValue={imageFormat === 'A0 Poster' ? 841 : imageFormat === 'A4 Print' ? 210 : 1920}
+                            className="w-16 border border-dawn-border rounded px-2 py-1 text-dawn-navy"
+                          />
+                          <span className="text-gray-400">{imageFormat === 'Digital Banner' ? 'px' : 'mm'}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-400">Height:</span>
+                          <input
+                            type="number"
+                            defaultValue={imageFormat === 'A0 Poster' ? 1189 : imageFormat === 'A4 Print' ? 297 : 1080}
+                            className="w-16 border border-dawn-border rounded px-2 py-1 text-dawn-navy"
+                          />
+                          <span className="text-gray-400">{imageFormat === 'Digital Banner' ? 'px' : 'mm'}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {IMAGE_VARIATIONS.map((variant) => (
-                <div
-                  key={variant.id}
-                  onClick={() => setSelectedImage(variant.id)}
-                  className={`cursor-pointer rounded-xl overflow-hidden border-2 transition-all ${
-                    selectedImage === variant.id
-                      ? 'border-dawn-teal shadow-lg scale-105'
-                      : 'border-gray-200 hover:border-dawn-teal/50'
-                  }`}
-                >
-                  {/* Image preview */}
-                  <div className="relative h-64 bg-gray-100">
-                    <img
-                      src={variant.image}
-                      alt={variant.title}
-                      className="w-full h-full object-cover"
-                    />
-                    {selectedImage === variant.id && (
-                      <div className="absolute top-3 right-3 w-6 h-6 bg-white rounded-full flex items-center justify-center shadow-md">
-                        <div className="w-3 h-3 bg-dawn-teal rounded-full" />
-                      </div>
-                    )}
-                  </div>
+            {/* Right: Editing tools panel */}
+            <div className="w-64 border-l border-dawn-border bg-white flex flex-col overflow-y-auto shrink-0">
+              <div className="p-4 space-y-4">
+                <p className="text-xs font-semibold text-dawn-navy">Image Adjustments</p>
 
-                  {/* Template info */}
-                  <div className="p-4 bg-white">
-                    <div className="flex items-center justify-between mb-1">
-                      <p className="text-sm font-semibold text-dawn-navy">{variant.title}</p>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-dawn-sky text-dawn-navy font-medium">
-                        {variant.type}
-                      </span>
-                    </div>
-                    <p className="text-xs text-gray-600">{variant.description}</p>
+                {/* Format selection */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-2">Format</label>
+                  <div className="space-y-1.5">
+                    {(['A0 Poster', 'A4 Print', 'Digital Banner'] as typeof imageFormat[]).map((f) => (
+                      <label key={f} className="flex items-center gap-2 cursor-pointer">
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${imageFormat === f ? 'border-dawn-teal' : 'border-gray-300'}`}>
+                          {imageFormat === f && <div className="w-2 h-2 rounded-full bg-dawn-teal" />}
+                        </div>
+                        <span className="text-xs text-dawn-navy">{f}</span>
+                      </label>
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
 
+                <div className="h-px bg-gray-200" />
+
+                {/* Contrast slider */}
+                <div>
+                  <div className="flex justify-between mb-1.5">
+                    <label className="text-xs text-gray-600">Contrast</label>
+                    <span className="text-xs text-dawn-navy font-medium">{contrast}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={200}
+                    value={contrast}
+                    onChange={(e) => setContrast(Number(e.target.value))}
+                    className="w-full accent-dawn-teal"
+                  />
+                </div>
+
+                {/* Brightness slider */}
+                <div>
+                  <div className="flex justify-between mb-1.5">
+                    <label className="text-xs text-gray-600">Brightness</label>
+                    <span className="text-xs text-dawn-navy font-medium">{brightness}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={0}
+                    max={200}
+                    value={brightness}
+                    onChange={(e) => setBrightness(Number(e.target.value))}
+                    className="w-full accent-dawn-teal"
+                  />
+                </div>
+
+                <div className="h-px bg-gray-200" />
+
+                {/* Toggle options */}
+                <div className="space-y-2.5">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Overlays</p>
+                  {[
+                    { label: 'Apply Brand Overlay', value: brandOverlay, set: setBrandOverlay },
+                    { label: 'Add ISI Footer', value: isiFooter, set: setIsiFooter },
+                  ].map(({ label, value, set }) => (
+                    <label key={label} className="flex items-center justify-between gap-2 cursor-pointer">
+                      <span className="text-xs text-gray-700">{label}</span>
+                      <div
+                        onClick={() => set(!value)}
+                        className={`w-9 h-5 rounded-full transition-colors relative ${value ? 'bg-dawn-teal' : 'bg-gray-300'}`}
+                      >
+                        <div className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all ${value ? 'left-4' : 'left-0.5'}`} />
+                      </div>
+                    </label>
+                  ))}
+                </div>
+
+                <div className="h-px bg-gray-200" />
+
+                {/* Reset button */}
+                <button
+                  onClick={() => {
+                    setContrast(50);
+                    setBrightness(50);
+                    setBrandOverlay(false);
+                    setIsiFooter(true);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 text-xs text-gray-600 border border-dawn-border rounded-lg px-3 py-2 hover:bg-gray-50 transition-colors cursor-pointer"
+                >
+                  <RotateCcw size={12} />
+                  Reset All
+                </button>
+
+                {/* Export buttons */}
+                <div className="pt-2 space-y-2">
+                  <button className="w-full flex items-center justify-center gap-2 bg-dawn-navy text-white text-xs font-medium rounded-lg px-3 py-2.5 hover:bg-dawn-navy/90 transition-colors cursor-pointer">
+                    <Download size={12} /> Export PNG
+                  </button>
+                  <button className="w-full flex items-center justify-center gap-2 border border-dawn-border text-dawn-navy text-xs font-medium rounded-lg px-3 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer">
+                    <FileImage size={12} /> Export PDF
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
         )}
 
         {/* Footer */}
@@ -493,8 +659,8 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
             {viewMode === 'content' ? '5 content assets' : `Visual: ${IMAGE_VARIATIONS.find(v => v.id === selectedImage)?.title}`}
           </p>
           <div className="flex gap-3">
-            <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors">Cancel</button>
-            <button onClick={onConfirm} className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm">
+            <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer">Cancel</button>
+            <button onClick={onConfirm} className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm cursor-pointer">
               Confirm & Continue →
             </button>
           </div>

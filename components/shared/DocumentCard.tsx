@@ -87,7 +87,7 @@ export default function DocumentCard({ id, title, type, relevance, keyFinding, f
       {filePath && onPreview && (
         <button
           onClick={handlePreview}
-          className="mt-2 inline-flex items-center gap-1 text-xs text-dawn-teal hover:text-dawn-teal/80 font-medium transition-colors"
+          className="mt-2 inline-flex items-center gap-1 text-xs text-dawn-teal hover:text-dawn-teal/80 font-medium transition-colors cursor-pointer"
         >
           <Eye size={12} />
           Preview Document

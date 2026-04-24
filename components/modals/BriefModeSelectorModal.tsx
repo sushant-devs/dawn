@@ -35,7 +35,7 @@ export default function BriefModeSelectorModal({ onConfirm, onClose }: BriefMode
               <p className="text-xs text-gray-400">Choose how you want to create your campaign brief</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors">
+          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors cursor-pointer">
             <X size={20} />
           </button>
         </div>
@@ -46,7 +46,7 @@ export default function BriefModeSelectorModal({ onConfirm, onClose }: BriefMode
             {/* Manual Mode */}
             <button
               onClick={() => setSelectedMode('manual')}
-              className={`text-left rounded-xl border-2 p-6 transition-all ${
+              className={`text-left rounded-xl border-2 p-6 transition-all cursor-pointer ${
                 selectedMode === 'manual'
                   ? 'border-dawn-teal bg-dawn-teal/5 shadow-lg'
                   : 'border-dawn-border hover:border-dawn-teal/50 hover:shadow-md'
@@ -87,7 +87,7 @@ export default function BriefModeSelectorModal({ onConfirm, onClose }: BriefMode
             {/* Auto Mode */}
             <button
               onClick={() => setSelectedMode('auto')}
-              className={`text-left rounded-xl border-2 p-6 transition-all ${
+              className={`text-left rounded-xl border-2 p-6 transition-all cursor-pointer ${
                 selectedMode === 'auto'
                   ? 'border-dawn-teal bg-dawn-teal/5 shadow-lg'
                   : 'border-dawn-border hover:border-dawn-teal/50 hover:shadow-md'
@@ -140,7 +140,7 @@ export default function BriefModeSelectorModal({ onConfirm, onClose }: BriefMode
         <div className="px-6 py-4 border-t border-dawn-border bg-gray-50 rounded-b-xl flex justify-end gap-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors bg-white"
+            className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors bg-white cursor-pointer"
           >
             Cancel
           </button>

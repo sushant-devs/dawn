@@ -13,6 +13,7 @@ interface MessageBubbleProps {
   message: ChatMessage;
   shouldStream?: boolean;
   onStreamComplete?: (messageId: string) => void;
+  onContentExpand?: () => void;
 }
 
 const MESSAGE_STREAM_SPEED = 70;
@@ -223,7 +224,7 @@ function MLRTableBlock({ rows }: { rows: NonNullable<AgentResponseContent['mlrTa
 }
 
 // PLS quality scores
-function PLSScoresBlock({ scores, preview }: { scores: NonNullable<AgentResponseContent['plsScores']>; preview?: string }) {
+function PLSScoresBlock({ scores, preview, onExpand }: { scores: NonNullable<AgentResponseContent['plsScores']>; preview?: string; onExpand?: () => void }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -253,7 +254,15 @@ function PLSScoresBlock({ scores, preview }: { scores: NonNullable<AgentResponse
             {expanded ? preview : preview.slice(0, 200) + '…'}
           </p>
           <button
-            onClick={() => setExpanded(!expanded)}
+            onClick={() => {
+              setExpanded((prev) => {
+                const willExpand = !prev;
+                if (willExpand && onExpand) {
+                  setTimeout(() => onExpand(), 100);
+                }
+                return willExpand;
+              });
+            }}
             className="mt-2 flex items-center gap-1 text-xs text-dawn-teal hover:text-dawn-teal/80 font-medium"
           >
             {expanded ? <><ChevronUp size={12} /> Show less</> : <><ChevronDown size={12} /> Show more</>}
@@ -300,7 +309,7 @@ function StatusSummaryBlock({ summary }: { summary: NonNullable<AgentResponseCon
 
 // ─── Main MessageBubble ───────────────────────────────────────────────────────
 
-export default function MessageBubble({ message, shouldStream = true, onStreamComplete }: MessageBubbleProps) {
+export default function MessageBubble({ message, shouldStream = true, onStreamComplete, onContentExpand }: MessageBubbleProps) {
   const { openModal } = useDAWN();
   const isUser = message.role === 'user';
   const content = message.content;
@@ -340,6 +349,29 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
     }
   }, [hasFinishedStreaming, shouldStream, onStreamComplete, message.id]);
 
+  // Trigger scroll when rich content appears after streaming completes
+  useEffect(() => {
+    if (!isUser && (hasFinishedStreaming || !shouldStream)) {
+      const resp = content as AgentResponseContent;
+      const hasRichContent = !!(
+        resp.documentCards ||
+        resp.contentAssets ||
+        resp.imageVariations ||
+        resp.mlrTable ||
+        resp.plsScores ||
+        resp.metrics
+      );
+
+      if (hasRichContent && onContentExpand) {
+        // Delay to ensure DOM has updated with the content
+        const timer = setTimeout(() => {
+          onContentExpand();
+        }, 200);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [hasFinishedStreaming, shouldStream, isUser, content, onContentExpand]);
+
   if (isUser) {
     return (
       <div
@@ -347,7 +379,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <div className="max-w-lg flex items-end gap-2">
+        <div className="max-w-lg flex items-start gap-2">
           {/* Copy button — appears on hover */}
           <div className={`transition-opacity duration-150 ${hovered ? 'opacity-100' : 'opacity-0'}`}>
             <button
@@ -382,7 +414,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
           </div>
 
           {/* User avatar */}
-          <div className="w-8 h-8 rounded-full bg-dawn-teal flex items-center justify-center shrink-0 mt-0.5">
+          <div className="w-8 h-8 rounded-full bg-dawn-teal flex items-center justify-center shrink-0">
             <span className="text-white font-serif text-xs font-bold">U</span>
           </div>
         </div>
@@ -408,7 +440,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
       onMouseLeave={() => setHovered(false)}
     >
       {/* Avatar */}
-      <div className="w-8 h-8 rounded-full bg-dawn-navy flex items-center justify-center shrink-0 self-end mb-1">
+      <div className="w-8 h-8 rounded-full bg-dawn-navy flex items-center justify-center shrink-0 mt-0.5">
         <span className="text-white font-serif text-xs font-bold">D</span>
       </div>
 
@@ -420,8 +452,17 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
             <div>
               <div className="flex justify-end">
                 <button
-                  onClick={() => setShowThinkingMessage((prev) => !prev)}
-                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-gray-500 hover:text-dawn-navy hover:bg-gray-100 transition-colors text-[11px]"
+                  onClick={() => {
+                    setShowThinkingMessage((prev) => {
+                      const willShow = !prev;
+                      if (willShow && onContentExpand) {
+                        // Delay to allow DOM update
+                        setTimeout(() => onContentExpand(), 100);
+                      }
+                      return willShow;
+                    });
+                  }}
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg text-gray-500 hover:text-dawn-navy hover:bg-gray-100 transition-colors text-[11px] cursor-pointer"
                 >
                   {showThinkingMessage ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
                   <span>Tool Response</span>
@@ -500,7 +541,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
           {(hasFinishedStreaming || !shouldStream) && resp.statusSummary && <StatusSummaryBlock summary={resp.statusSummary} />}
 
           {/* PLS scores */}
-          {(hasFinishedStreaming || !shouldStream) && resp.plsScores && <PLSScoresBlock scores={resp.plsScores} preview={resp.plsPreview} />}
+          {(hasFinishedStreaming || !shouldStream) && resp.plsScores && <PLSScoresBlock scores={resp.plsScores} preview={resp.plsPreview} onExpand={onContentExpand} />}
 
           {/* Metrics */}
           {(hasFinishedStreaming || !shouldStream) && resp.metrics && <MetricsBlock metrics={resp.metrics} />}
@@ -524,7 +565,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
           {(hasFinishedStreaming || !shouldStream) && resp.actionButton && (
             <button
               onClick={handleAction}
-              className="mt-4 inline-flex items-center gap-2 bg-dawn-teal text-white rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-dawn-teal/90 transition-all duration-200 shadow-sm hover:shadow-md"
+              className="mt-4 inline-flex items-center gap-2 bg-dawn-teal text-white rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-dawn-teal/90 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
             >
               {resp.actionButton.label}
             </button>

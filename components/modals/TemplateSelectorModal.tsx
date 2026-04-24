@@ -135,7 +135,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
               <p className="text-xs text-gray-400">Stage 4 — Choose templates for your content</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors">
+          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors cursor-pointer">
             <X size={20} />
           </button>
         </div>
@@ -201,7 +201,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
                                   e.stopPropagation();
                                   handlePreviewTemplate(template);
                                 }}
-                                className="mt-1 w-full flex items-center justify-center gap-1 px-2 py-1 text-xs text-dawn-teal hover:text-dawn-teal/80 border border-dawn-teal/30 rounded hover:bg-dawn-teal/5 transition-colors"
+                                className="mt-1 w-full flex items-center justify-center gap-1 px-2 py-1 text-xs text-dawn-teal hover:text-dawn-teal/80 border border-dawn-teal/30 rounded hover:bg-dawn-teal/5 transition-colors cursor-pointer"
                                 title={`Preview ${template.name}`}
                               >
                                 <Eye size={10} />
@@ -253,7 +253,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
                   'Digital Detail Aid': 'dda-modular',
                 });
               }}
-              className="text-xs text-dawn-teal hover:text-dawn-teal/80 font-medium"
+              className="text-xs text-dawn-teal hover:text-dawn-teal/80 font-medium cursor-pointer"
             >
               Reset to recommended
             </button>
@@ -261,13 +261,13 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
           <div className="flex justify-end gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors"
+              className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               onClick={onConfirm}
-              className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm"
+              className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm cursor-pointer"
             >
               Confirm Templates & Continue →
             </button>

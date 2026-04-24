@@ -133,7 +133,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
               <p className="text-xs text-gray-400">Add your campaign briefs or use Medical Prompt Library</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors">
+          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors cursor-pointer">
             <X size={20} />
           </button>
         </div>
@@ -143,7 +143,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
           <div className="flex items-center gap-3">
             <button
               onClick={() => setViewMode('form')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                 viewMode === 'form'
                   ? 'bg-dawn-teal text-white shadow-sm'
                   : 'bg-white text-gray-600 border border-dawn-border hover:border-dawn-teal'
@@ -154,7 +154,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
             </button>
             <button
               onClick={() => setViewMode('library')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all cursor-pointer ${
                 viewMode === 'library'
                   ? 'bg-dawn-teal text-white shadow-sm'
                   : 'bg-white text-gray-600 border border-dawn-border hover:border-dawn-teal'
@@ -188,7 +188,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
                     {briefs.length > 1 && (
                       <button
                         onClick={() => removeBrief(brief.id)}
-                        className="text-gray-400 hover:text-dawn-red transition-colors"
+                        className="text-gray-400 hover:text-dawn-red transition-colors cursor-pointer"
                         title="Remove brief"
                       >
                         <Trash2 size={16} />
@@ -232,7 +232,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
               {/* Add Brief Button */}
               <button
                 onClick={addBrief}
-                className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-sm text-gray-500 hover:border-dawn-teal hover:text-dawn-teal transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-sm text-gray-500 hover:border-dawn-teal hover:text-dawn-teal transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Plus size={16} />
                 Add Another Brief
@@ -275,7 +275,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
                       <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
-                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
                           selectedCategory === cat
                             ? 'bg-dawn-teal text-white'
                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -312,7 +312,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
                               e.stopPropagation();
                               toggleFavorite(prompt.id);
                             }}
-                            className="shrink-0"
+                            className="shrink-0 cursor-pointer"
                           >
                             <Star
                               size={14}
@@ -362,7 +362,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
                         <h3 className="text-base font-serif font-semibold text-dawn-navy">{selectedPrompt.title}</h3>
                         <button
                           onClick={() => toggleFavorite(selectedPrompt.id)}
-                          className="shrink-0"
+                          className="shrink-0 cursor-pointer"
                         >
                           <Star
                             size={18}
@@ -399,7 +399,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
 
                     <button
                       onClick={generateContent}
-                      className="w-full py-2.5 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm flex items-center justify-center gap-2"
+                      className="w-full py-2.5 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Sparkles size={16} />
                       Generate Content
@@ -412,7 +412,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
                             <p className="text-xs font-semibold text-dawn-navy">Generated Content:</p>
                             <button
                               onClick={copyToClipboard}
-                              className="flex items-center gap-1 text-xs text-dawn-teal hover:text-dawn-teal/80"
+                              className="flex items-center gap-1 text-xs text-dawn-teal hover:text-dawn-teal/80 cursor-pointer"
                             >
                               {copied ? <Check size={12} /> : <Copy size={12} />}
                               {copied ? 'Copied!' : 'Copy'}
@@ -426,13 +426,13 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
                         <div className="flex gap-2">
                           <button
                             onClick={addGeneratedToBrief}
-                            className="flex-1 py-2 bg-dawn-navy text-white text-sm font-medium rounded-lg hover:bg-dawn-navy/90 transition-all"
+                            className="flex-1 py-2 bg-dawn-navy text-white text-sm font-medium rounded-lg hover:bg-dawn-navy/90 transition-all cursor-pointer"
                           >
                             Add to Brief
                           </button>
                           <button
                             onClick={() => setShowFeedback(!showFeedback)}
-                            className="px-4 py-2 border border-dawn-border text-sm text-gray-600 rounded-lg hover:bg-gray-50 transition-all"
+                            className="px-4 py-2 border border-dawn-border text-sm text-gray-600 rounded-lg hover:bg-gray-50 transition-all cursor-pointer"
                           >
                             Feedback
                           </button>
@@ -442,11 +442,11 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
                           <div className="bg-dawn-sky/30 border border-dawn-teal/20 rounded-lg p-4 space-y-3">
                             <p className="text-xs font-semibold text-dawn-navy">How was this output?</p>
                             <div className="flex gap-2">
-                              <button className="flex items-center gap-2 px-3 py-2 bg-white border border-dawn-border rounded-lg text-xs hover:bg-gray-50 transition-all">
+                              <button className="flex items-center gap-2 px-3 py-2 bg-white border border-dawn-border rounded-lg text-xs hover:bg-gray-50 transition-all cursor-pointer">
                                 <ThumbsUp size={14} />
                                 Good
                               </button>
-                              <button className="flex items-center gap-2 px-3 py-2 bg-white border border-dawn-border rounded-lg text-xs hover:bg-gray-50 transition-all">
+                              <button className="flex items-center gap-2 px-3 py-2 bg-white border border-dawn-border rounded-lg text-xs hover:bg-gray-50 transition-all cursor-pointer">
                                 <ThumbsDown size={14} />
                                 Needs Improvement
                               </button>
@@ -456,7 +456,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
                               rows={2}
                               className="w-full px-3 py-2 text-xs border border-dawn-border rounded-lg focus:outline-none focus:ring-2 focus:ring-dawn-teal/30 focus:border-dawn-teal resize-none"
                             />
-                            <button className="w-full py-1.5 bg-dawn-teal text-white text-xs font-medium rounded-lg hover:bg-dawn-teal/90 transition-all">
+                            <button className="w-full py-1.5 bg-dawn-teal text-white text-xs font-medium rounded-lg hover:bg-dawn-teal/90 transition-all cursor-pointer">
                               Submit Feedback
                             </button>
                           </div>
@@ -488,7 +488,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
           <div className="flex justify-end gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors"
+              className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer"
             >
               Cancel
             </button>

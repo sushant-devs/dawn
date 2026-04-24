@@ -59,7 +59,7 @@ export default function DistributionModal({ onConfirm, onClose }: DistributionMo
               <p className="text-xs text-gray-400">Stage 7 — Multichannel Distribution</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy"><X size={20} /></button>
+          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy cursor-pointer"><X size={20} /></button>
         </div>
 
         {/* Status header */}
@@ -143,8 +143,8 @@ export default function DistributionModal({ onConfirm, onClose }: DistributionMo
         <div className="px-6 py-4 border-t border-dawn-border bg-white flex items-center justify-between">
           <p className="text-xs text-gray-500">{enabledCount} of {channels.length} channels enabled</p>
           <div className="flex gap-3">
-            <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors">Cancel</button>
-            <button onClick={onConfirm} className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm">
+            <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer">Cancel</button>
+            <button onClick={onConfirm} className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm cursor-pointer">
               Confirm Distribution →
             </button>
           </div>

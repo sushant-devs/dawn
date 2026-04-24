@@ -70,7 +70,7 @@ export default function ChatPage() {
         {showWelcomeScreen ? (
           /* Welcome screen */
           <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-            <div className="w-full max-w-3xl rounded-3xl  p-8 text-center glass-navbar">
+            <div className="w-full max-w-3xl rounded-3xl p-8 text-center border border-gray-200">
               <h1 className="font-serif text-4xl text-dawn-navy mb-2">
                 Hi Sarah, how can I help you today?
               </h1>

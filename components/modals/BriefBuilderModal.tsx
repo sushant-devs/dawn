@@ -16,7 +16,7 @@ function ChipInput({ values, onChange, aiPopulated }: { values: string[]; onChan
       {values.map((v) => (
         <span key={v} className="inline-flex items-center gap-1 bg-dawn-sky text-dawn-navy rounded-full px-2.5 py-0.5 text-xs font-medium">
           {v}
-          <button onClick={() => onChange(values.filter((x) => x !== v))} className="text-gray-400 hover:text-dawn-red">
+          <button onClick={() => onChange(values.filter((x) => x !== v))} className="text-gray-400 hover:text-dawn-red cursor-pointer">
             <X size={10} />
           </button>
         </span>
@@ -73,7 +73,7 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
               <p className="text-xs text-gray-400">Stage 2 — Campaign Brief</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors"><X size={20} /></button>
+          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors cursor-pointer"><X size={20} /></button>
         </div>
 
         {/* AI populated notice */}
@@ -152,10 +152,10 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
                   <GripVertical size={14} className="text-gray-300 mt-0.5 shrink-0 cursor-grab" />
                   <p className="flex-1 text-sm text-dawn-navy">{i + 1}. {msg}</p>
                   <div className="flex flex-col gap-0.5">
-                    <button onClick={() => moveMessage(i, -1)} disabled={i === 0} className="text-gray-300 hover:text-dawn-navy disabled:opacity-30">
+                    <button onClick={() => moveMessage(i, -1)} disabled={i === 0} className="text-gray-300 hover:text-dawn-navy disabled:opacity-30 cursor-pointer">
                       <Plus size={12} />
                     </button>
-                    <button onClick={() => moveMessage(i, 1)} disabled={i === messages.length - 1} className="text-gray-300 hover:text-dawn-navy disabled:opacity-30">
+                    <button onClick={() => moveMessage(i, 1)} disabled={i === messages.length - 1} className="text-gray-300 hover:text-dawn-navy disabled:opacity-30 cursor-pointer">
                       <Minus size={12} />
                     </button>
                   </div>
@@ -240,12 +240,12 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-dawn-border bg-white flex justify-end gap-3">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors">
+          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer">
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm"
+            className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm cursor-pointer"
           >
             Confirm Brief & Continue →
           </button>

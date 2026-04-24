@@ -79,7 +79,7 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
               <p className="text-xs text-gray-400">Stage 4 — Visual Assets</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy"><X size={20} /></button>
+          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy cursor-pointer"><X size={20} /></button>
         </div>
 
         {/* Body — 3-panel layout */}
@@ -191,7 +191,7 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
                               e.stopPropagation();
                               handlePreview(v);
                             }}
-                            className="absolute inset-0 bg-black/0 hover:bg-black/30 transition-all duration-200 flex items-center justify-center"
+                            className="absolute inset-0 bg-black/0 hover:bg-black/30 transition-all duration-200 flex items-center justify-center cursor-pointer"
                           >
                             <div className="bg-white/90 hover:bg-white text-dawn-navy px-3 py-1.5 rounded-lg text-xs font-medium opacity-0 hover:opacity-100 transition-opacity duration-200 flex items-center gap-2 shadow-lg">
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -271,10 +271,10 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
               </div>
 
               <div className="pt-2 space-y-2">
-                <button className="w-full flex items-center justify-center gap-2 bg-dawn-navy text-white text-xs font-medium rounded-lg px-3 py-2 hover:bg-dawn-navy/90 transition-colors">
+                <button className="w-full flex items-center justify-center gap-2 bg-dawn-navy text-white text-xs font-medium rounded-lg px-3 py-2 hover:bg-dawn-navy/90 transition-colors cursor-pointer">
                   <Download size={12} /> Export PNG
                 </button>
-                <button className="w-full flex items-center justify-center gap-2 border border-dawn-border text-dawn-navy text-xs font-medium rounded-lg px-3 py-2 hover:bg-gray-100 transition-colors">
+                <button className="w-full flex items-center justify-center gap-2 border border-dawn-border text-dawn-navy text-xs font-medium rounded-lg px-3 py-2 hover:bg-gray-100 transition-colors cursor-pointer">
                   <FileImage size={12} /> Export PDF
                 </button>
               </div>
@@ -284,8 +284,8 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-dawn-border bg-white flex justify-end gap-3">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors">Cancel</button>
-          <button onClick={onConfirm} className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm">
+          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer">Cancel</button>
+          <button onClick={onConfirm} className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm cursor-pointer">
             Confirm & Continue →
           </button>
         </div>

@@ -62,7 +62,7 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
               <p className="text-xs text-gray-400">Generate Plain Language Summary for your documents</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors">
+          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors cursor-pointer">
             <X size={20} />
           </button>
         </div>
@@ -71,7 +71,7 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
         <div className="flex border-b border-dawn-border">
           <button
             onClick={() => setActiveTab('select')}
-            className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
               activeTab === 'select'
                 ? 'border-dawn-teal text-dawn-teal'
                 : 'border-transparent text-gray-500 hover:text-dawn-navy'
@@ -81,7 +81,7 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
           </button>
           <button
             onClick={() => setActiveTab('upload')}
-            className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
               activeTab === 'upload'
                 ? 'border-dawn-teal text-dawn-teal'
                 : 'border-transparent text-gray-500 hover:text-dawn-navy'
@@ -104,7 +104,7 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
                   <button
                     key={doc.id}
                     onClick={() => setSelectedDoc(doc.id)}
-                    className={`w-full text-left rounded-lg border p-4 transition-all ${
+                    className={`w-full text-left rounded-lg border p-4 transition-all cursor-pointer ${
                       selectedDoc === doc.id
                         ? 'border-dawn-teal bg-dawn-teal/5 shadow-sm'
                         : 'border-dawn-border hover:border-dawn-teal/50 hover:bg-gray-50'
@@ -160,7 +160,7 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
                   </div>
                   <button
                     onClick={() => setUploadedFile(null)}
-                    className="text-gray-400 hover:text-dawn-red transition-colors"
+                    className="text-gray-400 hover:text-dawn-red transition-colors cursor-pointer"
                   >
                     <X size={16} />
                   </button>
@@ -200,10 +200,10 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
 
               {/* Actions */}
               <div className="flex gap-2 mt-4">
-                <button className="flex-1 px-4 py-2 text-sm border border-dawn-border rounded-lg hover:bg-white transition-colors">
+                <button className="flex-1 px-4 py-2 text-sm border border-dawn-border rounded-lg hover:bg-white transition-colors cursor-pointer">
                   Copy to Clipboard
                 </button>
-                <button className="flex-1 px-4 py-2 text-sm bg-dawn-teal text-white rounded-lg hover:bg-dawn-teal/90 transition-colors">
+                <button className="flex-1 px-4 py-2 text-sm bg-dawn-teal text-white rounded-lg hover:bg-dawn-teal/90 transition-colors cursor-pointer">
                   Download as PDF
                 </button>
               </div>
@@ -215,7 +215,7 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
         <div className="px-6 py-4 border-t border-dawn-border bg-white flex justify-between gap-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors"
+            className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer"
           >
             Close
           </button>
