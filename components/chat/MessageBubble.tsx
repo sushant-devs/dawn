@@ -343,6 +343,13 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
     setShowThinkingMessage(false);
   }, [message.id, shouldStream]);
 
+  // Mark user messages as completed immediately since they don't stream
+  useEffect(() => {
+    if (isUser && onStreamComplete) {
+      onStreamComplete(message.id);
+    }
+  }, [isUser, message.id, onStreamComplete]);
+
   useEffect(() => {
     if (hasFinishedStreaming && shouldStream) {
       onStreamComplete?.(message.id);
@@ -393,22 +400,8 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
 
           <div>
             <div className="rounded-2xl rounded-tr-sm bg-gradient-to-br from-dawn-teal to-cyan-600 px-4 py-3 text-white shadow-[0_12px_28px_rgba(0,168,150,0.32)]">
-              {hasFinishedStreaming || !shouldStream ? (
-                <p className="text-sm leading-relaxed whitespace-pre-line">{content as string}</p>
-              ) : (
-                <TypeAnimation
-                  sequence={[
-                    MESSAGE_STREAM_START_DELAY_MS,
-                    streamText,
-                    () => setHasFinishedStreaming(true),
-                  ]}
-                  speed={MESSAGE_STREAM_SPEED}
-                  repeat={0}
-                  cursor={true}
-                  style={{ display: 'block', whiteSpace: 'pre-line' }}
-                  className="text-sm leading-relaxed"
-                />
-              )}
+              {/* User messages never stream - always show instantly */}
+              <p className="text-sm leading-relaxed whitespace-pre-line">{content as string}</p>
             </div>
             <p className="text-[10px] text-gray-400 text-right mt-1 pr-1">{formatTime(message.timestamp)}</p>
           </div>

@@ -49,10 +49,20 @@ export default function ChatContainer({ messages, isTyping, typingMessage }: Cha
     });
   };
 
+  const scrollToBottom = () => {
+    const container = containerRef.current;
+    if (container) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const handleContentExpand = () => {
     if (shouldAutoScroll) {
       requestAnimationFrame(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        scrollToBottom();
       });
     }
   };
@@ -77,7 +87,7 @@ export default function ChatContainer({ messages, isTyping, typingMessage }: Cha
     if (shouldAutoScroll) {
       // Use requestAnimationFrame for better timing
       requestAnimationFrame(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        scrollToBottom();
       });
     }
   }, [visibleMessages, isTyping, activeStreamIndex, shouldAutoScroll]);
@@ -86,11 +96,50 @@ export default function ChatContainer({ messages, isTyping, typingMessage }: Cha
   useEffect(() => {
     if (shouldAutoScroll) {
       const timer = setTimeout(() => {
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        scrollToBottom();
       }, 300);
       return () => clearTimeout(timer);
     }
   }, [messages.length, shouldAutoScroll]);
+
+  // Continuous scroll during streaming - check every 100ms
+  useEffect(() => {
+    if (!shouldAutoScroll || activeStreamIndex === -1) return;
+
+    const scrollInterval = setInterval(() => {
+      const container = containerRef.current;
+      if (container) {
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const isAtBottom = scrollHeight - scrollTop - clientHeight < 10;
+
+        // Only scroll if not at bottom (content is growing)
+        if (!isAtBottom) {
+          scrollToBottom();
+        }
+      }
+    }, 100);
+
+    return () => clearInterval(scrollInterval);
+  }, [shouldAutoScroll, activeStreamIndex]);
+
+  // Watch for content changes and auto-scroll
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !shouldAutoScroll) return;
+
+    const observer = new MutationObserver(() => {
+      // Content has changed, scroll to bottom
+      scrollToBottom();
+    });
+
+    observer.observe(container, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+
+    return () => observer.disconnect();
+  }, [shouldAutoScroll]);
 
   return (
     <div ref={containerRef} className="flex-1 overflow-y-auto px-6 py-6">

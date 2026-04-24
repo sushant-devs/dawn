@@ -82,7 +82,7 @@ function dawnReducer(state: DAWNState, action: DAWNAction): DAWNState {
         currentStage: newStage,
         completedStages,
         currentStepIndex: nextStepIndex,
-        typingMessage: shouldAutoAdvance && currentStep?.thinkingMessage ? currentStep.thinkingMessage : 'DAWN is thinking…',
+        typingMessage: shouldAutoAdvance && nextStep?.thinkingMessage ? nextStep.thinkingMessage : 'DAWN is thinking…',
         // Pre-populate next message immediately for non-modal, non-auto-advance steps
         prePopulatedMessage:
           !hasModal && !shouldAutoAdvance && nextStepIndex < STORYLINE.length
@@ -203,16 +203,6 @@ const DAWNContext = createContext<DAWNContextType | null>(null);
 
 export function DAWNProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(dawnReducer, initialState);
-  const getUserMessageStreamDelay = useCallback((userText?: string) => {
-    if (!userText) return 0;
-
-    // Keep in sync with MessageBubble streaming cadence so thinking appears first.
-    const userMessageStreamStartDelayMs = 250;
-    const userMessageStreamSpeed = 70;
-    const estimatedStreamMs = userMessageStreamStartDelayMs + (userText.length * userMessageStreamSpeed);
-
-    return Math.max(estimatedStreamMs, 400);
-  }, []);
 
   const getAgentTypingDelay = useCallback((thinkingMessage?: string) => {
     if (!thinkingMessage) return 1500 + Math.random() * 700;
@@ -269,9 +259,8 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
       const currentStep = STORYLINE[state.currentStepIndex];
       if (!currentStep) return;
 
-      const userStreamDelay = getUserMessageStreamDelay(text);
-      const thinkingDelay = getAgentTypingDelay(currentStep.thinkingMessage);
-      const delay = userStreamDelay + thinkingDelay;
+      // Don't stream user message - show it instantly and only use agent typing delay
+      const delay = getAgentTypingDelay(currentStep.thinkingMessage);
 
       setTimeout(() => {
         const agentMsg: ChatMessage = {
@@ -284,7 +273,7 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
         dispatch({ type: 'ADD_AGENT_MESSAGE', payload: agentMsg });
       }, delay);
     },
-    [state.currentStepIndex, getAgentTypingDelay, getUserMessageStreamDelay]
+    [state.currentStepIndex, getAgentTypingDelay]
   );
 
   const openModal = useCallback((modal: ModalType) => {

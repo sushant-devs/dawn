@@ -20,7 +20,6 @@ export const STORYLINE: StorylineStep[] = [
       },
     },
     autoAdvance: true,
-    thinkingMessage: 'Searching for documents related to Hemlibra...',
   },
 
   // ─── Step 1: Content Finder ────────────────────────────────────────────────
@@ -33,7 +32,7 @@ export const STORYLINE: StorylineStep[] = [
       documentCards: HAVEN_DOCUMENTS,
     },
     autoAdvance: true,
-    thinkingMessage: 'Preparing brief mode options...',
+    thinkingMessage: 'Searching for documents related to Hemlibra...',
   },
 
   // ─── Step 2: Brief Mode Selection ─────────────────────────────────────────
@@ -201,14 +200,15 @@ export const STORYLINE: StorylineStep[] = [
       },
     },
     triggersModal: 'templateSelector',
+    autoAdvanceAfterModal: true,
+    thinkingMessage: 'DAWN is integrating compliance guidelines and preparing template recommendations...',
   },
 
   // ─── Step 5: Content & Visual Creator (Merged) ────────────────────────────
   {
     id: 'step-5',
     stage: 'creator',
-    userMessage:
-      'Okay, generate the master creative assets using the selected templates and show me how German regional content is being referenced.',
+    userMessage: '',
     agentResponse: {
       text: 'Master creative assets and visual directions generated. Content includes copy for all 5 assets with persona-based tone, and visual variations for poster design. Review, edit content, and select your preferred visual direction.',
       contentAssets: [
