@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { Bell, FileText, Sparkles, ShieldCheck } from 'lucide-react';
 import { useDAWN } from '@/context/DAWNContext';
 import ChatContainer from '@/components/chat/ChatContainer';
 import ChatInput from '@/components/chat/ChatInput';
+import ChatNavbar from '@/components/chat/ChatNavbar';
 import QuickChips from '@/components/chat/QuickChips';
 import BriefModeSelectorModal from '@/components/modals/BriefModeSelectorModal';
 import ManualBriefInputModal from '@/components/modals/ManualBriefInputModal';
@@ -59,61 +59,18 @@ export default function ChatPage() {
 
   return (
     <>
-      {/* Top bar */}
-      <header className="shrink-0 border-b border-dawn-border/80 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex w-full items-center justify-between px-6 py-3">
-        <div className="flex items-center gap-2">
-          {/* Mobile logo */}
-          <div className="flex md:hidden items-center gap-2">
-            <div className="w-7 h-7 bg-dawn-navy rounded-lg flex items-center justify-center">
-              <span className="text-white font-serif text-xs font-bold">D</span>
-            </div>
-            <span className="font-serif text-dawn-navy text-lg">AI</span>
-          </div>
-          <div className="hidden md:flex items-center gap-2 text-sm text-gray-400">
-            <span className="font-medium text-dawn-navy">DAWN AI</span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => setShowPLSModal(true)}
-            className="w-8 h-8 rounded-lg border border-dawn-border text-gray-600 hover:text-dawn-navy hover:border-dawn-navy/30 hover:bg-gray-50 flex items-center justify-center transition-colors"
-            title="Generate PLS"
-          >
-            <FileText size={16} />
-          </button>
-          <button
-            onClick={() => hasNotifications && setShowNotifications(true)}
-            className={`w-8 h-8 rounded-lg border flex items-center justify-center transition-colors relative ${
-              hasNotifications
-                ? 'border-dawn-teal bg-dawn-teal/5 text-dawn-teal hover:bg-dawn-teal/10'
-                : 'border-dawn-border text-gray-400 hover:text-dawn-navy hover:border-dawn-navy/30'
-            }`}
-            disabled={!hasNotifications}
-          >
-            <Bell size={16} />
-            {hasNotifications && (
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-dawn-red rounded-full border-2 border-white" />
-            )}
-          </button>
-          <div className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center">
-            <span className="text-white text-xs font-semibold">SC</span>
-          </div>
-        </div>
-        </div>
-      </header>
+      <ChatNavbar
+        hasNotifications={hasNotifications}
+        onShowPLSModal={() => setShowPLSModal(true)}
+        onShowNotifications={() => setShowNotifications(true)}
+      />
 
       {/* Chat area */}
-      <div className="flex-1 flex flex-col overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50">
+      <div className="flex-1 flex flex-col overflow-hidden bg-transparent">
         {showWelcomeScreen ? (
           /* Welcome screen */
           <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-            <div className="w-full max-w-3xl rounded-3xl border border-dawn-border/70 bg-white/85 p-8 text-center shadow-[0_24px_80px_rgba(13,27,62,0.08)] backdrop-blur">
-              {/* <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-dawn-navy/10 bg-dawn-navy/5 px-3 py-1 text-xs font-medium text-dawn-navy">
-                <ShieldCheck size={14} />
-                Enterprise-safe AI workspace
-              </div> */}
+            <div className="w-full max-w-3xl rounded-3xl  p-8 text-center glass-navbar">
               <h1 className="font-serif text-4xl text-dawn-navy mb-2">
                 Hi Sarah, how can I help you today?
               </h1>
@@ -139,18 +96,18 @@ export default function ChatPage() {
             <ChatContainer messages={state.messages} isTyping={state.isAgentTyping} typingMessage={state.typingMessage} />
 
             {/* Input bar */}
-            <div className="border-t border-dawn-border/80 bg-white/90 px-6 py-4 backdrop-blur-xl">
+            <div className=" px-6 py-4 ">
               <div className="mx-auto max-w-4xl">
                 <ChatInput
                   prePopulatedMessage={state.prePopulatedMessage}
                   onSend={handleSend}
                   disabled={state.isAgentTyping || state.waitingForModalConfirm}
                 />
-                {state.waitingForModalConfirm && (
+                {/* {state.waitingForModalConfirm && (
                   <p className="text-xs text-gray-400 mt-2 text-center">
                     Open the modal above to continue
                   </p>
-                )}
+                )} */}
               </div>
             </div>
           </>

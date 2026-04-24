@@ -233,12 +233,15 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
     const currentStep = STORYLINE[state.currentStepIndex];
     const prevStep = state.currentStepIndex > 0 ? STORYLINE[state.currentStepIndex - 1] : null;
     const twoPrevStep = state.currentStepIndex > 1 ? STORYLINE[state.currentStepIndex - 2] : null;
+    const lastMessage = state.messages[state.messages.length - 1];
+    const lastMessageIsAgent = lastMessage?.role === 'agent';
 
     // If agent is typing and either:
     // 1. Previous step had autoAdvance flag (meaning we should now show current step), OR
     // 2. Previous step had autoAdvanceAfterModal (meaning we auto-jumped here after modal), OR
     // 3. Two steps back had autoAdvanceAfterModal (when we skip a step)
     const shouldAutoTrigger = state.isAgentTyping &&
+      lastMessageIsAgent &&
       (prevStep?.autoAdvance || prevStep?.autoAdvanceAfterModal || twoPrevStep?.autoAdvanceAfterModal);
 
     if (shouldAutoTrigger && currentStep) {
@@ -257,7 +260,7 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
 
       return () => clearTimeout(timer);
     }
-  }, [state.isAgentTyping, state.currentStepIndex, getAgentTypingDelay]);
+  }, [state.isAgentTyping, state.currentStepIndex, state.messages, getAgentTypingDelay]);
 
   const sendMessage = useCallback(
     (text: string) => {
