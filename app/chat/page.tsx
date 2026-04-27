@@ -5,7 +5,6 @@ import { useDAWN } from '@/context/DAWNContext';
 import ChatContainer from '@/components/chat/ChatContainer';
 import ChatInput from '@/components/chat/ChatInput';
 import ChatNavbar from '@/components/chat/ChatNavbar';
-import QuickChips from '@/components/chat/QuickChips';
 import BriefModeSelectorModal from '@/components/modals/BriefModeSelectorModal';
 import ManualBriefInputModal from '@/components/modals/ManualBriefInputModal';
 import BriefBuilderModal from '@/components/modals/BriefBuilderModal';
@@ -70,24 +69,24 @@ export default function ChatPage() {
         {showWelcomeScreen ? (
           /* Welcome screen */
           <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-            <div className="w-full max-w-3xl rounded-3xl p-8 text-center border border-gray-200">
-              <h1 className="font-serif text-4xl text-dawn-navy mb-2">
+            <div className="w-full max-w-3xl text-center mb-8">
+              <h1 className="font-display text-4xl text-dawn-navy mb-2">
                 Hi Sarah, how can I help you today?
               </h1>
-              <p className="text-gray-400 text-sm mb-10">
+              <p className="text-gray-500 text-sm">
                 DAWN — Your AI-powered content lifecycle agent
               </p>
+            </div>
 
+            <div className="w-full max-w-3xl">
               {/* Input area */}
-              <div className="mb-6">
+              <div>
                 <ChatInput
                   prePopulatedMessage={state.prePopulatedMessage}
                   onSend={handleSend}
                   disabled={state.isAgentTyping}
                 />
               </div>
-
-              <QuickChips />
             </div>
           </div>
         ) : (
@@ -96,7 +95,7 @@ export default function ChatPage() {
             <ChatContainer messages={state.messages} isTyping={state.isAgentTyping} typingMessage={state.typingMessage} />
 
             {/* Input bar */}
-            <div className=" px-6 py-4 ">
+            <div className=" px-6 py-2 ">
               <div className="mx-auto max-w-4xl">
                 <ChatInput
                   prePopulatedMessage={state.prePopulatedMessage}

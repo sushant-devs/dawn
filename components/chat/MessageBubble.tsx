@@ -47,14 +47,25 @@ function RichText({ text }: { text: string }) {
 // Campaign summary card
 function CampaignSummaryCard({ data }: { data: NonNullable<AgentResponseContent['campaignSummary']> }) {
   return (
-    <div className="mt-3 bg-dawn-sky rounded-xl border border-dawn-teal/20 overflow-hidden">
-      <div className="px-4 py-3 bg-dawn-teal/10 border-b border-dawn-teal/20 flex items-center justify-between">
+    <div className="mt-3 overflow-hidden rounded-2xl border border-[#dbe3ff] bg-white shadow-[0_16px_36px_rgba(15,23,42,0.09)] ring-1 ring-[#eef2ff]">
+      {/* <div className="flex items-center justify-between border-b border-[#e7ecff] bg-gradient-to-r from-[#f8faff] to-[#f3f6ff] px-5 py-3.5">
         <span className="text-xs font-semibold text-dawn-teal uppercase tracking-wide">Campaign Configuration</span>
+        <span className="rounded-full border border-[#ffd98a] bg-[#fff5dd] px-3 py-1 text-[11px] font-semibold text-[#d29400] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+          {data.campaignId}
+        </span>
+      </div> */}
+        <div
+        className="px-4 py-3 border-b border-gray-200 flex items-center justify-between"
+        style={{ backgroundColor: "oklch(14.1% 0.005 285.823)" }}
+      >
+        <span className="text-xs font-semibold text-gray-300 uppercase tracking-wide">
+          Campaign Configuration
+        </span>
         <span className="bg-dawn-amber/20 text-dawn-amber border border-dawn-amber/30 rounded-full px-2.5 py-0.5 text-xs font-medium">
           {data.campaignId}
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-0 divide-x divide-y divide-dawn-teal/10">
+      <div className="grid grid-cols-2 gap-0 divide-x divide-y divide-[#e9edfb] bg-white">
         {[
           { label: 'Brand', value: data.brand },
           { label: 'Therapeutic Area', value: data.ta },
@@ -62,9 +73,9 @@ function CampaignSummaryCard({ data }: { data: NonNullable<AgentResponseContent[
           { label: 'Markets', value: data.markets.join(', ') },
           { label: 'Audience', value: data.audience.join(', ') },
         ].map(({ label, value }) => (
-          <div key={label} className="px-4 py-3">
-            <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-0.5">{label}</p>
-            <p className="text-sm font-medium text-dawn-navy">{value}</p>
+          <div key={label} className="px-5 py-3.5">
+            <p className="mb-1 text-[9px] font-medium uppercase tracking-[0.08em] text-gray-400">{label}</p>
+            <p className="text-[0.98rem] font-medium leading-snug text-dawn-navy">{value}</p>
           </div>
         ))}
       </div>
@@ -118,7 +129,7 @@ function ContentAssetsBlock({ assets }: { assets: NonNullable<AgentResponseConte
       {assets.map((asset) => {
         const prog = progress[asset.id] ?? 0;
         return (
-          <div key={asset.id} className="bg-white border border-dawn-border rounded-lg px-4 py-3">
+          <div key={asset.id} className="rounded-xl border border-dawn-border/90 bg-gradient-to-b from-white to-[#fbfcff] px-4 py-3 shadow-[0_10px_24px_rgba(15,23,42,0.07)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(15,23,42,0.11)]">
             <div className="flex items-center justify-between mb-2">
               <div>
                 <p className="text-sm font-medium text-dawn-navy">{asset.title}</p>
@@ -159,7 +170,7 @@ function ImageVariationsBlock({ variations }: { variations: NonNullable<AgentRes
           key={v.id}
           onClick={() => setSelected(v.id)}
           className={`rounded-xl overflow-hidden border-2 cursor-pointer transition-all duration-200 ${
-            selected === v.id ? 'border-dawn-teal shadow-lg' : 'border-dawn-border hover:border-dawn-teal/50'
+            selected === v.id ? 'border-dawn-teal shadow-[0_14px_30px_rgba(95,77,230,0.22)]' : 'border-dawn-border shadow-[0_8px_20px_rgba(15,23,42,0.06)] hover:border-dawn-teal/50 hover:shadow-[0_12px_26px_rgba(15,23,42,0.1)]'
           }`}
         >
           {/* Template Image */}
@@ -177,7 +188,7 @@ function ImageVariationsBlock({ variations }: { variations: NonNullable<AgentRes
               </div>
             )}
           </div>
-          <div className="bg-white px-3 py-2.5">
+          <div className="bg-gradient-to-b from-white to-[#fcfdff] px-3 py-2.5">
             <div className="flex items-center justify-between mb-1">
               <p className="text-xs font-semibold text-dawn-navy">{v.title}</p>
               <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-dawn-sky text-dawn-navy font-medium">
@@ -195,7 +206,7 @@ function ImageVariationsBlock({ variations }: { variations: NonNullable<AgentRes
 // MLR table
 function MLRTableBlock({ rows }: { rows: NonNullable<AgentResponseContent['mlrTable']> }) {
   return (
-    <div className="mt-3 overflow-hidden rounded-xl border border-dawn-border">
+    <div className="mt-3 overflow-hidden rounded-xl border border-dawn-border bg-white shadow-[0_12px_26px_rgba(15,23,42,0.08)]">
       <table className="w-full text-xs">
         <thead>
           <tr className="bg-gray-50 border-b border-dawn-border">
@@ -229,7 +240,7 @@ function PLSScoresBlock({ scores, preview, onExpand }: { scores: NonNullable<Age
 
   return (
     <div className="mt-3 space-y-3">
-      <div className="bg-white border border-dawn-border rounded-xl p-4 space-y-2.5">
+      <div className="space-y-2.5 rounded-xl border border-dawn-border bg-gradient-to-b from-white to-[#fbfcff] p-4 shadow-[0_10px_24px_rgba(15,23,42,0.07)]">
         {scores.map((s) => (
           <div key={s.dimension}>
             <div className="flex justify-between mb-1">
@@ -248,7 +259,7 @@ function PLSScoresBlock({ scores, preview, onExpand }: { scores: NonNullable<Age
         ))}
       </div>
       {preview && (
-        <div className="bg-dawn-sky rounded-xl border border-dawn-teal/20 p-4">
+        <div className="rounded-xl border border-dawn-teal/20 bg-gradient-to-br from-[#f8f9ff] to-[#eef2ff] p-4 shadow-[0_10px_24px_rgba(111,92,255,0.12)]">
           <p className="text-xs font-semibold text-dawn-teal mb-2 uppercase tracking-wide">PLS Preview</p>
           <p className="text-sm text-gray-700 leading-relaxed">
             {expanded ? preview : preview.slice(0, 200) + '…'}
@@ -278,7 +289,7 @@ function MetricsBlock({ metrics }: { metrics: NonNullable<AgentResponseContent['
   return (
     <div className="mt-3 grid grid-cols-2 gap-2">
       {metrics.map((m) => (
-        <div key={m.label} className="bg-white border border-dawn-border rounded-xl p-3">
+        <div key={m.label} className="rounded-xl border border-dawn-border/90 bg-gradient-to-b from-white to-[#fbfcff] p-3 shadow-[0_10px_24px_rgba(15,23,42,0.07)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(15,23,42,0.12)]">
           <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1">{m.label}</p>
           <p className="text-2xl font-bold text-dawn-navy font-serif leading-none">{m.value}</p>
           {m.trend && (
@@ -399,7 +410,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
           </div>
 
           <div>
-            <div className="rounded-2xl rounded-tr-sm bg-gradient-to-br from-dawn-teal to-cyan-600 px-4 py-3 text-white shadow-[0_12px_28px_rgba(0,168,150,0.32)]">
+            <div className="rounded-2xl rounded-tr-sm bg-gradient-to-br from-dawn-teal to-[#1A3FCC] px-4 py-3 text-white shadow-[0_10px_24px_rgba(26,63,204,0.32)]">
               {/* User messages never stream - always show instantly */}
               <p className="text-sm leading-relaxed whitespace-pre-line">{content as string}</p>
             </div>
@@ -407,7 +418,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
           </div>
 
           {/* User avatar */}
-          <div className="w-8 h-8 rounded-full bg-dawn-teal flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-full bg-dawn-teal flex items-center justify-center shrink-0 shadow-[0_8px_18px_rgba(95,77,230,0.34)]">
             <span className="text-white font-serif text-xs font-bold">U</span>
           </div>
         </div>
@@ -439,7 +450,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
 
       <div className="flex-1 min-w-0">
         {/* Bubble */}
-        <div className="rounded-2xl rounded-tl-sm border border-dawn-border bg-white px-4 py-3 shadow-sm border-l-[3px] border-l-dawn-teal">
+        <div className="rounded-2xl rounded-tl-sm border border-dawn-border/90 border-l-[3px] border-l-dawn-teal bg-gradient-to-b from-white to-[#fcfdff] px-4 py-3 shadow-[0_14px_32px_rgba(15,23,42,0.09)] ring-1 ring-white/80">
           {/* Thinking message toggle + panel */}
           {hasThinkingMessage && (
             <div>
@@ -541,7 +552,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
 
           {/* Recommendation - shown after all content */}
           {(hasFinishedStreaming || !shouldStream) && resp.recommendation && (
-            <div className="mt-4 bg-dawn-amber/5 border-l-2 border-dawn-amber rounded-r-lg px-4 py-3">
+            <div className="mt-4 rounded-r-xl border-l-2 border-dawn-amber bg-gradient-to-r from-dawn-amber/10 to-dawn-amber/5 px-4 py-3 shadow-[0_10px_22px_rgba(251,191,36,0.15)]">
               <p className="text-xs font-semibold text-dawn-amber mb-1 uppercase tracking-wide flex items-center gap-1.5">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 2L2 7l10 5 10-5-10-5z" />
@@ -558,7 +569,7 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
           {(hasFinishedStreaming || !shouldStream) && resp.actionButton && (
             <button
               onClick={handleAction}
-              className="mt-4 inline-flex items-center gap-2 bg-dawn-teal text-white rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-dawn-teal/90 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
+              className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-r from-dawn-teal to-[#1A3FCC] px-4 py-2.5 text-sm font-medium text-white shadow-[0_12px_24px_rgba(26,63,204,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:from-[#3B67FF] hover:to-[#1738B8] hover:shadow-[0_16px_30px_rgba(26,63,204,0.35)]"
             >
               {resp.actionButton.label}
             </button>

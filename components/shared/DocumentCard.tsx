@@ -87,7 +87,7 @@ export default function DocumentCard({ id, title, type, relevance, keyFinding, f
       {filePath && onPreview && (
         <button
           onClick={handlePreview}
-          className="mt-2 inline-flex items-center gap-1 text-xs text-dawn-teal hover:text-dawn-teal/80 font-medium transition-colors cursor-pointer"
+          className="mt-3 inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-dawn-teal/25 bg-gradient-to-r from-dawn-teal to-[#1A3FCC] px-3 py-1.5 text-xs font-semibold text-white shadow-[0_8px_18px_rgba(26,63,204,0.22)] transition-all duration-200 hover:-translate-y-0.5 hover:from-[#3B67FF] hover:to-[#1738B8] hover:shadow-[0_12px_22px_rgba(26,63,204,0.3)] active:translate-y-0 active:shadow-[0_6px_12px_rgba(26,63,204,0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn-teal/40 focus-visible:ring-offset-2"
         >
           <Eye size={12} />
           Preview Document

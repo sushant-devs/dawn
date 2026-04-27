@@ -15,7 +15,7 @@ export default function ChatNavbar({
   onShowNotifications,
 }: ChatNavbarProps) {
   return (
-    <header className="shrink-0 px-4 py-2 md:px-5">
+    <header className="shrink-0 px-4 py-2 md:px-5 mt-4">
       <div className="glass-navbar mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2 md:hidden cursor-pointer hover:opacity-80 transition-opacity">
@@ -39,17 +39,17 @@ export default function ChatNavbar({
         <div className="flex items-center gap-2.5">
           <button
             onClick={onShowPLSModal}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/50 bg-white/55 text-slate-700 shadow-[0_8px_20px_rgba(15,23,42,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-white/80 hover:bg-white/75 hover:text-dawn-navy cursor-pointer"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/50 bg-white/70 text-slate-700 shadow-[0_8px_20px_rgba(15,23,42,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-dawn-navy cursor-pointer"
             title="Generate PLS"
           >
             <FileText size={16} />
           </button>
           <button
             onClick={() => hasNotifications && onShowNotifications()}
-            className={`relative flex h-9 w-9 items-center justify-center rounded-xl border bg-white/55 shadow-[0_8px_20px_rgba(15,23,42,0.08)] transition-all duration-200 ${
+            className={`relative flex h-9 w-9 items-center justify-center rounded-xl border bg-white/70 shadow-[0_8px_20px_rgba(15,23,42,0.08)] transition-all duration-200 ${
               hasNotifications
-                ? 'border-dawn-teal/45 text-dawn-teal hover:-translate-y-0.5 hover:bg-white/75 cursor-pointer'
-                : 'border-white/50 text-slate-500 hover:-translate-y-0.5 hover:border-white/80 hover:bg-white/75 hover:text-dawn-navy cursor-not-allowed'
+                ? 'border-dawn-teal/50 text-dawn-teal hover:-translate-y-0.5 hover:bg-white cursor-pointer'
+                : 'border-white/50 text-slate-500 hover:-translate-y-0.5 hover:border-white hover:bg-white hover:text-dawn-navy cursor-not-allowed'
             }`}
             disabled={!hasNotifications}
             title="Notifications"

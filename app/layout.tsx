@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { DM_Serif_Display, DM_Sans } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
-const dmSerifDisplay = DM_Serif_Display({
+const playfairDisplay = Playfair_Display({
   weight: ["400"],
   subsets: ["latin"],
-  variable: "--font-dm-serif",
+  variable: "--font-playfair-display",
   display: "swap",
 });
 
@@ -27,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${dmSerifDisplay.variable} ${dmSans.variable}`}>
-      <body className="font-sans antialiased h-full">{children}</body>
+    <html lang="en" className={`${playfairDisplay.variable} ${dmSans.variable}`}>
+      <body className="dawn-theme font-sans antialiased h-full">{children}</body>
     </html>
   );
 }
