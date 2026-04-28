@@ -1,0 +1,29 @@
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+
+# Local databases and coverage
+*.sqlite
+*.sqlite3
+.coverage
+.pytest_cache/
+htmlcov/
+
+# IDE/editor files
+.idea/
+.vscode/
