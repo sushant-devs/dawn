@@ -60,7 +60,8 @@ export default function RegisterPage() {
 
     setIsLoading(true);
     try {
-      await register({ full_name: fullName, email, password });
+      const authResponse = await register({ full_name: fullName, email, password });
+      localStorage.setItem('dawn_user', JSON.stringify(authResponse.user));
       router.push('/chat');
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Unable to register right now');
@@ -74,13 +75,7 @@ export default function RegisterPage() {
       <section className="mx-auto flex min-h-[calc(100vh-2rem)] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/60 bg-white shadow-[0_30px_80px_rgba(29,44,89,0.25)] md:min-h-[680px] md:p-0">
         <div className="flex w-full items-center justify-center bg-[#f8f9fc] px-6 py-10 sm:px-10 md:w-1/2 md:px-12 lg:px-16">
           <div className="w-full max-w-sm">
-            <div className="mb-8 flex h-9 w-9 items-center justify-center rounded-md bg-indigo-100 text-indigo-700">
-              <span className="text-base font-bold">D</span>
-            </div>
-
             <h1 className="text-3xl font-bold tracking-tight text-[#10153a]">Create account</h1>
-            <p className="mt-2 text-sm text-slate-500">Get started to organize your workflow and digital assets.</p>
-
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div className="space-y-2">
                 <label htmlFor="fullName" className="block text-sm font-semibold text-[#1a2147]">
@@ -141,17 +136,6 @@ export default function RegisterPage() {
                   className="h-11 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm text-slate-700 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
-
-              <label className="flex items-start gap-2 text-sm text-slate-600">
-                <input
-                  type="checkbox"
-                  checked={agreeToTerms}
-                  onChange={(event) => setAgreeToTerms(event.target.checked)}
-                  className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-indigo-600"
-                />
-                I agree to the terms and privacy policy
-              </label>
-
               {error ? <p className="text-sm text-red-600">{error}</p> : null}
 
               <button

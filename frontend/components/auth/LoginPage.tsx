@@ -33,8 +33,9 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      await login({ email, password });
-      router.push('/chat');
+      const authResponse = await login({ email, password });
+      localStorage.setItem('dawn_user', JSON.stringify(authResponse.user));
+      router.push('/workspace');
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Unable to login right now');
     } finally {
@@ -47,12 +48,9 @@ export default function LoginPage() {
       <section className="mx-auto flex min-h-[calc(100vh-2rem)] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/60 bg-white shadow-[0_30px_80px_rgba(29,44,89,0.25)] md:min-h-[680px] md:p-0">
         <div className="flex w-full items-center justify-center bg-[#f8f9fc] px-6 py-10 sm:px-10 md:w-1/2 md:px-12 lg:px-16">
           <div className="w-full max-w-sm">
-            <div className="mb-8 flex h-9 w-9 items-center justify-center rounded-md bg-indigo-100 text-indigo-700">
-              <span className="text-base font-bold">D</span>
-            </div>
 
-            <h1 className="text-3xl font-bold tracking-tight text-[#10153a]">Welcome back !</h1>
-            <p className="mt-2 text-sm text-slate-500">Enter to get unlimited access to data &amp; information.</p>
+
+            <h1 className="text-3xl font-bold tracking-tight text-[#10153a]">Sign In !</h1>
 
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div className="space-y-2">
@@ -95,16 +93,6 @@ export default function LoginPage() {
                     </svg>
                   </button>
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center gap-2 text-slate-600">
-                  <input type="checkbox" className="h-4 w-4 rounded border-slate-300 accent-indigo-600" />
-                  Remember me
-                </label>
-                <Link href="#" className="font-medium text-indigo-600 hover:text-indigo-700">
-                  Forgot your password ?
-                </Link>
               </div>
 
               {error ? <p className="text-sm text-red-600">{error}</p> : null}
