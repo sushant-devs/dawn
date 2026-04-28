@@ -30,7 +30,7 @@ function ChipInput({ values, onChange, aiPopulated }: { values: string[]; onChan
             setInput('');
           }
         }}
-        className="flex-1 min-w-[80px] bg-transparent text-xs outline-none text-dawn-navy placeholder-gray-400"
+        className="flex-1 min-w-[80px] bg-transparent text-xs outline-none text-dawn-navy placeholder:text-dawn-navy/45"
         placeholder="Add & press Enter"
       />
     </div>
@@ -70,10 +70,10 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
             </div>
             <div>
               <h2 className="font-serif text-dawn-navy text-lg">Brief Builder</h2>
-              <p className="text-xs text-gray-400">Stage 2 — Campaign Brief</p>
+              <p className="text-xs text-dawn-navy/45">Stage 2 — Campaign Brief</p>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-dawn-navy transition-colors cursor-pointer"><X size={20} /></button>
+          <button onClick={onClose} className="text-dawn-navy/35 hover:text-dawn-navy transition-colors cursor-pointer"><X size={20} /></button>
         </div>
 
         {/* AI populated notice */}
@@ -87,7 +87,7 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
 
           {/* Section 1: Campaign Identity */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">1. Campaign Identity</h3>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dawn-navy/45">1. Campaign Identity</h3>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-dawn-navy mb-1">Campaign Name</label>
@@ -130,7 +130,7 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
 
           {/* Section 2: Audience */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">2. Audience</h3>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dawn-navy/45">2. Audience</h3>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-dawn-navy mb-1">Primary Audience</label>
@@ -145,17 +145,17 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
 
           {/* Section 3: Key Messages */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">3. Key Messages</h3>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dawn-navy/45">3. Key Messages</h3>
             <div className="space-y-2">
               {messages.map((msg, i) => (
                 <div key={i} className="flex items-start gap-2 bg-dawn-teal/5 border border-dawn-teal/20 rounded-lg px-3 py-2.5">
-                  <GripVertical size={14} className="text-gray-300 mt-0.5 shrink-0 cursor-grab" />
+                  <GripVertical size={14} className="mt-0.5 shrink-0 cursor-grab text-dawn-teal/35" />
                   <p className="flex-1 text-sm text-dawn-navy">{i + 1}. {msg}</p>
                   <div className="flex flex-col gap-0.5">
-                    <button onClick={() => moveMessage(i, -1)} disabled={i === 0} className="text-gray-300 hover:text-dawn-navy disabled:opacity-30 cursor-pointer">
+                    <button onClick={() => moveMessage(i, -1)} disabled={i === 0} className="text-dawn-teal/35 hover:text-dawn-teal disabled:opacity-30 cursor-pointer">
                       <Plus size={12} />
                     </button>
-                    <button onClick={() => moveMessage(i, 1)} disabled={i === messages.length - 1} className="text-gray-300 hover:text-dawn-navy disabled:opacity-30 cursor-pointer">
+                    <button onClick={() => moveMessage(i, 1)} disabled={i === messages.length - 1} className="text-dawn-teal/35 hover:text-dawn-teal disabled:opacity-30 cursor-pointer">
                       <Minus size={12} />
                     </button>
                   </div>
@@ -166,7 +166,7 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
 
           {/* Section 4: Mandatory Inclusions */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">4. Mandatory Inclusions</h3>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dawn-navy/45">4. Mandatory Inclusions</h3>
             <div className="space-y-2">
               {[
                 'Boxed Warning — TMA/Thromboembolism with aPCC',
@@ -188,17 +188,17 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
 
           {/* Section 5: Deliverables */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">5. Deliverables</h3>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dawn-navy/45">5. Deliverables</h3>
             <div className="grid grid-cols-3 gap-2">
               {deliverableOptions.map((d) => {
                 const checked = brief.deliverables.includes(d);
                 return (
-                  <label key={d} className={`flex items-center gap-2 rounded-lg border px-3 py-2.5 cursor-pointer transition-colors ${checked ? 'bg-dawn-teal/5 border-dawn-teal/30' : 'border-dawn-border hover:bg-gray-50'}`}>
+                  <label key={d} className={`flex items-center gap-2 rounded-lg border px-3 py-2.5 cursor-pointer transition-colors ${checked ? 'bg-dawn-teal/5 border-dawn-teal/30' : 'border-dawn-border hover:border-dawn-teal/30 hover:bg-dawn-teal/[0.04]'}`}>
                     <div
                       onClick={() => {
                         updateField('deliverables', checked ? brief.deliverables.filter((x) => x !== d) : [...brief.deliverables, d]);
                       }}
-                      className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${checked ? 'bg-dawn-teal border-dawn-teal' : 'border-gray-300'}`}
+                      className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${checked ? 'bg-dawn-teal border-dawn-teal' : 'border-dawn-navy/20'}`}
                     >
                       {checked && (
                         <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
@@ -215,7 +215,7 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
 
           {/* Section 6: Timeline & Budget */}
           <section>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">6. Timeline & Budget</h3>
+            <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-dawn-navy/45">6. Timeline & Budget</h3>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-dawn-navy mb-1">Deadline</label>
@@ -240,12 +240,15 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-dawn-border bg-white flex justify-end gap-3">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-sm text-dawn-navy/70 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors bg-white hover:bg-gray-50 cursor-pointer"
+          >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm cursor-pointer"
+            className="px-5 py-2 rounded-lg bg-gradient-to-r from-dawn-teal to-[#1A3FCC] text-white text-sm font-medium shadow-[0_10px_22px_rgba(26,63,204,0.26)] transition-all duration-200 hover:-translate-y-0.5 hover:from-[#1AB7C3] hover:to-[#2449DD] hover:shadow-[0_14px_28px_rgba(26,63,204,0.34)] active:translate-y-0 active:shadow-[0_8px_16px_rgba(26,63,204,0.26)] cursor-pointer"
           >
             Confirm Brief & Continue →
           </button>

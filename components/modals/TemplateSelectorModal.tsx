@@ -165,13 +165,14 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
                   return (
                     <div
                       key={template.id}
-                      className={`w-full text-left rounded-lg border p-4 transition-all cursor-pointer ${
+                      className={`group relative w-full overflow-hidden rounded-xl border p-4 text-left transition-all duration-200 cursor-pointer ${
                         isSelected
-                          ? 'border-dawn-teal bg-dawn-teal/5 shadow-sm'
-                          : 'border-dawn-border hover:border-dawn-teal/50 hover:bg-gray-50'
+                          ? 'border-dawn-teal/70 bg-gradient-to-br from-dawn-teal/[0.06] via-white to-[#eef8ff] shadow-[0_12px_28px_rgba(9,30,66,0.10)] ring-1 ring-dawn-teal/15'
+                          : 'border-[#dbe3ee] bg-white shadow-[0_6px_16px_rgba(9,30,66,0.04)] hover:-translate-y-0.5 hover:border-dawn-teal/45 hover:shadow-[0_14px_26px_rgba(9,30,66,0.10)]'
                       }`}
                       onClick={() => handleTemplateSelect(recommendation.assetType, template.id)}
                     >
+                      <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-dawn-teal/90 to-[#1A3FCC] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
                       <div className="flex items-start gap-3">
                         {/* Selection indicator */}
                         <div className={`mt-0.5 shrink-0 ${isSelected ? 'text-dawn-teal' : 'text-gray-300'}`}>
@@ -180,17 +181,17 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
 
                         {/* Content */}
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-start gap-3 mb-2">
+                          <div className="mb-2 flex items-start gap-3">
                             <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <h4 className="text-sm font-semibold text-dawn-navy">{template.name}</h4>
+                              <div className="mb-1 flex items-center gap-2">
+                                <h4 className="text-base font-semibold leading-tight text-dawn-navy">{template.name}</h4>
                                 {isRecommended && (
-                                  <span className="text-xs bg-dawn-amber/20 text-dawn-amber px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+                                  <span className="inline-flex items-center gap-1 rounded-full border border-dawn-amber/30 bg-dawn-amber/15 px-2 py-0.5 text-xs font-semibold text-dawn-amber">
                                     ★ Recommended
                                   </span>
                                 )}
                               </div>
-                              <p className="text-xs text-gray-600">{template.description}</p>
+                              <p className="text-sm leading-relaxed text-gray-600">{template.description}</p>
                             </div>
 
                             {/* Visual Preview */}
@@ -201,7 +202,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
                                   e.stopPropagation();
                                   handlePreviewTemplate(template);
                                 }}
-                                className="mt-1 w-full flex items-center justify-center gap-1 px-2 py-1 text-xs text-dawn-teal hover:text-dawn-teal/80 border border-dawn-teal/30 rounded hover:bg-dawn-teal/5 transition-colors cursor-pointer"
+                                className="mt-1 flex w-full items-center justify-center gap-1 rounded-md border border-dawn-teal/30 bg-white px-2 py-1 text-xs font-medium text-dawn-teal transition-colors hover:bg-dawn-teal/5 hover:text-dawn-teal/80 cursor-pointer"
                                 title={`Preview ${template.name}`}
                               >
                                 <Eye size={10} />
@@ -211,7 +212,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
                           </div>
 
                           {/* Structure preview */}
-                          <div className="bg-white border border-gray-200 rounded px-2 py-1.5 text-[10px] text-gray-500 font-mono mb-2">
+                          <div className="mb-2 rounded-md border border-[#d8e0eb] bg-[#f9fbff] px-2 py-1.5 font-mono text-[10px] text-gray-500">
                             {template.preview}
                           </div>
 
@@ -220,7 +221,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
                             {template.structure.map((element, idx) => (
                               <span
                                 key={idx}
-                                className="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded"
+                                className="rounded bg-[#f1f5fb] px-1.5 py-0.5 text-[10px] font-medium text-gray-600"
                               >
                                 {element}
                               </span>
@@ -267,7 +268,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
             </button>
             <button
               onClick={onConfirm}
-              className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm cursor-pointer"
+              className="px-5 py-2 rounded-lg bg-gradient-to-r from-dawn-teal to-[#1A3FCC] text-white text-sm font-medium shadow-[0_10px_22px_rgba(26,63,204,0.26)] transition-all duration-200 hover:-translate-y-0.5 hover:from-[#1AB7C3] hover:to-[#2449DD] hover:shadow-[0_14px_28px_rgba(26,63,204,0.34)] active:translate-y-0 active:shadow-[0_8px_16px_rgba(26,63,204,0.26)] cursor-pointer"
             >
               Confirm Templates & Continue →
             </button>

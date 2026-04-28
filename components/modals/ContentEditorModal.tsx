@@ -266,7 +266,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
             onClick={() => setViewMode('content')}
             className={`px-4 py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${
               viewMode === 'content'
-                ? 'bg-dawn-teal text-white shadow-sm'
+                ? 'bg-gradient-to-r from-dawn-teal to-[#1A3FCC] text-white shadow-[0_8px_18px_rgba(26,63,204,0.24)]'
                 : 'bg-white text-gray-600 hover:text-dawn-navy border border-dawn-border'
             }`}
           >
@@ -276,7 +276,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
             onClick={() => setViewMode('images')}
             className={`px-4 py-2 text-sm font-medium rounded-lg transition-all cursor-pointer ${
               viewMode === 'images'
-                ? 'bg-dawn-teal text-white shadow-sm'
+                ? 'bg-gradient-to-r from-dawn-teal to-[#1A3FCC] text-white shadow-[0_8px_18px_rgba(26,63,204,0.24)]'
                 : 'bg-white text-gray-600 hover:text-dawn-navy border border-dawn-border'
             }`}
           >
@@ -289,18 +289,19 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
 
         {/* Asset tabs (only for content view) */}
         {viewMode === 'content' && (
-          <div className="flex border-b border-dawn-border overflow-x-auto">
+          <div className="thin-x-scroll flex items-center gap-x-1 overflow-x-auto overflow-y-hidden border-b border-dawn-border px-2 py-4 whitespace-nowrap">
             {GENERATED_ASSETS.map((a, i) => (
               <button
                 key={a.id}
                 onClick={() => setActiveTab(i)}
-                className={`shrink-0 px-4 py-2.5 text-xs font-medium border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
+                title={a.title}
+                className={`shrink-0 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium leading-5 transition-colors cursor-pointer ${
                   activeTab === i
-                    ? 'border-dawn-teal text-dawn-teal'
-                    : 'border-transparent text-gray-500 hover:text-dawn-navy'
+                    ? 'bg-dawn-teal/[0.08] text-dawn-teal shadow-[inset_0_-2px_0_0_#14B8A6]'
+                    : 'text-gray-500 hover:bg-gray-50 hover:text-dawn-navy'
                 }`}
               >
-                {a.title.split(' — ')[0]}
+                {a.title}
               </button>
             ))}
           </div>
@@ -660,7 +661,10 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
           </p>
           <div className="flex gap-3">
             <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer">Cancel</button>
-            <button onClick={onConfirm} className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm cursor-pointer">
+            <button
+              onClick={onConfirm}
+              className="px-5 py-2 rounded-lg bg-gradient-to-r from-dawn-teal to-[#1A3FCC] text-white text-sm font-medium shadow-[0_10px_22px_rgba(26,63,204,0.26)] transition-all duration-200 hover:-translate-y-0.5 hover:from-[#1AB7C3] hover:to-[#2449DD] hover:shadow-[0_14px_28px_rgba(26,63,204,0.34)] active:translate-y-0 active:shadow-[0_8px_16px_rgba(26,63,204,0.26)] cursor-pointer"
+            >
               Confirm & Continue →
             </button>
           </div>

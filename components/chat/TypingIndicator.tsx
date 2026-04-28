@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 
 interface TypingIndicatorProps {
@@ -33,6 +33,7 @@ export default function TypingIndicator({ message = 'DAWN is thinking…' }: Typ
 
   const [isMounted, setIsMounted] = useState(false);
   const [dynamicTitle, setDynamicTitle] = useState('Working on it...');
+  const streamingViewportRef = useRef<HTMLDivElement>(null);
 
   // Handle hydration
   useEffect(() => {
@@ -60,6 +61,20 @@ export default function TypingIndicator({ message = 'DAWN is thinking…' }: Typ
     const interval = setInterval(tick, 120);
     return () => clearInterval(interval);
   }, [message, isDetailedMessage]);
+
+  // Keep the fixed-height thinking viewport pinned to the latest streamed text.
+  useEffect(() => {
+    if (!isDetailedMessage) return;
+
+    const interval = setInterval(() => {
+      const viewport = streamingViewportRef.current;
+      if (viewport) {
+        viewport.scrollTop = viewport.scrollHeight;
+      }
+    }, 120);
+
+    return () => clearInterval(interval);
+  }, [isDetailedMessage, message]);
 
   // Prevent hydration mismatch by showing simple loader on server render
   if (!isMounted) {
@@ -110,7 +125,10 @@ export default function TypingIndicator({ message = 'DAWN is thinking…' }: Typ
               </div>
               <span className="text-xs font-semibold text-dawn-navy">{dynamicTitle}</span>
             </div>
-            <div className="text-xs text-gray-700 leading-relaxed whitespace-pre-line">
+            <div
+              ref={streamingViewportRef}
+              className="max-h-40 overflow-y-auto pr-1 text-xs text-gray-700 leading-relaxed whitespace-pre-line"
+            >
               <TypeAnimation
                 key={message}
                 sequence={[THINKING_STREAM_START_DELAY_MS, message]}
