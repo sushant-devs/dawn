@@ -2,14 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
 import { login } from '@/lib/authApi';
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email'),
+  email: z.email('Please enter a valid email'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
 });
 
@@ -20,7 +20,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
 
@@ -44,13 +44,12 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#dfe2f0] p-4 md:p-8">
-      <section className="mx-auto flex min-h-[calc(100vh-2rem)] w-full max-w-6xl overflow-hidden rounded-2xl border border-white/60 bg-white shadow-[0_30px_80px_rgba(29,44,89,0.25)] md:min-h-[680px] md:p-0">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#eef2ff,_#dde3f2_42%,_#d3daec)]">
+      <section className="flex min-h-screen w-full overflow-hidden bg-white/90 md:p-0">
         <div className="flex w-full items-center justify-center bg-[#f8f9fc] px-6 py-10 sm:px-10 md:w-1/2 md:px-12 lg:px-16">
           <div className="w-full max-w-sm">
-
-
-            <h1 className="text-3xl font-bold tracking-tight text-[#10153a]">Sign In !</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-[#10153a]">Sign in to your account</h1>
+            <p className="mt-1.5 text-sm text-slate-500">Continue to DAWN and manage your workspace insights.</p>
 
             <form onSubmit={handleSubmit} className="mt-8 space-y-5">
               <div className="space-y-2">
@@ -64,7 +63,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   required
-                  className="h-11 w-full rounded-lg border border-slate-200 bg-white px-4 text-sm text-slate-700 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                  className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
 
@@ -80,7 +79,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     required
-                    className="h-11 w-full rounded-lg border border-slate-200 bg-white px-4 pr-11 text-sm text-slate-700 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                    className="h-11 w-full rounded-xl border border-slate-200 bg-white px-4 pr-11 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
                   />
                   <button
                     type="button"
@@ -100,7 +99,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="mt-1 h-11 w-full rounded-lg bg-indigo-600 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+                className="mt-1 h-11 w-full rounded-xl bg-gradient-to-r from-[#2f5cff] to-[#4b6fff] text-sm font-semibold text-white shadow-[0_12px_24px_rgba(79,70,229,0.28)] transition hover:-translate-y-0.5 hover:from-[#2851e6] hover:to-[#4265ea] disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {isLoading ? 'Logging in...' : 'Log In'}
               </button>
@@ -116,7 +115,7 @@ export default function LoginPage() {
         </div>
 
         <div className="relative hidden md:block md:w-1/2">
-          <Image src="/agentic-bg.jpg" alt="Login illustration" fill priority className="object-cover" />
+          <Image src="/bg-image-ai.jpg" alt="Login illustration" fill priority className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/15 via-transparent to-indigo-900/20" />
         </div>
       </section>
