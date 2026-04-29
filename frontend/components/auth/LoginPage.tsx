@@ -116,7 +116,7 @@ export default function LoginPage() {
         </div>
 
         <div className="relative hidden md:block md:w-1/2">
-          <Image src="/home-bg.jpg" alt="Login illustration" fill priority className="object-cover" />
+          <Image src="/agentic-bg.jpg" alt="Login illustration" fill priority className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-indigo-950/15 via-transparent to-indigo-900/20" />
         </div>
       </section>

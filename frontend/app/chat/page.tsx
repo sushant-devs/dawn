@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 import { useDAWN } from '@/context/DAWNContext';
 import ChatContainer from '@/components/chat/ChatContainer';
 import ChatInput from '@/components/chat/ChatInput';
-import ChatNavbar from '@/components/chat/ChatNavbar';
 import WorkspaceSidebar from '@/components/chat/WorkspaceSidebar';
 import BriefModeSelectorModal from '@/components/modals/BriefModeSelectorModal';
 import ManualBriefInputModal from '@/components/modals/ManualBriefInputModal';
@@ -18,13 +17,11 @@ import DistributionModal from '@/components/modals/DistributionModal';
 import EffectivenessModal from '@/components/modals/EffectivenessModal';
 import NotificationModal from '@/components/modals/NotificationModal';
 import PLSGeneratorModal from '@/components/modals/PLSGeneratorModal';
-import type { AgentResponseContent, NotificationData } from '@/lib/types';
+import type { AgentResponseContent } from '@/lib/types';
 
 export default function ChatPage() {
   const searchParams = useSearchParams();
   const { state, dispatch, sendMessage, confirmModal, closeModal, setBriefMode } = useDAWN();
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showPLSModal, setShowPLSModal] = useState(false);
   const workspaceName = searchParams.get('workspace')?.trim() ?? '';
 
   // Find the latest notification from messages
@@ -40,8 +37,6 @@ export default function ChatPage() {
     }
     return null;
   }, [state.messages]);
-
-  const hasNotifications = !!latestNotification;
 
   // Auto-start: show first pre-populated message after 1s
   useEffect(() => {
@@ -65,13 +60,6 @@ export default function ChatPage() {
       <WorkspaceSidebar activeWorkspace={workspaceName} />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <ChatNavbar
-          hasNotifications={hasNotifications}
-          onShowPLSModal={() => setShowPLSModal(true)}
-          onShowNotifications={() => setShowNotifications(true)}
-          workspaceName={workspaceName}
-        />
-
         {/* Chat area */}
         <div className="flex-1 flex flex-col overflow-hidden bg-transparent">
           {showWelcomeScreen ? (
@@ -110,11 +98,6 @@ export default function ChatPage() {
                     onSend={handleSend}
                     disabled={state.isAgentTyping || state.waitingForModalConfirm}
                   />
-                  {/* {state.waitingForModalConfirm && (
-                    <p className="text-xs text-gray-400 mt-2 text-center">
-                      Open the modal above to continue
-                    </p>
-                  )} */}
                 </div>
               </div>
             </>
@@ -154,18 +137,7 @@ export default function ChatPage() {
         <EffectivenessModal onConfirm={confirmModal} onClose={closeModal} />
       )}
 
-      {/* Notification Modal */}
-      {showNotifications && latestNotification && (
-        <NotificationModal
-          notification={latestNotification}
-          onClose={() => setShowNotifications(false)}
-        />
-      )}
-
-      {/* PLS Generator Modal */}
-      {showPLSModal && (
-        <PLSGeneratorModal onClose={() => setShowPLSModal(false)} />
-      )}
+      {/* Notification and PLS modals are intentionally hidden on /chat route */}
     </div>
   );
 }

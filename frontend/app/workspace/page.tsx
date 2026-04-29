@@ -1,23 +1,22 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Activity, FolderOpen, LogOut, MessageSquare, Plus, Sparkles, Type, User } from 'lucide-react';
+import { Activity, FolderOpen, MessageSquare, Plus, Sparkles } from 'lucide-react';
 import { getCurrentUser, logout, type UserProfile } from '@/lib/authApi';
+import Navbar from '@/components/Navbar';
 
 const WORKSPACES_STORAGE_KEY = 'dawn_workspaces';
 
 export default function WorkspacePage() {
   const router = useRouter();
   const [userName, setUserName] = useState('User');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [workspaceName, setWorkspaceName] = useState('');
   const [workspaceError, setWorkspaceError] = useState('');
   const [workspaceList, setWorkspaceList] = useState<string[]>([]);
-  const profileMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const raw = localStorage.getItem(WORKSPACES_STORAGE_KEY);
@@ -55,15 +54,80 @@ export default function WorkspacePage() {
   const userInitial = useMemo(() => userName.trim().charAt(0).toUpperCase() || 'U', [userName]);
   const firstName = useMemo(() => userName.trim().split(/\s+/)[0] || 'there', [userName]);
   const safeFullName = useMemo(() => userName.trim() || 'User', [userName]);
-  const stats = useMemo(
-    () => [
-      { label: 'Workspaces', value: String(workspaceList.length), subLabel: 'active projects' },
-      { label: 'Total Chats', value: '0', subLabel: 'conversations' },
-      { label: 'Generated', value: '0', subLabel: 'content pieces' },
-      { label: 'Words', value: '0', subLabel: 'words created' },
-    ],
-    [workspaceList.length]
+  const workspaceDistribution = useMemo(() => {
+    const dummyWorkspaceData = [
+      { drug: 'Semaglutide', projects: 6, trend: '+12%' },
+      { drug: 'Atorvastatin', projects: 4, trend: '+6%' },
+      { drug: 'Metformin', projects: 3, trend: '+4%' },
+      { drug: 'Losartan', projects: 2, trend: '+2%' },
+    ];
+    const highest = Math.max(...dummyWorkspaceData.map((item) => item.projects), 1);
+    return dummyWorkspaceData.map((item) => ({
+      ...item,
+      width: (item.projects / highest) * 100,
+    }));
+  }, []);
+
+  const drugContentDistribution = useMemo(() => {
+    const dummyDistributionByDrug = [
+      {
+        drug: 'Semaglutide',
+        distribution: [
+          { type: 'Email Campaigns', share: 38, tone: 'bg-indigo-500', stroke: '#6366f1' },
+          { type: 'Doctor Leave-behinds', share: 26, tone: 'bg-cyan-500', stroke: '#06b6d4' },
+          { type: 'Patient Education', share: 20, tone: 'bg-emerald-500', stroke: '#10b981' },
+          { type: 'Social Creatives', share: 16, tone: 'bg-fuchsia-500', stroke: '#d946ef' },
+        ],
+      },
+      {
+        drug: 'Atorvastatin',
+        distribution: [
+          { type: 'Email Campaigns', share: 24, tone: 'bg-indigo-500', stroke: '#6366f1' },
+          { type: 'Doctor Leave-behinds', share: 33, tone: 'bg-cyan-500', stroke: '#06b6d4' },
+          { type: 'Patient Education', share: 27, tone: 'bg-emerald-500', stroke: '#10b981' },
+          { type: 'Social Creatives', share: 16, tone: 'bg-fuchsia-500', stroke: '#d946ef' },
+        ],
+      },
+      {
+        drug: 'Metformin',
+        distribution: [
+          { type: 'Email Campaigns', share: 20, tone: 'bg-indigo-500', stroke: '#6366f1' },
+          { type: 'Doctor Leave-behinds', share: 24, tone: 'bg-cyan-500', stroke: '#06b6d4' },
+          { type: 'Patient Education', share: 36, tone: 'bg-emerald-500', stroke: '#10b981' },
+          { type: 'Social Creatives', share: 20, tone: 'bg-fuchsia-500', stroke: '#d946ef' },
+        ],
+      },
+      {
+        drug: 'Losartan',
+        distribution: [
+          { type: 'Email Campaigns', share: 18, tone: 'bg-indigo-500', stroke: '#6366f1' },
+          { type: 'Doctor Leave-behinds', share: 31, tone: 'bg-cyan-500', stroke: '#06b6d4' },
+          { type: 'Patient Education', share: 29, tone: 'bg-emerald-500', stroke: '#10b981' },
+          { type: 'Social Creatives', share: 22, tone: 'bg-fuchsia-500', stroke: '#d946ef' },
+        ],
+      },
+    ];
+    return dummyDistributionByDrug;
+  }, []);
+  const [selectedDrug, setSelectedDrug] = useState('Semaglutide');
+  const selectedDrugContent = useMemo(
+    () =>
+      drugContentDistribution.find((item) => item.drug === selectedDrug)?.distribution ??
+      drugContentDistribution[0]?.distribution ??
+      [],
+    [drugContentDistribution, selectedDrug]
   );
+  const selectedDrugDonut = useMemo(() => {
+    const total = selectedDrugContent.reduce((sum, item) => sum + item.share, 0) || 1;
+    let cumulative = 0;
+    return selectedDrugContent.map((item) => {
+      const percent = (item.share / total) * 100;
+      const dashArray = `${percent} ${100 - percent}`;
+      const dashOffset = -cumulative;
+      cumulative += percent;
+      return { ...item, dashArray, dashOffset };
+    });
+  }, [selectedDrugContent]);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -99,91 +163,141 @@ export default function WorkspacePage() {
     router.push(`/chat?workspace=${encodeURIComponent(trimmedName)}`);
   };
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (!profileMenuRef.current) return;
-      if (!profileMenuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, []);
-
   return (
     <main className="h-screen overflow-hidden px-4 py-3 md:px-6 md:py-7">
-      <div className="mx-auto flex h-full w-full  flex-col gap-6">
-        <header
-          className="glass-navbar relative z-[80] !overflow-visible flex items-center justify-between px-5 py-1"
-          style={{ overflow: 'visible' }}
+      <div className="mx-auto flex h-full w-full flex-col">
+        <div className="shrink-0 pb-6">
+          <Navbar
+            userInitial={userInitial}
+            safeFullName={safeFullName}
+            isLoggingOut={isLoggingOut}
+            onLogout={handleLogout}
+          />
+        </div>
+
+        <div
+          className="min-h-0 flex-1 space-y-4 overflow-y-auto pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         >
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-dawn-navy to-[#203463]">
-              <span className="font-serif text-sm font-bold text-white">D</span>
-            </div>
-            <span className="font-display text-xl text-dawn-navy">DAWN</span>
-          </div>
-          <div ref={profileMenuRef} className="relative z-[90]">
-            <button
-              type="button"
-              onClick={() => setIsMenuOpen((prev) => !prev)}
-              className="inline-flex items-center rounded-full border border-white/60 bg-white/70 p-1 shadow-[0_8px_20px_rgba(15,23,42,0.08)] transition hover:bg-white"
-            >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-400 to-pink-500 text-xs font-semibold text-white ring-2 ring-white/70">
-                {userInitial}
-              </span>
-            </button>
+          <section className="grid grid-cols-1 gap-3 xl:grid-cols-3">
+            <article className="rounded-2xl border border-white/70 bg-white/60 px-5 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.07)] backdrop-blur-sm xl:col-span-2">
+              <h1 className="font-display text-3xl text-dawn-navy md:text-4xl">Hi {firstName}, how can I help you today?</h1>
+              <p className="mt-1 text-sm text-slate-500">DAWN — Your AI-powered content lifecycle agent</p>
+            </article>
 
-            {isMenuOpen && (
-              <div className="absolute left-1/2 top-full z-[100] mt-2 w-56 -translate-x-1/2 overflow-hidden rounded-xl border border-white/70 bg-white/95 shadow-[0_20px_40px_rgba(15,23,42,0.14)] backdrop-blur-sm">
-                <div className="flex items-center gap-2.5 border-b border-slate-100 px-3 py-2.5">
-                  <User size={15} className="text-dawn-teal" />
-                  <p className="truncate text-sm font-medium text-slate-700">{safeFullName}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  disabled={isLoggingOut}
-                  className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-sm text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  <LogOut size={15} />
-                  {isLoggingOut ? 'Logging out...' : 'Logout'}
-                </button>
-              </div>
-            )}
-          </div>
-        </header>
-
-        <section className="rounded-2xl border border-white/70 bg-white/60 px-5 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.07)] backdrop-blur-sm">
-          <h1 className="font-display text-3xl text-dawn-navy md:text-4xl">Hi {firstName}, how can I help you today?</h1>
-          <p className="mt-1 text-sm text-slate-500">DAWN — Your AI-powered content lifecycle agent</p>
-        </section>
-
-        <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {stats.map((stat, index) => (
-            <article
-              key={stat.label}
-              className="rounded-2xl border border-white/70 bg-white/75 p-4 shadow-[0_14px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm"
-            >
+            <article className="rounded-2xl border border-white/70 bg-white/75 p-4 shadow-[0_14px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-slate-500">{stat.label}</p>
+                <p className="text-sm font-medium text-slate-500">Workspaces</p>
                 <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-dawn-sky text-dawn-teal">
-                  {index === 0 ? <FolderOpen size={14} /> : null}
-                  {index === 1 ? <MessageSquare size={14} /> : null}
-                  {index === 2 ? <Sparkles size={14} /> : null}
-                  {index === 3 ? <Type size={14} /> : null}
+                  <FolderOpen size={14} />
                 </span>
               </div>
-              <p className="mt-2 text-3xl font-bold leading-none text-dawn-navy">{stat.value}</p>
-              <p className="mt-1 text-xs font-medium text-slate-400">{stat.subLabel}</p>
+              <p className="mt-2 text-3xl font-bold leading-none text-dawn-navy">{workspaceList.length}</p>
+              <p className="mt-1 text-xs font-medium text-slate-400">active projects</p>
             </article>
-          ))}
-        </section>
+          </section>
 
-        <section className="flex items-center justify-between rounded-xl border border-white/60 bg-white/35 px-4 py-3 backdrop-blur-sm">
+          <section className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <article className="rounded-2xl border border-white/70 bg-white/75 p-4 shadow-[0_14px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-slate-500">Active Workspace Drug Mix</p>
+                <h2 className="text-lg font-semibold text-dawn-navy">Projects by drug name</h2>
+              </div>
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
+                <FolderOpen size={12} />
+                {workspaceList.length} workspaces
+              </span>
+            </div>
+
+            <div className="mt-4 space-y-3">
+              {workspaceDistribution.map((item) => (
+                <div key={item.drug}>
+                  <div className="mb-1 flex items-center justify-between text-xs">
+                    <p className="font-medium text-slate-600">{item.drug}</p>
+                    <p className="text-slate-500">
+                      {item.projects} active projects <span className="text-emerald-600">{item.trend}</span>
+                    </p>
+                  </div>
+                  <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
+                    <div className="h-full rounded-full bg-gradient-to-r from-dawn-teal to-indigo-500" style={{ width: `${item.width}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-white/70 bg-white/75 p-4 shadow-[0_14px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-slate-500">Profile Content Signature</p>
+                <h2 className="text-lg font-semibold text-dawn-navy">Drug content type distribution</h2>
+              </div>
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-dawn-sky text-dawn-teal">
+                <Sparkles size={15} />
+              </span>
+            </div>
+
+            <div className="mt-4 space-y-2.5">
+              <div className="flex flex-wrap gap-2">
+                {drugContentDistribution.map((item) => (
+                  <button
+                    key={item.drug}
+                    type="button"
+                    onClick={() => setSelectedDrug(item.drug)}
+                    className={`rounded-full border px-3 py-1 text-xs font-medium transition ${
+                      selectedDrug === item.drug
+                        ? 'border-dawn-teal bg-dawn-sky text-dawn-teal'
+                        : 'border-slate-200 bg-white/70 text-slate-500 hover:border-dawn-teal/40 hover:text-dawn-teal'
+                    }`}
+                  >
+                    {item.drug}
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1.25fr_0.75fr] sm:items-center">
+                <div className="relative mx-auto h-[210px] w-[210px]">
+                  <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
+                    <circle cx="18" cy="18" r="13" fill="none" stroke="#e2e8f0" strokeWidth="5" />
+                    {selectedDrugDonut.map((segment) => (
+                      <circle
+                        key={segment.type}
+                        cx="18"
+                        cy="18"
+                        r="13"
+                        fill="none"
+                        stroke={segment.stroke}
+                        strokeWidth="5"
+                        strokeDasharray={segment.dashArray}
+                        strokeDashoffset={segment.dashOffset}
+                        pathLength={100}
+                      />
+                    ))}
+                  </svg>
+                  <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <p className="max-w-[84px] text-[11px] font-semibold leading-tight text-dawn-navy">{selectedDrug}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  {selectedDrugContent.map((item) => (
+                    <div key={item.type} className="rounded-lg border border-slate-100 bg-white/60 px-2.5 py-2">
+                      <div className="mb-1 flex items-center justify-between text-xs">
+                        <span className="inline-flex items-center gap-1.5 font-medium text-slate-600">
+                          <span className={`h-2 w-2 rounded-full ${item.tone}`} />
+                          {item.type}
+                        </span>
+                        <span className="text-slate-500">{item.share}%</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </article>
+          </section>
+
+          <section className="flex items-center justify-between rounded-xl border border-white/60 bg-white/35 px-4 py-3 backdrop-blur-sm">
           <div>
             <h2 className="text-xl font-semibold text-dawn-navy">Your Workspaces</h2>
             <p className="text-sm text-slate-500">Click any workspace to start chatting with AI.</p>
@@ -200,9 +314,9 @@ export default function WorkspacePage() {
             <Plus size={16} />
             New Workspace
           </button>
-        </section>
+          </section>
 
-        <section className="min-h-0 flex-1 overflow-y-auto rounded-2xl border border-white/60 bg-white/25 p-3 backdrop-blur-[1px]">
+          <section className="max-h-[52vh] overflow-y-auto rounded-2xl border border-white/60 bg-white/25 p-3 backdrop-blur-[1px]">
           {workspaceList.length === 0 ? (
             <div className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dawn-teal/20 border-dashed bg-white/45 px-4 text-center sm:min-h-[260px] lg:min-h-[290px]">
               <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-dawn-sky text-dawn-teal">
@@ -213,7 +327,7 @@ export default function WorkspacePage() {
             </div>
           ) : null}
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {workspaceList.map((workspace) => (
               <Link
                 key={workspace}
@@ -250,7 +364,8 @@ export default function WorkspacePage() {
 
            
           </div>
-        </section>
+          </section>
+        </div>
       </div>
 
       {isCreateModalOpen && (
