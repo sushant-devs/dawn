@@ -180,9 +180,16 @@ export default function WorkspacePage() {
   };
 
   return (
-    <main className="h-screen overflow-hidden px-4 py-3 md:px-6 md:py-7">
-      <div className="mx-auto flex h-full w-full flex-col">
-        <div className="shrink-0 pb-6">
+    <main className="h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30 relative">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-blue-100/30 to-teal-100/30 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-40 left-20 w-80 h-80 bg-gradient-to-tr from-purple-100/20 to-pink-100/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-gradient-to-r from-dawn-teal/10 to-blue-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+      </div>
+
+      <div className="relative z-10 h-full flex flex-col">
+        <div className="shrink-0">
           <Navbar
             userInitial={userInitial}
             safeFullName={safeFullName}
@@ -191,56 +198,92 @@ export default function WorkspacePage() {
           />
         </div>
 
-        <div
-          className="min-h-0 flex-1 space-y-4 overflow-y-auto pb-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-        >
-
-          <div className="rounded-2xl border border-white/70 bg-white/60 px-5 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.07)] backdrop-blur-sm xl:col-span-2">
-            <h1 className="font-display text-3xl text-dawn-navy md:text-4xl">Hi {firstName}, how can I help you today?</h1>
-            <p className="mt-1 text-sm text-slate-500">DAWN — Your AI-powered content lifecycle agent</p>
-          </div>
-          <section className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-            <article className="rounded-3xl border border-slate-200/70 bg-white/85 p-4 shadow-[0_18px_34px_rgba(15,23,42,0.08)] backdrop-blur-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">Active Workspace Drug Mix</p>
-                  <h2 className="mt-1 text-xl font-semibold text-dawn-navy">Projects by drug name</h2>
-                </div>
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50 text-indigo-500">
-                  <FolderOpen size={15} />
-                </span>
+        <div className="min-h-0 flex-1 px-6 py-6 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="mx-auto max-w-7xl space-y-8">
+            {/* Enhanced Welcome Section */}
+            <div className="relative">
+              {/* Floating particles animation */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-dawn-teal/30 rounded-full animate-bounce delay-300"></div>
+                <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400/40 rounded-full animate-bounce delay-700"></div>
+                <div className="absolute bottom-1/3 left-1/2 w-3 h-3 bg-purple-400/20 rounded-full animate-bounce delay-1000"></div>
               </div>
 
-              <div className="mt-3 space-y-2">
-                {workspaceDistribution.map((item) => (
-                  <div
-                    key={item.drug}
-                    className="rounded-xl border border-slate-100 bg-gradient-to-r from-white to-slate-50/70 px-3 py-2.5 transition hover:border-indigo-100 hover:shadow-[0_8px_18px_rgba(99,102,241,0.08)]"
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="inline-flex min-w-0 items-center gap-2.5">
-                        <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-100 to-indigo-200 text-xs font-semibold text-indigo-700">
-                          {item.rank}
-                        </span>
-                        <p className="truncate text-sm font-medium text-slate-700">{item.drug}</p>
-                      </div>
-                      <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">{item.projects} active projects</span>
+              <div className="text-center mb-8">
+                {/* Agent status indicator */}
+                <div className="flex justify-center mb-6">
+                  <div className="flex items-center gap-3 px-4 py-2 bg-white/80 backdrop-blur-sm border border-dawn-teal/20 rounded-full shadow-lg">
+                    <div className="relative">
+                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                      <div className="absolute inset-0 w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
                     </div>
+                    <span className="text-sm font-medium text-slate-600">DAWN Agent Online</span>
                   </div>
-                ))}
-              </div>
-            </article>
-
-            <article className="rounded-3xl border border-slate-200/70 bg-white/85 p-4 shadow-[0_18px_34px_rgba(15,23,42,0.08)] backdrop-blur-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">Profile Content Signature</p>
-                  <h2 className="mt-1 text-xl font-semibold text-dawn-navy">Drug content type distribution</h2>
                 </div>
-                <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-indigo-100 bg-indigo-50 text-indigo-500">
-                  <Sparkles size={15} />
-                </span>
+
+                <h1 className="font-display text-4xl md:text-5xl bg-gradient-to-r from-dawn-navy via-dawn-teal to-blue-600 bg-clip-text text-transparent mb-4 font-bold leading-tight">
+                  Hi {firstName}, how can I help you today?
+                </h1>
+                <p className="text-slate-600 text-lg font-medium mb-2">
+                  DAWN — Your AI-powered content lifecycle agent
+                </p>
+                <p className="text-slate-500 text-sm max-w-2xl mx-auto leading-relaxed">
+                  Manage your workspaces, create content, and streamline your workflow with AI assistance
+                </p>
               </div>
+            </div>
+            {/* Analytics Section */}
+            <section className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+              <article className="group relative overflow-hidden rounded-3xl border border-slate-200/50 bg-white/90 backdrop-blur-xl p-6 shadow-lg shadow-slate-900/5 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/10 hover:-translate-y-1">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-full blur-2xl"></div>
+                <div className="relative flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 mb-1">Active Workspace Drug Mix</p>
+                    <h2 className="text-xl font-semibold text-dawn-navy">Projects by drug name</h2>
+                  </div>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-lg shadow-indigo-500/25">
+                    <FolderOpen size={18} />
+                  </div>
+                </div>
+
+                <div className="relative space-y-3">
+                  {workspaceDistribution.map((item, index) => (
+                    <div
+                      key={item.drug}
+                      className="group relative overflow-hidden rounded-2xl border border-slate-200/50 bg-gradient-to-r from-white/80 to-slate-50/50 backdrop-blur-sm px-4 py-3 transition-all duration-300 hover:border-indigo-300/60 hover:shadow-lg hover:shadow-indigo-500/10 hover:-translate-y-0.5"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="inline-flex min-w-0 items-center gap-3">
+                          <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 text-xs font-bold text-white shadow-md">
+                            {item.rank}
+                          </span>
+                          <div>
+                            <p className="truncate text-sm font-semibold text-slate-800">{item.drug}</p>
+                            <p className="text-xs text-slate-500">{item.trend} vs last month</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="rounded-xl bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700">
+                            {item.projects} projects
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </article>
+
+              <article className="group relative overflow-hidden rounded-3xl border border-slate-200/50 bg-white/90 backdrop-blur-xl p-6 shadow-lg shadow-slate-900/5 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/10 hover:-translate-y-1">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-2xl"></div>
+                <div className="relative flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500 mb-1">Profile Content Signature</p>
+                    <h2 className="text-xl font-semibold text-dawn-navy">Drug content type distribution</h2>
+                  </div>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/25">
+                    <Sparkles size={18} />
+                  </div>
+                </div>
 
               <div className="mt-3 space-y-2.5">
                 <div className="flex flex-wrap gap-2 rounded-xl bg-slate-50/80 p-1.5">
@@ -301,112 +344,143 @@ export default function WorkspacePage() {
             </article>
           </section>
 
-          <section className="flex items-center justify-between rounded-xl border border-white/60 bg-white/35 px-4 py-3 backdrop-blur-sm">
-            <div className='flex items-center justify-between'>
-              <div>
-                <h2 className="text-xl font-semibold text-dawn-navy">Your Workspaces  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-sm font-medium text-emerald-700">
-                  <FolderOpen size={14} />
-                  {isLoadingWorkspaces ? 'Loading...' : `${workspaceList.length} workspaces`}
-                </span></h2>
-                <p className="text-sm text-slate-500">Click any workspace to start chatting with AI.</p>
-              </div>
-            </div>
+            {/* Workspace Section */}
+            <section className="relative">
+              <div className="flex items-center justify-between mb-6 p-6 rounded-3xl border border-slate-200/50 bg-white/80 backdrop-blur-xl shadow-lg shadow-slate-900/5">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <h2 className="text-2xl font-bold text-dawn-navy">Your Workspaces</h2>
+                    <div className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200/50 px-4 py-2 text-sm font-semibold text-emerald-700">
+                      <FolderOpen size={16} />
+                      {isLoadingWorkspaces ? 'Loading...' : `${workspaceList.length} workspaces`}
+                    </div>
+                  </div>
+                  <p className="text-slate-500">Click any workspace to start chatting with AI agent.</p>
+                </div>
 
-            <button
-              type="button"
-              onClick={() => {
-                setWorkspaceError('');
-                setIsCreateModalOpen(true);
-              }}
-              className="inline-flex items-center gap-2 rounded-xl bg-dawn-teal px-4 py-2 text-sm font-medium text-white shadow-[0_12px_24px_rgba(46,91,255,0.35)] transition hover:-translate-y-0.5"
-            >
-              <Plus size={16} />
-              New Workspace
-            </button>
-          </section>
-
-          <section className="max-h-[52vh] overflow-y-auto rounded-2xl border border-white/60 bg-white/25 p-3 backdrop-blur-[1px]">
-            {workspaceList.length === 0 ? (
-              <div className="flex min-h-[220px] flex-col items-center justify-center rounded-2xl border border-dawn-teal/20 border-dashed bg-white/45 px-4 text-center sm:min-h-[260px] lg:min-h-[290px]">
-                <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-dawn-sky text-dawn-teal">
-                  <Activity size={18} />
-                </span>
-                <p className="text-sm font-semibold text-slate-700">No workspace created</p>
-                <p className="mt-1 text-xs text-slate-500">Create your first workspace to begin collaborating.</p>
-              </div>
-            ) : null}
-
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {workspaceList.map((workspace) => (
-                <Link
-                  key={workspace.id}
-                  href={`/chat?workspace=${encodeURIComponent(workspace.name)}`}
-                  className="group rounded-2xl border border-white/70 bg-white/80 p-4 shadow-[0_14px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm transition hover:-translate-y-1 hover:border-dawn-teal/30 hover:shadow-[0_20px_38px_rgba(15,23,42,0.11)]"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setWorkspaceError('');
+                    setIsCreateModalOpen(true);
+                  }}
+                  className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-dawn-teal to-blue-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-dawn-teal/30 transition-all duration-200 hover:shadow-xl hover:shadow-dawn-teal/40 hover:-translate-y-1"
                 >
-                  <div className="mb-3 flex items-start justify-between">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-dawn-sky text-dawn-teal">
-                      <FolderOpen size={18} />
-                    </span>
-                    <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-600">
-                      Active
-                    </span>
+                  <Plus size={18} strokeWidth={2.5} />
+                  New Workspace
+                </button>
+              </div>
+
+              <div className="relative">
+                {workspaceList.length === 0 ? (
+                  <div className="flex min-h-[300px] flex-col items-center justify-center rounded-3xl border-2 border-dashed border-dawn-teal/30 bg-gradient-to-br from-white/80 to-dawn-sky/20 backdrop-blur-xl p-12 text-center">
+                    <div className="relative mb-6">
+                      <div className="absolute inset-0 bg-dawn-teal/20 rounded-full blur-xl animate-pulse"></div>
+                      <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-dawn-teal to-blue-500 text-white shadow-lg">
+                        <Activity size={24} />
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-700 mb-2">No workspaces yet</h3>
+                    <p className="text-slate-500 text-sm max-w-sm">Create your first workspace to start collaborating with the AI agent and manage your projects.</p>
                   </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {workspaceList.map((workspace, index) => (
+                      <Link
+                        key={workspace.id}
+                        href={`/chat?workspace=${encodeURIComponent(workspace.name)}`}
+                        className="group relative overflow-hidden rounded-3xl border border-slate-200/50 bg-white/90 backdrop-blur-xl p-6 shadow-lg shadow-slate-900/5 transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/15 hover:-translate-y-2 hover:border-dawn-teal/40"
+                      >
+                        {/* Animated background gradient */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-dawn-teal/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        <div className="relative">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="relative">
+                              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-dawn-teal to-blue-500 text-white shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+                                <FolderOpen size={20} />
+                              </div>
+                              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full animate-pulse"></div>
+                            </div>
+                            <div className="rounded-xl bg-emerald-50 border border-emerald-200/50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                              Active
+                            </div>
+                          </div>
 
-                  <h3 className="text-base font-semibold text-dawn-navy">{workspace.name}</h3>
-                  <p className="mt-1 inline-flex rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
-                    Workspace
-                  </p>
+                          <div className="mb-4">
+                            <h3 className="text-lg font-bold text-dawn-navy mb-1 group-hover:text-dawn-teal transition-colors duration-300">{workspace.name}</h3>
+                            <div className="inline-flex rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200/50 px-3 py-1 text-xs font-medium text-indigo-700">
+                              Workspace Environment
+                            </div>
+                          </div>
 
-                  {workspace.description && (
-                    <p className="mt-3 text-xs text-slate-500">{workspace.description}</p>
-                  )}
-                  {!workspace.description && (
-                    <p className="mt-3 text-xs text-slate-500">
-                      Manage campaigns, drafts, and approvals for this workspace.
-                    </p>
-                  )}
+                          {workspace.description ? (
+                            <p className="text-sm text-slate-600 mb-4 leading-relaxed">{workspace.description}</p>
+                          ) : (
+                            <p className="text-sm text-slate-500 mb-4 leading-relaxed">
+                              AI-powered workspace for content creation, campaign management, and collaborative workflows.
+                            </p>
+                          )}
 
-                  <div className="mt-4 flex items-center gap-4 border-t border-slate-100 pt-3 text-xs text-slate-500">
-                    <span className="inline-flex items-center gap-1">
-                      <MessageSquare size={13} />
-                      {workspace.message_count} messages
-                    </span>
-                    <span>{new Date(workspace.created_at).toLocaleDateString()}</span>
+                          <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                            <div className="flex items-center gap-2 text-xs text-slate-500">
+                              <MessageSquare size={14} />
+                              <span className="font-medium">{workspace.message_count} messages</span>
+                            </div>
+                            <span className="text-xs text-slate-400">
+                              {new Date(workspace.created_at).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
-                </Link>
-              ))}
-
-
-            </div>
-          </section>
+                )}
+              </div>
+            </section>
+          </div>
         </div>
       </div>
 
       {isCreateModalOpen && (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-900/35 px-4 backdrop-blur-[2px]">
-          <div className="w-full max-w-md rounded-2xl border border-white/70 bg-white p-6 shadow-[0_30px_70px_rgba(15,23,42,0.25)]">
-            <h3 className="text-xl font-semibold text-dawn-navy">Create Workspace</h3>
-            <p className="mt-1 text-sm text-slate-500">Add a workspace name to continue.</p>
-
-            <div className="mt-5">
-              <label htmlFor="workspaceName" className="mb-2 block text-sm font-medium text-slate-700">
-                Workspace Name
-              </label>
-              <input
-                id="workspaceName"
-                type="text"
-                value={workspaceName}
-                onChange={(event) => {
-                  setWorkspaceName(event.target.value);
-                  if (workspaceError) setWorkspaceError('');
-                }}
-                placeholder="Enter workspace name"
-                className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3.5 text-sm text-slate-700 outline-none transition focus:border-dawn-teal/60 focus:ring-2 focus:ring-dawn-teal/20"
-              />
-              {workspaceError ? <p className="mt-2 text-xs text-rose-600">{workspaceError}</p> : null}
+        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-900/60 px-4 backdrop-blur-md">
+          <div className="w-full max-w-md rounded-3xl border border-slate-200/50 bg-white/95 backdrop-blur-xl p-8 shadow-2xl shadow-slate-900/25">
+            <div className="text-center mb-6">
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-dawn-teal to-blue-500 text-white shadow-lg mb-4">
+                <Plus size={24} />
+              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-dawn-navy to-dawn-teal bg-clip-text text-transparent">Create Workspace</h3>
+              <p className="mt-2 text-sm text-slate-500">Set up your AI-powered workspace environment</p>
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-3">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="workspaceName" className="block text-sm font-semibold text-slate-700 mb-2">
+                  Workspace Name
+                </label>
+                <div className="relative">
+                  <input
+                    id="workspaceName"
+                    type="text"
+                    value={workspaceName}
+                    onChange={(event) => {
+                      setWorkspaceName(event.target.value);
+                      if (workspaceError) setWorkspaceError('');
+                    }}
+                    placeholder="Enter workspace name"
+                    className="h-12 w-full rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-dawn-teal/60 focus:ring-4 focus:ring-dawn-teal/10 focus:bg-white"
+                  />
+                </div>
+                {workspaceError ? (
+                  <p className="mt-2 text-xs text-rose-600 flex items-center gap-1">
+                    <span className="w-1 h-1 bg-rose-500 rounded-full"></span>
+                    {workspaceError}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="mt-8 flex items-center gap-3">
               <button
                 type="button"
                 onClick={() => {
@@ -414,7 +488,7 @@ export default function WorkspacePage() {
                   setWorkspaceName('');
                   setWorkspaceError('');
                 }}
-                className="h-11 rounded-xl border border-slate-200 bg-white px-5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                className="flex-1 h-12 rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-white hover:border-slate-300/80"
               >
                 Cancel
               </button>
@@ -422,9 +496,16 @@ export default function WorkspacePage() {
                 type="button"
                 onClick={handleCreateWorkspace}
                 disabled={isCreatingWorkspace}
-                className="h-11 rounded-xl bg-dawn-teal px-5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(46,91,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 h-12 rounded-2xl bg-gradient-to-r from-dawn-teal to-blue-500 px-4 text-sm font-bold text-white shadow-lg shadow-dawn-teal/30 transition-all duration-200 hover:shadow-xl hover:shadow-dawn-teal/40 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                {isCreatingWorkspace ? 'Creating...' : 'Create Workspace'}
+                {isCreatingWorkspace ? (
+                  <span className="flex items-center gap-2 justify-center">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Creating...
+                  </span>
+                ) : (
+                  'Create Workspace'
+                )}
               </button>
             </div>
           </div>

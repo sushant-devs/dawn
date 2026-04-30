@@ -3,18 +3,23 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronRight, FolderOpen, LogOut, Plus, User } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, MessageSquare, LogOut, Plus, User } from 'lucide-react';
 import { logout, type UserProfile } from '@/lib/authApi';
+
+interface ChatSession {
+  id: string;
+  title: string;
+  createdAt: string;
+}
 
 interface WorkspaceSidebarProps {
   activeWorkspace: string;
+  activeChatId?: string;
 }
 
-const WORKSPACES_STORAGE_KEY = 'dawn_workspaces';
-
-export default function WorkspaceSidebar({ activeWorkspace }: WorkspaceSidebarProps) {
+export default function WorkspaceSidebar({ activeWorkspace, activeChatId }: WorkspaceSidebarProps) {
   const router = useRouter();
-  const [workspaces, setWorkspaces] = useState<string[]>([]);
+  const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [userName, setUserName] = useState('User');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,18 +27,34 @@ export default function WorkspaceSidebar({ activeWorkspace }: WorkspaceSidebarPr
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const raw = localStorage.getItem(WORKSPACES_STORAGE_KEY);
-    const stored = raw ? (JSON.parse(raw) as string[]) : [];
-    const unique = Array.from(new Set(stored));
-    if (activeWorkspace) {
-      const hasActive = unique.some((item) => item.toLowerCase() === activeWorkspace.toLowerCase());
-      if (!hasActive) unique.unshift(activeWorkspace);
-    }
-    setWorkspaces(unique);
-    localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(unique));
+    const loadChatSessions = () => {
+      if (!activeWorkspace) return;
+      
+      const storageKey = `dawn_chats_${activeWorkspace.toLowerCase()}`;
+      const stored = localStorage.getItem(storageKey);
+      const sessions = stored ? JSON.parse(stored) : [];
+      setChatSessions(sessions);
+    };
+
+    loadChatSessions();
   }, [activeWorkspace]);
 
-  const normalizedActive = useMemo(() => activeWorkspace.trim().toLowerCase(), [activeWorkspace]);
+  const createNewChat = () => {
+    const newChatId = `chat-${Date.now()}`;
+    const newChat: ChatSession = {
+      id: newChatId,
+      title: `Chat ${chatSessions.length + 1}`,
+      createdAt: new Date().toISOString()
+    };
+    
+    const updatedSessions = [newChat, ...chatSessions];
+    setChatSessions(updatedSessions);
+    
+    const storageKey = `dawn_chats_${activeWorkspace.toLowerCase()}`;
+    localStorage.setItem(storageKey, JSON.stringify(updatedSessions));
+    
+    router.push(`/chat?workspace=${encodeURIComponent(activeWorkspace)}&chatId=${newChatId}`);
+  };
   const userInitial = useMemo(() => userName.trim().charAt(0).toUpperCase() || 'U', [userName]);
   const safeFullName = useMemo(() => userName.trim() || 'User', [userName]);
 
@@ -80,94 +101,189 @@ export default function WorkspaceSidebar({ activeWorkspace }: WorkspaceSidebarPr
 
   return (
     <aside
-      className={`hidden h-full shrink-0 border-r border-slate-200/80 bg-slate-100/85 p-3 transition-all duration-300 md:flex md:flex-col ${isCollapsed ? 'w-[92px]' : 'w-[286px]'
+      className={`hidden h-full shrink-0 border-r border-slate-200/50 bg-gradient-to-b from-slate-50/95 via-white/90 to-slate-100/95 backdrop-blur-xl transition-all duration-300 md:flex md:flex-col shadow-xl ${isCollapsed ? 'w-[80px] px-2 py-4' : 'w-[300px] px-4 py-4'
         }`}
     >
-      <div className="mb-3 flex items-center justify-between rounded-xl  px-1 py-1">
-        <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-dawn-navy to-[#203463] text-xs font-semibold text-white shadow-[0_6px_12px_rgba(32,52,99,0.25)]">
+      <div className={`mb-6 flex items-center ${isCollapsed ? 'flex-col gap-3' : 'justify-between px-1'}`}>
+        <button
+          onClick={() => router.push('/workspace')}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-dawn-navy via-dawn-teal to-blue-600 text-sm font-bold text-white shadow-lg shadow-dawn-navy/25 transition-all duration-200 hover:shadow-xl hover:shadow-dawn-navy/30 hover:scale-105"
+          title="Back to workspaces"
+        >
           D
-        </span>
+        </button>
         <button
           type="button"
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           onClick={() => setIsCollapsed((prev) => !prev)}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:border-dawn-teal/30 hover:text-dawn-teal"
+          className={`inline-flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200/80 bg-white/80 backdrop-blur-sm text-slate-500 transition-all duration-200 hover:border-dawn-teal/40 hover:text-dawn-teal hover:bg-white hover:shadow-md ${isCollapsed ? 'mt-2' : ''}`}
+          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
         </button>
       </div>
 
-      <Link
-        href="#"
-        className={`mb-2.5 flex h-10 items-center rounded-xl bg-dawn-teal text-sm font-semibold text-white shadow-[0_10px_18px_rgba(46,91,255,0.28)] transition hover:-translate-y-0.5 hover:bg-[#2d73f6] ${isCollapsed ? 'justify-center px-0' : 'gap-2 px-3'
+      <button
+        onClick={createNewChat}
+        className={`mb-6 flex items-center rounded-2xl bg-gradient-to-r from-dawn-teal to-blue-500 text-sm font-semibold text-white shadow-lg shadow-dawn-teal/30 transition-all duration-200 hover:shadow-xl hover:shadow-dawn-teal/40 hover:-translate-y-1 hover:from-dawn-teal/90 hover:to-blue-500/90 ${isCollapsed ? 'h-12 w-12 justify-center' : 'h-11 gap-3 px-4'
           }`}
+        title={isCollapsed ? 'New Chat' : undefined}
       >
-        <Plus size={15} />
+        <Plus size={isCollapsed ? 18 : 16} strokeWidth={2.5} />
         {!isCollapsed ? 'New Chat' : null}
-      </Link>
+      </button>
 
-      {!isCollapsed ? <p className="mb-2 px-1 text-xs font-semibold uppercase tracking-[0.08em] text-slate-400">Recents</p> : null}
+      {!isCollapsed ? (
+        <div className="mb-4 px-1">
+          <div className="flex items-center gap-2">
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+            <span className="text-xs font-medium uppercase tracking-wider text-slate-400">Chat History</span>
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+          </div>
+        </div>
+      ) : null}
 
-      <div className="min-h-0 flex-1 space-y-1.5 overflow-y-auto pr-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-        {workspaces.map((workspace) => {
-          const isActive = workspace.toLowerCase() === normalizedActive;
-          return (
-            <button
-              key={workspace}
-              type="button"
-              onClick={() => router.push(`/chat?workspace=${encodeURIComponent(workspace)}`)}
-              className={`flex w-full items-center gap-2 rounded-xl border px-2.5 py-2 text-left transition ${isActive
-                ? 'border-dawn-teal/35 bg-dawn-sky/55 text-dawn-navy'
-                : 'border-transparent bg-transparent text-slate-700 hover:border-slate-200 hover:bg-white/85'
+      <div className={`min-h-0 flex-1 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ${isCollapsed ? 'space-y-3' : 'space-y-2 pr-1'}`}>
+        {chatSessions.length === 0 ? (
+          <div className={`flex flex-col items-center justify-center ${isCollapsed ? 'py-8' : 'py-12'}`}>
+            {!isCollapsed && (
+              <>
+                <div className="w-12 h-12 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex items-center justify-center mb-3">
+                  <MessageSquare size={20} className="text-slate-400" />
+                </div>
+                <div className="text-sm font-medium text-slate-500 mb-1">No conversations yet</div>
+                <div className="text-xs text-slate-400 text-center">Start a new chat to begin</div>
+              </>
+            )}
+            {isCollapsed && (
+              <div className="w-8 h-8 bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center">
+                <MessageSquare size={16} className="text-slate-400" />
+              </div>
+            )}
+          </div>
+        ) : (
+          chatSessions.map((chat, index) => {
+            const isActive = chat.id === activeChatId;
+            return (
+              <button
+                key={chat.id}
+                type="button"
+                onClick={() => router.push(`/chat?workspace=${encodeURIComponent(activeWorkspace)}&chatId=${chat.id}`)}
+                className={`group flex w-full items-center transition-all duration-200 ${
+                  isCollapsed
+                    ? `h-12 w-12 justify-center rounded-2xl border ${
+                        isActive
+                          ? 'border-dawn-teal/40 bg-gradient-to-r from-dawn-sky/60 to-blue-50/80 shadow-md'
+                          : 'border-transparent bg-white/50 backdrop-blur-sm hover:border-slate-200/60 hover:bg-white/80 hover:shadow-sm'
+                      }`
+                    : `gap-3 rounded-2xl border px-3 py-3 text-left ${
+                        isActive
+                          ? 'border-dawn-teal/40 bg-gradient-to-r from-dawn-sky/60 to-blue-50/80 text-dawn-navy shadow-md'
+                          : 'border-transparent bg-white/50 backdrop-blur-sm text-slate-700 hover:border-slate-200/60 hover:bg-white/80 hover:shadow-sm'
+                      }`
                 }`}
-            >
-              <span
-                className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg ${isActive ? 'bg-white text-dawn-teal' : 'bg-slate-200/70 text-slate-500'
-                  }`}
+                title={isCollapsed ? chat.title : undefined}
               >
-                <FolderOpen size={13} />
-              </span>
-              {!isCollapsed ? (
-                <span className="min-w-0">
-                  <span className="block truncate text-sm font-medium">{workspace}</span>
+                <span
+                  className={`flex shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${
+                    isCollapsed
+                      ? `h-6 w-6 ${
+                          isActive 
+                            ? 'bg-white shadow-sm text-dawn-teal' 
+                            : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-600'
+                        }`
+                      : `h-8 w-8 ${
+                          isActive 
+                            ? 'bg-white shadow-sm text-dawn-teal' 
+                            : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-600'
+                        }`
+                  }`}
+                >
+                  <MessageSquare size={isCollapsed ? 12 : 14} strokeWidth={2} />
                 </span>
-              ) : null}
-            </button>
-          );
-        })}
+                {!isCollapsed ? (
+                  <span className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between">
+                      <span className="block truncate text-sm font-semibold">{chat.title}</span>
+                      {isActive && (
+                        <div className="w-2 h-2 bg-dawn-teal rounded-full animate-pulse"></div>
+                      )}
+                    </div>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {new Date(chat.createdAt).toLocaleDateString()}
+                    </div>
+                  </span>
+                ) : null}
+              </button>
+            );
+          })
+        )}
       </div>
 
-      <div ref={profileMenuRef} className="relative mt-3 border-t border-slate-200/80 pt-3">
+      <div ref={profileMenuRef} className="relative mt-4">
+        {!isCollapsed && (
+          <div className="mb-3 px-1">
+            <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+          </div>
+        )}
+        
         <button
           type="button"
           onClick={() => setIsMenuOpen((prev) => !prev)}
-          className={`inline-flex w-full items-center rounded-xl border border-slate-200 bg-white p-1.5 shadow-[0_6px_14px_rgba(15,23,42,0.08)] transition hover:border-slate-300 hover:bg-white ${isCollapsed ? 'justify-center' : 'gap-2'
-            }`}
+          className={`group inline-flex items-center rounded-2xl border border-slate-200/60 bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-900/5 transition-all duration-200 hover:border-slate-300/60 hover:bg-white hover:shadow-xl hover:shadow-slate-900/10 ${
+            isCollapsed 
+              ? 'h-12 w-12 justify-center' 
+              : 'w-full gap-3 p-2'
+          }`}
+          title={isCollapsed ? safeFullName : undefined}
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-[#2f5cff] to-[#4b6fff] text-[11px] font-semibold text-white">
-            {userInitial}
-          </span>
+          <div className="relative">
+            <span className={`flex items-center justify-center rounded-xl bg-gradient-to-br from-dawn-navy via-dawn-teal to-blue-600 font-bold text-white shadow-md ${
+              isCollapsed ? 'h-8 w-8 text-xs' : 'h-9 w-9 text-xs'
+            }`}>
+              {userInitial}
+            </span>
+            <div className={`absolute bg-green-500 border-2 border-white rounded-full animate-pulse ${
+              isCollapsed 
+                ? '-bottom-0.5 -right-0.5 w-3 h-3' 
+                : '-bottom-0.5 -right-0.5 w-3 h-3'
+            }`}></div>
+          </div>
           {!isCollapsed ? (
-            <span className="min-w-0 text-left leading-tight">
-              <span className="block truncate text-[12px] font-semibold uppercase tracking-wide text-slate-800">{safeFullName}</span>
+            <span className="min-w-0 text-left flex-1">
+              <div className="block truncate text-sm font-semibold text-slate-800">{safeFullName}</div>
+              <div className="text-xs text-slate-500 flex items-center gap-1">
+                <div className="w-1 h-1 bg-green-500 rounded-full"></div>
+                Online
+              </div>
             </span>
           ) : null}
         </button>
 
         {isMenuOpen && (
-          <div className="absolute bottom-full left-1/2 z-[100] mb-2 w-56 -translate-x-1/2 overflow-hidden rounded-xl border border-white/70 bg-white/95 shadow-[0_20px_40px_rgba(15,23,42,0.14)] backdrop-blur-sm">
-            <div className="flex items-center gap-2.5 border-b border-slate-100 px-3 py-2.5">
-              <User size={15} className="text-dawn-teal" />
-              <p className="truncate text-sm font-medium text-slate-700">{safeFullName}</p>
+          <div className="absolute bottom-full left-1/2 z-[100] mb-3 w-64 -translate-x-1/2 overflow-hidden rounded-2xl border border-slate-200/60 bg-white/95 shadow-2xl shadow-slate-900/20 backdrop-blur-xl">
+            <div className="bg-gradient-to-br from-dawn-navy/5 to-dawn-teal/5 px-4 py-3 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-dawn-navy via-dawn-teal to-blue-600 text-sm font-bold text-white shadow-md">
+                    {userInitial}
+                  </span>
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+                </div>
+                <div>
+                  <p className="truncate text-sm font-semibold text-slate-800">{safeFullName}</p>
+                  <p className="text-xs text-slate-500">Active Agent Session</p>
+                </div>
+              </div>
             </div>
             <button
               type="button"
               onClick={handleLogout}
               disabled={isLoggingOut}
-              className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-sm text-rose-600 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-70"
+              className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-rose-600 transition-all duration-200 hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              <LogOut size={15} />
-              {isLoggingOut ? 'Logging out...' : 'Logout'}
+              <LogOut size={16} />
+              <span className="font-medium">{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
             </button>
           </div>
         )}
