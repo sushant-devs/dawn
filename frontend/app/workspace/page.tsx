@@ -158,13 +158,13 @@ export default function WorkspacePage() {
 
     try {
       const response = await createWorkspace({ name: trimmedName });
-      
+
       // Update the workspace list with the new workspace
       setWorkspaceList(prev => [response.workspace, ...prev]);
-      
+
       setIsCreateModalOpen(false);
       setWorkspaceName('');
-      
+
       // Redirect to chat with the new workspace
       router.push(`/chat?workspace=${encodeURIComponent(trimmedName)}`);
     } catch (error: any) {
@@ -205,7 +205,7 @@ export default function WorkspacePage() {
               </div>
 
               <div className="text-center my-6">
-                
+
 
                 <h1 className="font-display text-3xl md:text-4xl bg-gradient-to-r from-dawn-navy via-dawn-teal to-blue-600 bg-clip-text text-transparent mb-3 font-bold leading-tight">
                   Hi {firstName}, how can I help you today?
@@ -373,7 +373,7 @@ export default function WorkspacePage() {
                       >
                         {/* Animated background gradient */}
                         <div className="absolute inset-0 bg-gradient-to-br from-dawn-teal/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        
+
                         <div className="relative">
                           <div className="flex items-start justify-between mb-3">
                             <div className="relative">
@@ -389,9 +389,6 @@ export default function WorkspacePage() {
 
                           <div className="mb-3">
                             <h3 className="text-base font-bold text-dawn-navy mb-1 group-hover:text-dawn-teal transition-colors duration-300 line-clamp-1">{workspace.name}</h3>
-                            <div className="inline-flex rounded-lg bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200/50 px-2 py-0.5 text-xs font-medium text-indigo-700">
-                              Environment
-                            </div>
                           </div>
 
                           {workspace.description ? (
@@ -408,9 +405,9 @@ export default function WorkspacePage() {
                               <span className="font-medium">{workspace.message_count}</span>
                             </div>
                             <span className="text-xs text-slate-400">
-                              {new Date(workspace.created_at).toLocaleDateString('en-US', { 
-                                month: 'short', 
-                                day: 'numeric' 
+                              {new Date(workspace.created_at).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric'
                               })}
                             </span>
                           </div>
