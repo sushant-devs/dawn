@@ -28,7 +28,7 @@ export const STORYLINE: StorylineStep[] = [
     stage: 'finder',
     userMessage: '',
     agentResponse: {
-      text: "I have pulled all available HAVEN clinical evidence from your data repository, including 10 documents covering the complete HAVEN clinical program.\n\n**Primary Evidence (Pre-selected):**\n• HAVEN 1 Clinical Study Report (156 pages)\n• HAVEN 3 Primary Analysis & Follow-up Studies (3 publications)\n• HAVEN 4 Clinical Study Report (18 pages)\n• HAVEN 7 Pediatric Study (54 pages)\n\n**Additional Research (Available):**\n• Clinical Experience & Real-world Evidence\n• Pharmacology & Mechanism Studies\n• Immunogenicity & Biomarker Analysis\n\nClick \"Preview Document\" on any card to view the full PDF. The most relevant documents are based on your campaign goals.",
+      text: "I have pulled all available HAVEN clinical evidence from your data repository, including 10 documents covering the complete HAVEN clinical program.\n\n**Primary Evidence:**\n• HAVEN 1 Clinical Study Report (156 pages)\n• HAVEN 3 Primary Analysis & Follow-up Studies (3 publications)\n• HAVEN 4 Clinical Study Report (18 pages)\n• HAVEN 7 Pediatric Study (54 pages)\n\n**Additional Research:**\n• Clinical Experience & Real-world Evidence\n• Pharmacology & Mechanism Studies\n• Immunogenicity & Biomarker Analysis\n\nClick \"Preview Document\" on any card to view the full PDF. The most relevant documents are based on your campaign goals.",
       documentCards: HAVEN_DOCUMENTS,
     },
     autoAdvance: true,
@@ -64,6 +64,74 @@ export const STORYLINE: StorylineStep[] = [
       recommendation: '• Include your core claims, target audience, and key messages\n• Specify any mandatory inclusions or regulatory requirements',
     },
     triggersModal: 'manualBriefInput',
+    autoAdvanceAfterModal: true,
+    thinkingMessage: 'DAWN is pulling compliance documents and doing MLR checks...',
+  },
+
+  // ─── Step 3a2: Brand Guidelines Integration (Manual Mode) ─────────────────
+  {
+    id: 'step-3a2',
+    stage: 'manualBrief',
+    userMessage: '',
+    agentResponse: {
+      text: "Brief confirmed. I'm now integrating Hemlibra Brand Guidelines v4 to ensure all generated content adheres to visual identity standards, approved tone of voice, and promotional claim guidelines. This includes logo usage rules, color palette, and messaging frameworks that will be automatically applied during content creation.",
+      recommendation: '• Proceed with pre-MLR checks guidelines for accelerated review process\n• Utilize pre-approved images and logos from brand asset library\n• Apply automated compliance validation during content creation',
+    },
+    autoAdvance: true,
+  },
+
+  // ─── Step 3a3: Pre-MLR Compliance Assets (Manual Mode) ────────────────────
+  {
+    id: 'step-3a3',
+    stage: 'manualBrief',
+    userMessage: '',
+    agentResponse: {
+      text: 'I have pulled all pre-approved compliance assets and MLR guidelines from your asset library. These documents ensure faster review cycles and regulatory compliance.\n\n**Pre-Approved Brand Assets:**\n• Hemlibra logo files and usage guidelines\n• Medical communication templates\n• MLR review checklists and protocols\n• Clinical report templates\n\nClick "Preview Document" on any asset to view the full file. All assets are pre-approved for use in pharmaceutical content creation.',
+      documentCards: [
+        {
+          id: 'hemlibra-logo',
+          title: 'Hemlibra Logo Package',
+          type: 'Brand Standard',
+          relevance: 95,
+          keyFinding: 'Official brand logo files with usage guidelines',
+          selected: true,
+          filePath: '/data/hemlibra-logo.png',
+          pageCount: 1,
+        },
+        {
+          id: 'medical-guide',
+          title: 'Medical Communication Guidelines',
+          type: 'Regulatory',
+          relevance: 92,
+          keyFinding: 'Pre-approved medical writing standards and claim language',
+          selected: true,
+          filePath: '/data/hemlibra-medical-guid.pdf',
+          pageCount: 24,
+        },
+        {
+          id: 'mlr-protocols',
+          title: 'MLR Review Protocols',
+          type: 'Regulatory',
+          relevance: 90,
+          keyFinding: 'Standardized MLR review checklists and approval workflows',
+          selected: true,
+          filePath: '/data/HEMLIBRA-MLR.pdf',
+          pageCount: 18,
+        },
+        {
+          id: 'market-insight',
+          title: 'Market Insight Reference',
+          type: 'Publication',
+          relevance: 88,
+          keyFinding: 'Market analysis and competitive intelligence data',
+          selected: true,
+          filePath: '/data/HEMLIBRA_Market_Insight_Reference.pdf',
+          pageCount: 45,
+        },
+      ],
+    },
+    autoAdvance: true,
+    thinkingMessage: 'DAWN is integrating compliance guidelines and preparing template recommendations...',
   },
 
   // ─── Step 3b: Auto Brief Builder ─────────────────────────────────────────
@@ -88,7 +156,7 @@ export const STORYLINE: StorylineStep[] = [
   {
     id: 'step-3c',
     stage: 'brief',
-    userMessage: 'Proceed with the brief and prepare for content generation.',
+    userMessage: '',
     agentResponse: {
       text: "Brief confirmed. I'm now integrating Hemlibra Brand Guidelines v4 to ensure all generated content adheres to visual identity standards, approved tone of voice, and promotional claim guidelines. This includes logo usage rules, color palette, and messaging frameworks that will be automatically applied during content creation.",
       recommendation: '• Proceed with pre-MLR checks guidelines for accelerated review process\n• Utilize pre-approved images and logos from brand asset library\n• Apply automated compliance validation during content creation',
@@ -99,7 +167,7 @@ export const STORYLINE: StorylineStep[] = [
   {
     id: 'step-3d',
     stage: 'brief',
-    userMessage: 'Yes, proceed with pre-MLR checks and show me the available compliance assets from the brand library.',
+    userMessage: '',
     agentResponse: {
       text: 'I have pulled all pre-approved compliance assets and MLR guidelines from your asset library. These documents ensure faster review cycles and regulatory compliance.\n\n**Pre-Approved Brand Assets:**\n• Hemlibra logo files and usage guidelines\n• Medical communication templates\n• MLR review checklists and protocols\n• Clinical report templates\n\nClick "Preview Document" on any asset to view the full file. All assets are pre-approved for use in pharmaceutical content creation.',
       documentCards: [

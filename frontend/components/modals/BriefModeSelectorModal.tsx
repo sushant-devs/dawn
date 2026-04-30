@@ -157,7 +157,7 @@ export default function BriefModeSelectorModal({ onConfirm, onClose }: BriefMode
           <button
             onClick={handleConfirm}
             disabled={!selectedMode}
-            className="rounded-xl bg-gradient-to-r from-dawn-teal to-[#1A3FCC] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(26,63,204,0.28)] transition-all hover:-translate-y-0.5 hover:from-[#3B67FF] hover:to-[#1738B8] hover:shadow-[0_16px_30px_rgba(26,63,204,0.35)] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+            className="cursor-pointer rounded-xl bg-gradient-to-r from-dawn-teal to-[#1A3FCC] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(26,63,204,0.28)] transition-all hover:-translate-y-0.5 hover:from-[#3B67FF] hover:to-[#1738B8] hover:shadow-[0_16px_30px_rgba(26,63,204,0.35)] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
           >
             Continue with {selectedMode === 'manual' ? 'Manual' : selectedMode === 'auto' ? 'Auto' : 'Selected'} Mode →
           </button>

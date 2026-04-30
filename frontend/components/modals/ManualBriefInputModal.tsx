@@ -116,14 +116,14 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
   const canConfirm = briefs.some((b) => b.title.trim() && b.content.trim());
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
       {/* Panel */}
-      <div className="relative ml-auto w-full max-w-5xl bg-white h-full flex flex-col animate-slide-in-right shadow-2xl">
+      <div className="relative w-full max-w-5xl max-h-[92vh] bg-white flex flex-col rounded-2xl border border-[#e2e8f7] shadow-[0_24px_64px_rgba(15,23,42,0.2)] animate-scale-in">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-dawn-border bg-white">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-dawn-border bg-white rounded-t-2xl">
           <div className="flex items-center gap-3">
             <div className="w-6 h-6 bg-dawn-navy rounded flex items-center justify-center">
               <span className="text-white font-serif text-xs font-bold">D</span>
@@ -479,7 +479,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-dawn-border bg-white">
+        <div className="px-6 py-4 border-t border-dawn-border bg-white rounded-b-2xl">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-gray-500">
               {briefs.filter((b) => b.title.trim() && b.content.trim()).length} of {briefs.length} briefs completed

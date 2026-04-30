@@ -88,6 +88,10 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
     'Patient Leaflet': 'leaflet-standard',
     'Digital Detail Aid': 'dda-modular',
   });
+  const [activeTab, setActiveTab] = useState<string>('Congress Poster');
+
+  // Get unique asset types for tabs
+  const assetTypes = TEMPLATE_RECOMMENDATIONS.map(r => r.assetType);
 
   const handleTemplateSelect = (assetType: string, templateId: string) => {
     setSelectedTemplates((prev) => ({
@@ -142,98 +146,109 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
 
         {/* AI recommendation notice */}
         <div className="px-6 py-2.5 bg-dawn-teal/5 border-b border-dawn-teal/20 flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-dawn-teal" />
           <p className="text-xs text-dawn-teal">
-            Templates marked with ★ are recommended based on your campaign brief and audience. These define content structure - visual design comes in the next step.
+            Recommended templates are selected based on your campaign brief and target audience.
           </p>
         </div>
 
-        {/* Body */}
-        <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
-          {TEMPLATE_RECOMMENDATIONS.map((recommendation) => (
-            <section key={recommendation.assetType}>
-              <h3 className="text-sm font-semibold text-dawn-navy mb-3 flex items-center gap-2">
-                <FileText size={16} className="text-dawn-teal" />
-                {recommendation.assetType}
-              </h3>
+        {/* Tabs */}
+        <div className="border-b border-slate-200 bg-slate-50">
+          <div className="px-6 flex gap-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            {assetTypes.map((assetType) => (
+              <button
+                key={assetType}
+                onClick={() => setActiveTab(assetType)}
+                className={`px-4 py-3 text-sm font-medium border-b-2 transition-all whitespace-nowrap cursor-pointer ${
+                  activeTab === assetType
+                    ? 'border-dawn-teal text-dawn-teal bg-white'
+                    : 'border-transparent text-slate-600 hover:text-dawn-navy hover:bg-slate-100'
+                }`}
+              >
+                {assetType}
+              </button>
+            ))}
+          </div>
+        </div>
 
-              <div className="space-y-3">
-                {recommendation.recommendedTemplates.map((template) => {
-                  const isSelected = selectedTemplates[recommendation.assetType] === template.id;
-                  const isRecommended = template.recommended;
+        {/* Body - Tab Content */}
+        <div className="flex-1 overflow-y-auto px-6 py-5">
+          {TEMPLATE_RECOMMENDATIONS.filter(r => r.assetType === activeTab).map((recommendation) => (
+            <div key={recommendation.assetType} className="space-y-3">
+              {recommendation.recommendedTemplates.map((template) => {
+                const isSelected = selectedTemplates[recommendation.assetType] === template.id;
+                const isRecommended = template.recommended;
 
-                  return (
-                    <div
-                      key={template.id}
-                      className={`group relative w-full overflow-hidden rounded-xl border p-4 text-left transition-all duration-200 cursor-pointer ${
-                        isSelected
-                          ? 'border-dawn-teal/70 bg-gradient-to-br from-dawn-teal/[0.06] via-white to-[#eef8ff] shadow-[0_12px_28px_rgba(9,30,66,0.10)] ring-1 ring-dawn-teal/15'
-                          : 'border-[#dbe3ee] bg-white shadow-[0_6px_16px_rgba(9,30,66,0.04)] hover:-translate-y-0.5 hover:border-dawn-teal/45 hover:shadow-[0_14px_26px_rgba(9,30,66,0.10)]'
-                      }`}
-                      onClick={() => handleTemplateSelect(recommendation.assetType, template.id)}
-                    >
-                      <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-dawn-teal/90 to-[#1A3FCC] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-                      <div className="flex items-start gap-3">
-                        {/* Selection indicator */}
-                        <div className={`mt-0.5 shrink-0 ${isSelected ? 'text-dawn-teal' : 'text-gray-300'}`}>
-                          <CheckCircle2 size={20} fill={isSelected ? 'currentColor' : 'none'} />
+                return (
+                  <div
+                    key={template.id}
+                    className={`group relative w-full overflow-hidden rounded-xl border p-4 text-left transition-all duration-200 cursor-pointer ${
+                      isSelected
+                        ? 'border-dawn-teal/70 bg-gradient-to-br from-dawn-teal/[0.06] via-white to-[#eef8ff] shadow-[0_12px_28px_rgba(9,30,66,0.10)] ring-1 ring-dawn-teal/15'
+                        : 'border-[#dbe3ee] bg-white shadow-[0_6px_16px_rgba(9,30,66,0.04)] hover:-translate-y-0.5 hover:border-dawn-teal/45 hover:shadow-[0_14px_26px_rgba(9,30,66,0.10)]'
+                    }`}
+                    onClick={() => handleTemplateSelect(recommendation.assetType, template.id)}
+                  >
+                    <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-dawn-teal/90 to-[#1A3FCC] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+                    <div className="flex items-start gap-3">
+                      {/* Selection indicator */}
+                      <div className={`mt-0.5 shrink-0 ${isSelected ? 'text-dawn-teal' : 'text-gray-300'}`}>
+                        <CheckCircle2 size={20} fill={isSelected ? 'currentColor' : 'none'} />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="mb-2 flex items-start gap-3">
+                          <div className="flex-1">
+                            <div className="mb-1 flex items-center gap-2">
+                              <h4 className="text-base font-semibold leading-tight text-dawn-navy">{template.name}</h4>
+                              {isRecommended && (
+                                <span className="inline-flex items-center gap-1 rounded-full border border-dawn-amber/30 bg-dawn-amber/15 px-2 py-0.5 text-xs font-semibold text-dawn-amber">
+                                  ★ Recommended
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm leading-relaxed text-gray-600">{template.description}</p>
+                          </div>
+
+                          {/* Visual Preview */}
+                          <div className="w-24 shrink-0">
+                            <TemplateVisualPreview template={template} />
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handlePreviewTemplate(template);
+                              }}
+                              className="mt-1 flex w-full items-center justify-center gap-1 rounded-md border border-dawn-teal/30 bg-white px-2 py-1 text-xs font-medium text-dawn-teal transition-colors hover:bg-dawn-teal/5 hover:text-dawn-teal/80 cursor-pointer"
+                              title={`Preview ${template.name}`}
+                            >
+                              <Eye size={10} />
+                              Preview
+                            </button>
+                          </div>
                         </div>
 
-                        {/* Content */}
-                        <div className="flex-1 min-w-0">
-                          <div className="mb-2 flex items-start gap-3">
-                            <div className="flex-1">
-                              <div className="mb-1 flex items-center gap-2">
-                                <h4 className="text-base font-semibold leading-tight text-dawn-navy">{template.name}</h4>
-                                {isRecommended && (
-                                  <span className="inline-flex items-center gap-1 rounded-full border border-dawn-amber/30 bg-dawn-amber/15 px-2 py-0.5 text-xs font-semibold text-dawn-amber">
-                                    ★ Recommended
-                                  </span>
-                                )}
-                              </div>
-                              <p className="text-sm leading-relaxed text-gray-600">{template.description}</p>
-                            </div>
+                        {/* Structure preview */}
+                        <div className="mb-2 rounded-md border border-[#d8e0eb] bg-[#f9fbff] px-2 py-1.5 font-mono text-[10px] text-gray-500">
+                          {template.preview}
+                        </div>
 
-                            {/* Visual Preview */}
-                            <div className="w-24 shrink-0">
-                              <TemplateVisualPreview template={template} />
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handlePreviewTemplate(template);
-                                }}
-                                className="mt-1 flex w-full items-center justify-center gap-1 rounded-md border border-dawn-teal/30 bg-white px-2 py-1 text-xs font-medium text-dawn-teal transition-colors hover:bg-dawn-teal/5 hover:text-dawn-teal/80 cursor-pointer"
-                                title={`Preview ${template.name}`}
-                              >
-                                <Eye size={10} />
-                                Preview
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Structure preview */}
-                          <div className="mb-2 rounded-md border border-[#d8e0eb] bg-[#f9fbff] px-2 py-1.5 font-mono text-[10px] text-gray-500">
-                            {template.preview}
-                          </div>
-
-                          {/* Structure elements */}
-                          <div className="flex flex-wrap gap-1">
-                            {template.structure.map((element, idx) => (
-                              <span
-                                key={idx}
-                                className="rounded bg-[#f1f5fb] px-1.5 py-0.5 text-[10px] font-medium text-gray-600"
-                              >
-                                {element}
-                              </span>
-                            ))}
-                          </div>
+                        {/* Structure elements */}
+                        <div className="flex flex-wrap gap-1">
+                          {template.structure.map((element, idx) => (
+                            <span
+                              key={idx}
+                              className="rounded bg-[#f1f5fb] px-1.5 py-0.5 text-[10px] font-medium text-gray-600"
+                            >
+                              {element}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </section>
+                  </div>
+                );
+              })}
+            </div>
           ))}
         </div>
 
