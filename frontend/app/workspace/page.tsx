@@ -4,9 +4,11 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Activity, FolderOpen, MessageSquare, Plus, Sparkles } from 'lucide-react';
+import { Pie, PieChart } from 'recharts';
 import { getCurrentUser, logout, type UserProfile } from '@/lib/authApi';
 import { createWorkspace, getWorkspaces, type Workspace } from '@/lib/workspaceApi';
 import Navbar from '@/components/Navbar';
+import CreateWorkspaceModal from '@/components/workspace/CreateWorkspaceModal';
 
 export default function WorkspacePage() {
   const router = useRouter();
@@ -125,17 +127,10 @@ export default function WorkspacePage() {
       [],
     [drugContentDistribution, selectedDrug]
   );
-  const selectedDrugDonut = useMemo(() => {
-    const total = selectedDrugContent.reduce((sum, item) => sum + item.share, 0) || 1;
-    let cumulative = 0;
-    return selectedDrugContent.map((item) => {
-      const percent = (item.share / total) * 100;
-      const dashArray = `${percent} ${100 - percent}`;
-      const dashOffset = -cumulative;
-      cumulative += percent;
-      return { ...item, dashArray, dashOffset };
-    });
-  }, [selectedDrugContent]);
+  const selectedDrugChartData = useMemo(
+    () => selectedDrugContent.map((segment) => ({ ...segment, fill: segment.stroke })),
+    [selectedDrugContent]
+  );
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -209,17 +204,8 @@ export default function WorkspacePage() {
                 <div className="absolute bottom-1/3 left-1/2 w-3 h-3 bg-purple-400/20 rounded-full animate-bounce delay-1000"></div>
               </div>
 
-              <div className="text-center mb-6">
-                {/* Agent status indicator */}
-                <div className="flex justify-center mb-4">
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-white/80 backdrop-blur-sm border border-dawn-teal/20 rounded-full shadow-md">
-                    <div className="relative">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <div className="absolute inset-0 w-2 h-2 bg-green-400 rounded-full animate-ping"></div>
-                    </div>
-                    <span className="text-xs font-medium text-slate-600">DAWN Agent Online</span>
-                  </div>
-                </div>
+              <div className="text-center my-6">
+                
 
                 <h1 className="font-display text-3xl md:text-4xl bg-gradient-to-r from-dawn-navy via-dawn-teal to-blue-600 bg-clip-text text-transparent mb-3 font-bold leading-tight">
                   Hi {firstName}, how can I help you today?
@@ -303,39 +289,33 @@ export default function WorkspacePage() {
                   </div>
 
                   <div className="grid grid-cols-1 gap-2 rounded-2xl border border-slate-100 bg-white p-2 sm:grid-cols-[1fr_1fr] sm:items-center">
-                    <div className="relative mx-auto h-[120px] w-[120px]">
-                      <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
-                        <circle cx="18" cy="18" r="13" fill="none" stroke="#e2e8f0" strokeWidth="5" />
-                        {selectedDrugDonut.map((segment) => (
-                          <circle
-                            key={segment.type}
-                            cx="18"
-                            cy="18"
-                            r="13"
-                            fill="none"
-                            stroke={segment.stroke}
-                            strokeWidth="5"
-                            strokeDasharray={segment.dashArray}
-                            strokeDashoffset={segment.dashOffset}
-                            pathLength={100}
-                          />
-                        ))}
-                      </svg>
+                    <div className="relative mx-auto h-[144px] w-[144px]">
+                      <PieChart width={144} height={144}>
+                        <Pie
+                          data={selectedDrugChartData}
+                          dataKey="share"
+                          nameKey="type"
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={44}
+                          outerRadius={64}
+                          strokeWidth={0}
+                          paddingAngle={1}
+                        />
+                      </PieChart>
                       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
                         <p className="max-w-[70px] text-[10px] font-semibold leading-tight text-dawn-navy">{selectedDrug}</p>
                       </div>
                     </div>
 
-                    <div className="space-y-1">
+                    <div className="space-y-2 rounded-xl bg-slate-50/70 p-3">
                       {selectedDrugContent.map((item) => (
-                        <div key={item.type} className="rounded-xl border border-slate-100 bg-gradient-to-r from-white to-slate-50/70 px-2 py-1.5">
-                          <div className="flex items-center justify-between text-xs">
-                            <span className="inline-flex items-center gap-1.5 font-medium text-slate-600">
-                              <span className={`h-2 w-2 rounded-full ${item.tone}`} />
-                              {item.type}
-                            </span>
-                            <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-xs font-medium text-slate-600">{item.share}%</span>
-                          </div>
+                        <div key={item.type} className="flex items-center justify-between rounded-lg px-2 py-1.5 transition-colors duration-200 hover:bg-white">
+                          <span className="inline-flex items-center gap-2 text-sm text-slate-500">
+                            <span className={`h-2.5 w-2.5 rounded-full ${item.tone}`} />
+                            <span className="font-medium text-slate-600">{item.type}</span>
+                          </span>
+                          <span className="text-sm font-semibold tracking-tight text-slate-800">{item.share}%</span>
                         </div>
                       ))}
                     </div>
@@ -445,75 +425,21 @@ export default function WorkspacePage() {
         </div>
       </div>
 
-      {isCreateModalOpen && (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-900/60 px-4 backdrop-blur-md">
-          <div className="w-full max-w-md rounded-3xl border border-slate-200/50 bg-white/95 backdrop-blur-xl p-8 shadow-2xl shadow-slate-900/25">
-            <div className="text-center mb-6">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-dawn-teal to-blue-500 text-white shadow-lg mb-4">
-                <Plus size={24} />
-              </div>
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-dawn-navy to-dawn-teal bg-clip-text text-transparent">Create Workspace</h3>
-              <p className="mt-2 text-sm text-slate-500">Set up your AI-powered workspace environment</p>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="workspaceName" className="block text-sm font-semibold text-slate-700 mb-2">
-                  Workspace Name
-                </label>
-                <div className="relative">
-                  <input
-                    id="workspaceName"
-                    type="text"
-                    value={workspaceName}
-                    onChange={(event) => {
-                      setWorkspaceName(event.target.value);
-                      if (workspaceError) setWorkspaceError('');
-                    }}
-                    placeholder="Enter workspace name"
-                    className="h-12 w-full rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 text-sm text-slate-700 outline-none transition-all duration-200 focus:border-dawn-teal/60 focus:ring-4 focus:ring-dawn-teal/10 focus:bg-white"
-                  />
-                </div>
-                {workspaceError ? (
-                  <p className="mt-2 text-xs text-rose-600 flex items-center gap-1">
-                    <span className="w-1 h-1 bg-rose-500 rounded-full"></span>
-                    {workspaceError}
-                  </p>
-                ) : null}
-              </div>
-            </div>
-
-            <div className="mt-8 flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsCreateModalOpen(false);
-                  setWorkspaceName('');
-                  setWorkspaceError('');
-                }}
-                className="flex-1 h-12 rounded-2xl border border-slate-200/80 bg-white/80 backdrop-blur-sm px-4 text-sm font-semibold text-slate-600 transition-all duration-200 hover:bg-white hover:border-slate-300/80"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={handleCreateWorkspace}
-                disabled={isCreatingWorkspace}
-                className="flex-1 h-12 rounded-2xl bg-gradient-to-r from-dawn-teal to-blue-500 px-4 text-sm font-bold text-white shadow-lg shadow-dawn-teal/30 transition-all duration-200 hover:shadow-xl hover:shadow-dawn-teal/40 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-              >
-                {isCreatingWorkspace ? (
-                  <span className="flex items-center gap-2 justify-center">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Creating...
-                  </span>
-                ) : (
-                  'Create Workspace'
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {isCreateModalOpen ? (
+        <CreateWorkspaceModal
+          workspaceName={workspaceName}
+          workspaceError={workspaceError}
+          isCreatingWorkspace={isCreatingWorkspace}
+          onWorkspaceNameChange={setWorkspaceName}
+          onClearWorkspaceError={() => setWorkspaceError('')}
+          onClose={() => {
+            setIsCreateModalOpen(false);
+            setWorkspaceName('');
+            setWorkspaceError('');
+          }}
+          onCreateWorkspace={handleCreateWorkspace}
+        />
+      ) : null}
     </main>
   );
 }
