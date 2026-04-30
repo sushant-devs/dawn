@@ -5,9 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Activity, FolderOpen, MessageSquare, Plus, Sparkles } from 'lucide-react';
 import { getCurrentUser, logout, type UserProfile } from '@/lib/authApi';
+import { createWorkspace, getWorkspaces, type Workspace } from '@/lib/workspaceApi';
 import Navbar from '@/components/Navbar';
-
-const WORKSPACES_STORAGE_KEY = 'dawn_workspaces';
 
 export default function WorkspacePage() {
   const router = useRouter();
@@ -16,14 +15,24 @@ export default function WorkspacePage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [workspaceName, setWorkspaceName] = useState('');
   const [workspaceError, setWorkspaceError] = useState('');
-  const [workspaceList, setWorkspaceList] = useState<string[]>([]);
+  const [workspaceList, setWorkspaceList] = useState<Workspace[]>([]);
+  const [isCreatingWorkspace, setIsCreatingWorkspace] = useState(false);
+  const [isLoadingWorkspaces, setIsLoadingWorkspaces] = useState(false);
 
   useEffect(() => {
-    const raw = localStorage.getItem(WORKSPACES_STORAGE_KEY);
-    const stored = raw ? (JSON.parse(raw) as string[]) : [];
-    const unique = Array.from(new Set(stored));
-    setWorkspaceList(unique);
-    localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(unique));
+    const fetchWorkspaces = async () => {
+      setIsLoadingWorkspaces(true);
+      try {
+        const response = await getWorkspaces();
+        setWorkspaceList(response.workspaces);
+      } catch (error) {
+        console.error('Failed to fetch workspaces:', error);
+      } finally {
+        setIsLoadingWorkspaces(false);
+      }
+    };
+
+    void fetchWorkspaces();
   }, []);
 
   useEffect(() => {
@@ -142,24 +151,32 @@ export default function WorkspacePage() {
     }
   };
 
-  const handleCreateWorkspace = () => {
+  const handleCreateWorkspace = async () => {
     const trimmedName = workspaceName.trim();
     if (!trimmedName) {
       setWorkspaceError('Workspace name is required');
       return;
     }
 
-    const existingRaw = localStorage.getItem(WORKSPACES_STORAGE_KEY);
-    const existing = existingRaw ? (JSON.parse(existingRaw) as string[]) : [];
-    const hasWorkspace = existing.some((item) => item.toLowerCase() === trimmedName.toLowerCase());
-    const nextWorkspaces = hasWorkspace ? existing : [trimmedName, ...existing];
-    setWorkspaceList(nextWorkspaces);
-    localStorage.setItem(WORKSPACES_STORAGE_KEY, JSON.stringify(nextWorkspaces));
-
+    setIsCreatingWorkspace(true);
     setWorkspaceError('');
-    setIsCreateModalOpen(false);
-    setWorkspaceName('');
-    router.push(`/chat?workspace=${encodeURIComponent(trimmedName)}`);
+
+    try {
+      const response = await createWorkspace({ name: trimmedName });
+      
+      // Update the workspace list with the new workspace
+      setWorkspaceList(prev => [response.workspace, ...prev]);
+      
+      setIsCreateModalOpen(false);
+      setWorkspaceName('');
+      
+      // Redirect to chat with the new workspace
+      router.push(`/chat?workspace=${encodeURIComponent(trimmedName)}`);
+    } catch (error: any) {
+      setWorkspaceError(error.message || 'Failed to create workspace');
+    } finally {
+      setIsCreatingWorkspace(false);
+    }
   };
 
   return (
@@ -289,7 +306,7 @@ export default function WorkspacePage() {
               <div>
                 <h2 className="text-xl font-semibold text-dawn-navy">Your Workspaces  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-sm font-medium text-emerald-700">
                   <FolderOpen size={14} />
-                  {workspaceList.length} workspaces
+                  {isLoadingWorkspaces ? 'Loading...' : `${workspaceList.length} workspaces`}
                 </span></h2>
                 <p className="text-sm text-slate-500">Click any workspace to start chatting with AI.</p>
               </div>
@@ -322,8 +339,8 @@ export default function WorkspacePage() {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
               {workspaceList.map((workspace) => (
                 <Link
-                  key={workspace}
-                  href={`/chat?workspace=${encodeURIComponent(workspace)}`}
+                  key={workspace.id}
+                  href={`/chat?workspace=${encodeURIComponent(workspace.name)}`}
                   className="group rounded-2xl border border-white/70 bg-white/80 p-4 shadow-[0_14px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm transition hover:-translate-y-1 hover:border-dawn-teal/30 hover:shadow-[0_20px_38px_rgba(15,23,42,0.11)]"
                 >
                   <div className="mb-3 flex items-start justify-between">
@@ -335,21 +352,26 @@ export default function WorkspacePage() {
                     </span>
                   </div>
 
-                  <h3 className="text-base font-semibold text-dawn-navy">{workspace}</h3>
+                  <h3 className="text-base font-semibold text-dawn-navy">{workspace.name}</h3>
                   <p className="mt-1 inline-flex rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
                     Workspace
                   </p>
 
-                  <p className="mt-3 text-xs text-slate-500">
-                    Manage campaigns, drafts, and approvals for this workspace.
-                  </p>
+                  {workspace.description && (
+                    <p className="mt-3 text-xs text-slate-500">{workspace.description}</p>
+                  )}
+                  {!workspace.description && (
+                    <p className="mt-3 text-xs text-slate-500">
+                      Manage campaigns, drafts, and approvals for this workspace.
+                    </p>
+                  )}
 
                   <div className="mt-4 flex items-center gap-4 border-t border-slate-100 pt-3 text-xs text-slate-500">
                     <span className="inline-flex items-center gap-1">
                       <MessageSquare size={13} />
-                      0 messages
+                      {workspace.message_count} messages
                     </span>
-                    <span>Today</span>
+                    <span>{new Date(workspace.created_at).toLocaleDateString()}</span>
                   </div>
                 </Link>
               ))}
@@ -399,9 +421,10 @@ export default function WorkspacePage() {
               <button
                 type="button"
                 onClick={handleCreateWorkspace}
-                className="h-11 rounded-xl bg-dawn-teal px-5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(46,91,255,0.35)] transition hover:-translate-y-0.5"
+                disabled={isCreatingWorkspace}
+                className="h-11 rounded-xl bg-dawn-teal px-5 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(46,91,255,0.35)] transition hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Create Workspace
+                {isCreatingWorkspace ? 'Creating...' : 'Create Workspace'}
               </button>
             </div>
           </div>
