@@ -18,12 +18,28 @@ import EffectivenessModal from '@/components/modals/EffectivenessModal';
 import NotificationModal from '@/components/modals/NotificationModal';
 import PLSGeneratorModal from '@/components/modals/PLSGeneratorModal';
 import type { AgentResponseContent } from '@/lib/types';
+import type { UserProfile } from '@/lib/authApi';
 
 export default function ChatPage() {
   const searchParams = useSearchParams();
   const { state, dispatch, sendMessage, confirmModal, closeModal, setBriefMode } = useDAWN();
   const workspaceName = searchParams.get('workspace')?.trim() ?? '';
   const activeChatId = searchParams.get('chatId')?.trim();
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    const stored = localStorage.getItem('dawn_user');
+    if (!stored) return;
+    try {
+      const parsed = JSON.parse(stored) as UserProfile;
+      if (parsed.full_name?.trim()) {
+        const firstName = parsed.full_name.trim().split(' ')[0];
+        setUserName(firstName);
+      }
+    } catch {
+      setUserName('');
+    }
+  }, []);
 
   // Find the latest notification from messages
   const latestNotification = useMemo(() => {
@@ -72,17 +88,11 @@ export default function ChatPage() {
           {showWelcomeScreen ? (
             /* Enhanced Welcome screen */
             <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-              {/* Floating particles animation */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-dawn-teal/30 rounded-full animate-bounce delay-300"></div>
-                <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-400/40 rounded-full animate-bounce delay-700"></div>
-                <div className="absolute bottom-1/3 left-1/2 w-3 h-3 bg-purple-400/20 rounded-full animate-bounce delay-1000"></div>
-              </div>
 
               <div className="w-full max-w-4xl text-center mb-12 relative">
                 {/* Agent status indicator */}
                 <div className="flex justify-center mb-6">
-                  <div className="flex items-center gap-3 px-4 py-2 bg-white/80 backdrop-blur-sm border border-dawn-teal/20 rounded-full shadow-lg">
+                  <div className="flex items-center gap-3 px-4 py-2 bg-white/80 backdrop-blur-sm border border-dawn-teal/20 rounded-full shadow-sm">
                     <div className="relative">
                       <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                       <div className="absolute inset-0 w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
@@ -93,7 +103,7 @@ export default function ChatPage() {
 
                 <div className="mb-10">
                   <h1 className="font-display text-4xl md:text-5xl bg-gradient-to-r from-dawn-navy via-dawn-teal to-blue-600 bg-clip-text text-transparent mb-6 font-bold leading-tight">
-                    Hi Sarah, how can I help you today?
+                    {userName ? `Hi ${userName}, how can I help you today?` : 'How can I help you today?'}
                   </h1>
                   <p className="text-slate-600 text-lg font-medium mb-3">
                     DAWN — Your AI-powered content lifecycle agent
@@ -105,7 +115,7 @@ export default function ChatPage() {
 
                 {/* Capability cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                  <div className="bg-white/60 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                  <div className="bg-white/60 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-4 shadow-sm">
                     <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mb-3 mx-auto">
                       <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -115,7 +125,7 @@ export default function ChatPage() {
                     <p className="text-xs text-slate-600">Generate, edit, and optimize content</p>
                   </div>
                   
-                  <div className="bg-white/60 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                  <div className="bg-white/60 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-4 shadow-sm">
                     <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mb-3 mx-auto">
                       <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
@@ -126,7 +136,7 @@ export default function ChatPage() {
                     <p className="text-xs text-slate-600">MLR review and approval</p>
                   </div>
                   
-                  <div className="bg-white/60 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+                  <div className="bg-white/60 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-4 shadow-sm">
                     <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center mb-3 mx-auto">
                       <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
@@ -141,8 +151,8 @@ export default function ChatPage() {
               <div className="w-full max-w-4xl">
                 {/* Enhanced Input area */}
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-dawn-teal/5 to-blue-500/5 rounded-2xl blur-xl"></div>
-                  <div className="relative bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-1 shadow-xl">
+                  <div className="absolute inset-0 bg-gradient-to-r from-dawn-teal/5 to-blue-500/5 rounded-2xl"></div>
+                  <div className="relative bg-white/80 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-1">
                     <ChatInput
                       prePopulatedMessage={state.prePopulatedMessage}
                       onSend={handleSend}
@@ -176,7 +186,7 @@ export default function ChatPage() {
               <ChatContainer messages={state.messages} isTyping={state.isAgentTyping} typingMessage={state.typingMessage} />
 
               {/* Enhanced Input bar */}
-              <div className="border-t border-slate-200/80 bg-white/60 backdrop-blur-sm px-6 py-4">
+              <div className=" px-6 py-4">
                 <div className="mx-auto max-w-4xl">
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-dawn-teal/5 to-blue-500/5 rounded-xl blur-sm"></div>

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, ChevronLeft, ChevronRight, MessageSquare, LogOut, Plus, User } from 'lucide-react';
+import { MessageSquare, LogOut, Plus } from 'lucide-react';
 import { logout, type UserProfile } from '@/lib/authApi';
 
 interface ChatSession {
@@ -20,7 +20,7 @@ interface WorkspaceSidebarProps {
 export default function WorkspaceSidebar({ activeWorkspace, activeChatId }: WorkspaceSidebarProps) {
   const router = useRouter();
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const [userName, setUserName] = useState('User');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -101,35 +101,35 @@ export default function WorkspaceSidebar({ activeWorkspace, activeChatId }: Work
 
   return (
     <aside
-      className={`hidden h-full shrink-0 border-r border-slate-200/50 bg-gradient-to-b from-slate-50/95 via-white/90 to-slate-100/95 backdrop-blur-xl transition-all duration-300 md:flex md:flex-col shadow-xl ${isCollapsed ? 'w-[80px] px-2 py-4' : 'w-[300px] px-4 py-4'
+      onClick={() => setIsCollapsed((prev) => !prev)}
+      className={`hidden h-full shrink-0 border-r border-slate-200/50 bg-gradient-to-b from-slate-50/95 via-white/90 to-slate-100/95 backdrop-blur-sm transition-all duration-300 md:flex md:flex-col shadow-xl cursor-pointer ${isCollapsed ? 'w-[80px] px-2 py-4' : 'w-[300px] px-4 py-4'
         }`}
     >
-      <div className={`mb-6 flex items-center ${isCollapsed ? 'flex-col gap-3' : 'justify-between px-1'}`}>
+      <div className={`mb-6 flex items-center ${isCollapsed ? 'justify-center' : 'justify-start px-1'}`}>
         <button
-          onClick={() => router.push('/workspace')}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-dawn-navy via-dawn-teal to-blue-600 text-sm font-bold text-white shadow-lg shadow-dawn-navy/25 transition-all duration-200 hover:shadow-xl hover:shadow-dawn-navy/30 hover:scale-105"
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push('/workspace');
+          }}
+          className={`inline-flex items-center justify-center rounded-xl bg-gradient-to-br from-dawn-navy via-dawn-teal to-blue-600 text-sm font-bold text-white shadow-lg shadow-dawn-navy/25 transition-all duration-200 hover:shadow-xl hover:shadow-dawn-navy/30 hover:scale-105 ${
+            isCollapsed ? 'h-12 w-12' : 'h-10 w-10'
+          }`}
           title="Back to workspaces"
         >
           D
         </button>
-        <button
-          type="button"
-          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          onClick={() => setIsCollapsed((prev) => !prev)}
-          className={`inline-flex h-8 w-8 items-center justify-center rounded-xl border border-slate-200/80 bg-white/80 backdrop-blur-sm text-slate-500 transition-all duration-200 hover:border-dawn-teal/40 hover:text-dawn-teal hover:bg-white hover:shadow-md ${isCollapsed ? 'mt-2' : ''}`}
-          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
-        </button>
       </div>
 
       <button
-        onClick={createNewChat}
-        className={`mb-6 flex items-center rounded-2xl bg-gradient-to-r from-dawn-teal to-blue-500 text-sm font-semibold text-white shadow-lg shadow-dawn-teal/30 transition-all duration-200 hover:shadow-xl hover:shadow-dawn-teal/40 hover:-translate-y-1 hover:from-dawn-teal/90 hover:to-blue-500/90 ${isCollapsed ? 'h-12 w-12 justify-center' : 'h-11 gap-3 px-4'
+        onClick={(e) => {
+          e.stopPropagation();
+          createNewChat();
+        }}
+        className={`mb-6 flex items-center rounded-2xl bg-gradient-to-r from-dawn-teal to-blue-500 text-sm font-semibold text-white shadow-lg shadow-dawn-teal/30 transition-all duration-200 hover:shadow-xl hover:shadow-dawn-teal/40 hover:-translate-y-1 hover:from-dawn-teal/90 hover:to-blue-500/90 ${isCollapsed ? 'h-12 w-12 justify-center mx-auto' : 'h-11 gap-3 px-4'
           }`}
         title={isCollapsed ? 'New Chat' : undefined}
       >
-        <Plus size={isCollapsed ? 18 : 16} strokeWidth={2.5} />
+        <Plus size={18} strokeWidth={2.5} />
         {!isCollapsed ? 'New Chat' : null}
       </button>
 
@@ -155,11 +155,6 @@ export default function WorkspaceSidebar({ activeWorkspace, activeChatId }: Work
                 <div className="text-xs text-slate-400 text-center">Start a new chat to begin</div>
               </>
             )}
-            {isCollapsed && (
-              <div className="w-8 h-8 bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center">
-                <MessageSquare size={16} className="text-slate-400" />
-              </div>
-            )}
           </div>
         ) : (
           chatSessions.map((chat, index) => {
@@ -168,10 +163,13 @@ export default function WorkspaceSidebar({ activeWorkspace, activeChatId }: Work
               <button
                 key={chat.id}
                 type="button"
-                onClick={() => router.push(`/chat?workspace=${encodeURIComponent(activeWorkspace)}&chatId=${chat.id}`)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push(`/chat?workspace=${encodeURIComponent(activeWorkspace)}&chatId=${chat.id}`);
+                }}
                 className={`group flex w-full items-center transition-all duration-200 ${
                   isCollapsed
-                    ? `h-12 w-12 justify-center rounded-2xl border ${
+                    ? `h-12 w-12 justify-center rounded-2xl border mx-auto ${
                         isActive
                           ? 'border-dawn-teal/40 bg-gradient-to-r from-dawn-sky/60 to-blue-50/80 shadow-md'
                           : 'border-transparent bg-white/50 backdrop-blur-sm hover:border-slate-200/60 hover:bg-white/80 hover:shadow-sm'
@@ -184,23 +182,17 @@ export default function WorkspaceSidebar({ activeWorkspace, activeChatId }: Work
                 }`}
                 title={isCollapsed ? chat.title : undefined}
               >
-                <span
-                  className={`flex shrink-0 items-center justify-center rounded-xl transition-all duration-200 ${
-                    isCollapsed
-                      ? `h-6 w-6 ${
-                          isActive 
-                            ? 'bg-white shadow-sm text-dawn-teal' 
-                            : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-600'
-                        }`
-                      : `h-8 w-8 ${
-                          isActive 
-                            ? 'bg-white shadow-sm text-dawn-teal' 
-                            : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-600'
-                        }`
-                  }`}
-                >
-                  <MessageSquare size={isCollapsed ? 12 : 14} strokeWidth={2} />
-                </span>
+                {!isCollapsed && (
+                  <span
+                    className={`flex shrink-0 items-center justify-center rounded-xl transition-all duration-200 h-8 w-8 ${
+                      isActive
+                        ? 'bg-white shadow-sm text-dawn-teal'
+                        : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200 group-hover:text-slate-600'
+                    }`}
+                  >
+                    <MessageSquare size={16} strokeWidth={2} />
+                  </span>
+                )}
                 {!isCollapsed ? (
                   <span className="min-w-0 flex-1">
                     <div className="flex items-center justify-between">
@@ -213,7 +205,11 @@ export default function WorkspaceSidebar({ activeWorkspace, activeChatId }: Work
                       {new Date(chat.createdAt).toLocaleDateString()}
                     </div>
                   </span>
-                ) : null}
+                ) : (
+                  <span className="text-xs font-bold text-slate-700">
+                    {index + 1}
+                  </span>
+                )}
               </button>
             );
           })
@@ -226,42 +222,52 @@ export default function WorkspaceSidebar({ activeWorkspace, activeChatId }: Work
             <div className="h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
           </div>
         )}
-        
+
         <button
           type="button"
-          onClick={() => setIsMenuOpen((prev) => !prev)}
-          className={`group inline-flex items-center rounded-2xl border border-slate-200/60 bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-900/5 transition-all duration-200 hover:border-slate-300/60 hover:bg-white hover:shadow-xl hover:shadow-slate-900/10 ${
-            isCollapsed 
-              ? 'h-12 w-12 justify-center' 
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsMenuOpen((prev) => !prev);
+          }}
+          className={`group flex items-center rounded-2xl border border-slate-200/60 bg-white/80 backdrop-blur-sm shadow-lg shadow-slate-900/5 transition-all duration-200 hover:border-slate-300/60 hover:bg-white hover:shadow-xl hover:shadow-slate-900/10 ${
+            isCollapsed
+              ? 'h-12 w-12 justify-center mx-auto'
               : 'w-full gap-3 p-2'
           }`}
           title={isCollapsed ? safeFullName : undefined}
         >
-          <div className="relative">
-            <span className={`flex items-center justify-center rounded-xl bg-gradient-to-br from-dawn-navy via-dawn-teal to-blue-600 font-bold text-white shadow-md ${
-              isCollapsed ? 'h-8 w-8 text-xs' : 'h-9 w-9 text-xs'
-            }`}>
-              {userInitial}
-            </span>
-            <div className={`absolute bg-green-500 border-2 border-white rounded-full animate-pulse ${
-              isCollapsed 
-                ? '-bottom-0.5 -right-0.5 w-3 h-3' 
-                : '-bottom-0.5 -right-0.5 w-3 h-3'
-            }`}></div>
-          </div>
-          {!isCollapsed ? (
-            <span className="min-w-0 text-left flex-1">
-              <div className="block truncate text-sm font-semibold text-slate-800">{safeFullName}</div>
-              <div className="text-xs text-slate-500 flex items-center gap-1">
-                <div className="w-1 h-1 bg-green-500 rounded-full"></div>
-                Online
+          {isCollapsed ? (
+            <div className="relative flex items-center justify-center">
+              <span className="flex items-center justify-center rounded-xl bg-gradient-to-br from-dawn-navy via-dawn-teal to-blue-600 font-bold text-white shadow-md h-7 w-7 text-xs">
+                {userInitial}
+              </span>
+              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full animate-pulse"></div>
+            </div>
+          ) : (
+            <>
+              <div className="relative">
+                <span className="flex items-center justify-center rounded-xl bg-gradient-to-br from-dawn-navy via-dawn-teal to-blue-600 font-bold text-white shadow-md h-9 w-9 text-xs">
+                  {userInitial}
+                </span>
+                <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full animate-pulse"></div>
               </div>
-            </span>
-          ) : null}
+              <span className="min-w-0 text-left flex-1">
+                <div className="block truncate text-sm font-semibold text-slate-800">{safeFullName}</div>
+                <div className="text-xs text-slate-500 flex items-center gap-1">
+                  <div className="w-1 h-1 bg-green-500 rounded-full"></div>
+                  Online
+                </div>
+              </span>
+            </>
+          )}
         </button>
 
         {isMenuOpen && (
-          <div className="absolute bottom-full left-1/2 z-[100] mb-3 w-64 -translate-x-1/2 overflow-hidden rounded-2xl border border-slate-200/60 bg-white/95 shadow-2xl shadow-slate-900/20 backdrop-blur-xl">
+          <div className={`fixed z-[100] overflow-hidden rounded-2xl border border-slate-200/60 bg-white/95 shadow-2xl shadow-slate-900/20 backdrop-blur-xl w-64 ${
+            isCollapsed
+              ? 'bottom-20 left-2'
+              : 'bottom-20 left-4'
+          }`}>
             <div className="bg-gradient-to-br from-dawn-navy/5 to-dawn-teal/5 px-4 py-3 border-b border-slate-100">
               <div className="flex items-center gap-3">
                 <div className="relative">
@@ -278,11 +284,14 @@ export default function WorkspaceSidebar({ activeWorkspace, activeChatId }: Work
             </div>
             <button
               type="button"
-              onClick={handleLogout}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLogout();
+              }}
               disabled={isLoggingOut}
               className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-rose-600 transition-all duration-200 hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              <LogOut size={16} />
+              <LogOut size={18} />
               <span className="font-medium">{isLoggingOut ? 'Logging out...' : 'Logout'}</span>
             </button>
           </div>

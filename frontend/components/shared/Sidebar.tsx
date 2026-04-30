@@ -1,8 +1,10 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
 import { Settings, Search, FileText, Edit3, Image, Shield, BookOpen, Send, BarChart2, Check } from 'lucide-react';
 import { useDAWN } from '@/context/DAWNContext';
 import type { Stage } from '@/lib/types';
+import type { UserProfile } from '@/lib/authApi';
 
 const STAGES: { id: Stage; label: string; icon: React.ElementType; index: number }[] = [
   { id: 'setup',              label: 'Campaign Setup',     icon: Settings,   index: 0 },
@@ -19,6 +21,32 @@ const STAGES: { id: Stage; label: string; icon: React.ElementType; index: number
 
 export default function Sidebar() {
   const { state } = useDAWN();
+  const [userName, setUserName] = useState('User');
+  const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+    const stored = localStorage.getItem('dawn_user');
+    if (!stored) return;
+    try {
+      const parsed = JSON.parse(stored) as UserProfile;
+      if (parsed.full_name?.trim()) {
+        setUserName(parsed.full_name.trim());
+      }
+      if (parsed.email?.trim()) {
+        setUserEmail(parsed.email.trim());
+      }
+    } catch {
+      setUserName('User');
+    }
+  }, []);
+
+  const userInitial = useMemo(() => {
+    const names = userName.trim().split(' ');
+    if (names.length >= 2) {
+      return (names[0].charAt(0) + names[1].charAt(0)).toUpperCase();
+    }
+    return userName.trim().charAt(0).toUpperCase() || 'U';
+  }, [userName]);
 
   return (
     <aside className="w-60 bg-dawn-navy flex flex-col h-full shrink-0">
@@ -100,12 +128,12 @@ export default function Sidebar() {
       {/* User profile */}
       <div className="px-4 py-4 border-t border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-pink-400 flex items-center justify-center shrink-0">
-            <span className="text-white text-xs font-semibold">SC</span>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-dawn-navy via-dawn-teal to-blue-600 flex items-center justify-center shrink-0">
+            <span className="text-white text-xs font-semibold">{userInitial}</span>
           </div>
           <div className="min-w-0">
-            <p className="text-white text-xs font-medium truncate">Sarah Chen</p>
-            <p className="text-white/40 text-[10px] truncate">Global Brand Marketeer</p>
+            <p className="text-white text-xs font-medium truncate">{userName}</p>
+            <p className="text-white/40 text-[10px] truncate">{userEmail || 'Active Session'}</p>
           </div>
         </div>
       </div>

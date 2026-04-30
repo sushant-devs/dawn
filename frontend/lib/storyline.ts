@@ -11,10 +11,10 @@ export const STORYLINE: StorylineStep[] = [
     agentResponse: {
       text: "Campaign workspace initialized. Here's your confirmed campaign configuration - all downstream modules will inherit these parameters.",
       campaignSummary: {
-        brand: 'Hemlibra (emicizumab-kxwh)',
-        ta: 'Hematology - Hemophilia A',
-        markets: ['US', 'EMEA', 'Germany'],
-        audience: ['Hematologists', 'Rheumatologists', 'Nurse Practitioners'],
+        brand: 'Hemlibra',
+        ta: 'Hemophilia A',
+        markets: ['Global'],
+        audience: ['Hematologists', 'Rheumatologists'],
         budget: '$75,000',
         campaignId: 'DAWN-HEM-2026-0042',
       },

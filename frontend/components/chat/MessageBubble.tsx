@@ -47,61 +47,190 @@ function RichText({ text }: { text: string }) {
 // Campaign summary card
 function CampaignSummaryCard({ data }: { data: NonNullable<AgentResponseContent['campaignSummary']> }) {
   return (
-    <div className="mt-3 overflow-hidden rounded-2xl border border-[#dbe3ff] bg-white shadow-[0_16px_36px_rgba(15,23,42,0.09)] ring-1 ring-[#eef2ff]">
-      {/* <div className="flex items-center justify-between border-b border-[#e7ecff] bg-gradient-to-r from-[#f8faff] to-[#f3f6ff] px-5 py-3.5">
-        <span className="text-xs font-semibold text-dawn-teal uppercase tracking-wide">Campaign Configuration</span>
-        <span className="rounded-full border border-[#ffd98a] bg-[#fff5dd] px-3 py-1 text-[11px] font-semibold text-[#d29400] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-          {data.campaignId}
-        </span>
-      </div> */}
-        <div
-        className="px-4 py-3 border-b border-gray-200 flex items-center justify-between"
-        style={{ backgroundColor: "oklch(14.1% 0.005 285.823)" }}
-      >
-        <span className="text-xs font-semibold text-gray-300 uppercase tracking-wide">
-          Campaign Configuration
-        </span>
-        <span className="bg-dawn-amber/20 text-dawn-amber border border-dawn-amber/30 rounded-full px-2.5 py-0.5 text-xs font-medium">
-          {data.campaignId}
-        </span>
+    <div className="mt-3 rounded-lg bg-white border border-slate-200 shadow-sm overflow-hidden max-w-md">
+      {/* Header */}
+      <div className="px-3 py-1.5 bg-slate-50 border-b border-slate-200">
+        <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wide">Campaign Configuration</h4>
       </div>
-      <div className="grid grid-cols-2 gap-0 divide-x divide-y divide-[#e9edfb] bg-white">
-        {[
-          { label: 'Brand', value: data.brand },
-          { label: 'Therapeutic Area', value: data.ta },
-          { label: 'Budget', value: data.budget },
-          { label: 'Markets', value: data.markets.join(', ') },
-          { label: 'Audience', value: data.audience.join(', ') },
-        ].map(({ label, value }) => (
-          <div key={label} className="px-5 py-3.5">
-            <p className="mb-1 text-[9px] font-medium uppercase tracking-[0.08em] text-gray-400">{label}</p>
-            <p className="text-[0.98rem] font-medium leading-snug text-dawn-navy">{value}</p>
+
+      {/* Content */}
+      <div className="p-3 space-y-2">
+        {/* Brand - Featured */}
+        <div className="pb-2 border-b border-slate-100">
+          <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Brand</span>
+          <h3 className="text-base font-semibold text-slate-900 mt-0.5">{data.brand}</h3>
+        </div>
+
+        {/* Two-column grid */}
+        <div className="grid grid-cols-2 gap-2.5">
+          <div>
+            <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Therapeutic Area</span>
+            <p className="text-sm font-medium text-slate-800 mt-0.5">{data.ta}</p>
           </div>
-        ))}
+          <div>
+            <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Budget</span>
+            <p className="text-sm font-semibold text-emerald-600 mt-0.5">{data.budget}</p>
+          </div>
+        </div>
+
+        {/* Markets */}
+        <div>
+          <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wide mb-1 block">Markets</span>
+          <div className="flex flex-wrap gap-1">
+            {data.markets.map((market) => (
+              <span key={market} className="inline-flex items-center px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs font-medium border border-blue-200">
+                {market}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Audience */}
+        <div>
+          <span className="text-[10px] font-medium text-slate-500 uppercase tracking-wide mb-1 block">Target Audience</span>
+          <div className="flex flex-wrap gap-1">
+            {data.audience.map((aud) => (
+              <span key={aud} className="inline-flex items-center px-2 py-0.5 rounded bg-purple-50 text-purple-700 text-xs font-medium border border-purple-200">
+                {aud}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-// Document grid
+// Document list with expandable view
 function DocumentGrid({ docs }: { docs: DocType[] }) {
-  const handlePreview = (filePath: string, title: string) => {
-    // Open PDF in new window
+  const [showAll, setShowAll] = useState(false);
+  const [hoveredDoc, setHoveredDoc] = useState<string | null>(null);
+
+  const handlePreview = (filePath: string) => {
     window.open(filePath, '_blank');
   };
 
+  // Show first 5 documents initially
+  const displayedDocs = showAll ? docs : docs.slice(0, 5);
+  const hiddenCount = docs.length - 5;
+
+  const getTypeIcon = (type: string) => {
+    if (type === 'Clinical Study Report' || type === 'CSR') {
+      return (
+        <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+          <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+        </svg>
+      );
+    }
+    return (
+      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+        <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
+      </svg>
+    );
+  };
+
+  const getRelevanceColor = (relevance: number) => {
+    if (relevance >= 95) return 'text-emerald-600 bg-emerald-50';
+    if (relevance >= 90) return 'text-green-600 bg-green-50';
+    if (relevance >= 85) return 'text-amber-600 bg-amber-50';
+    return 'text-orange-600 bg-orange-50';
+  };
+
   return (
-    <div className="mt-3">
-      {/* Document Grid */}
-      <div className="grid grid-cols-2 gap-2">
-        {docs.map((doc) => (
-          <DocumentCard
+    <div className="mt-3 space-y-2">
+      {/* Header */}
+      <div className="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-lg">
+        <div className="flex items-center gap-2">
+          <svg className="w-4 h-4 text-slate-500" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+          </svg>
+          <span className="text-xs font-semibold text-slate-700">{docs.length} Documents Retrieved</span>
+        </div>
+        <span className="text-[10px] text-slate-500">HAVEN Clinical Program</span>
+      </div>
+
+      {/* Document List */}
+      <div className="space-y-1.5">
+        {displayedDocs.map((doc) => (
+          <div
             key={doc.id}
-            {...doc}
-            onPreview={handlePreview}
-          />
+            onMouseEnter={() => setHoveredDoc(doc.id)}
+            onMouseLeave={() => setHoveredDoc(null)}
+            className="group relative flex items-center gap-3 px-3 py-2.5 rounded-lg border bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm transition-all duration-200 cursor-pointer"
+            onClick={() => handlePreview(doc.filePath)}
+          >
+            {/* Type Icon */}
+            <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center">
+              {getTypeIcon(doc.type)}
+            </div>
+
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-2 mb-1">
+                <h4 className="text-sm font-semibold text-slate-900 leading-tight line-clamp-1">
+                  {doc.title}
+                </h4>
+              </div>
+              <p className="text-xs text-slate-600 leading-snug line-clamp-1 mb-1.5">
+                {doc.keyFinding}
+              </p>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-500">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
+                  </svg>
+                  {doc.pageCount} pages
+                </span>
+                <span className="text-slate-300">•</span>
+                <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold ${getRelevanceColor(doc.relevance)}`}>
+                  {doc.relevance}% match
+                </span>
+                <span className="text-slate-300">•</span>
+                <span className="text-[10px] font-medium text-slate-500">{doc.type}</span>
+              </div>
+            </div>
+
+            {/* Preview Icon on Hover */}
+            {hoveredDoc === doc.id && (
+              <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-dawn-teal/10 flex items-center justify-center">
+                <svg className="w-3.5 h-3.5 text-dawn-teal" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+            )}
+          </div>
         ))}
       </div>
+
+      {/* View More Button */}
+      {!showAll && hiddenCount > 0 && (
+        <button
+          onClick={() => setShowAll(true)}
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-white border border-slate-200 hover:border-dawn-teal hover:bg-dawn-teal/5 rounded-lg transition-all duration-200 group"
+        >
+          <span className="text-xs font-medium text-slate-700 group-hover:text-dawn-teal">
+            Show {hiddenCount} More Document{hiddenCount !== 1 ? 's' : ''}
+          </span>
+          <svg className="w-3.5 h-3.5 text-slate-500 group-hover:text-dawn-teal transition-transform group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      )}
+
+      {/* Show Less Button */}
+      {showAll && (
+        <button
+          onClick={() => setShowAll(false)}
+          className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 rounded-lg transition-all duration-200 group"
+        >
+          <span className="text-xs font-medium text-slate-600">Show Less</span>
+          <svg className="w-3.5 h-3.5 text-slate-500 transition-transform group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }
