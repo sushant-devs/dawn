@@ -116,9 +116,8 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
                   onChange={(e) => updateField('therapeuticArea', e.target.value)}
                   className="w-full bg-dawn-teal/5 border border-dawn-teal/30 rounded-lg px-3 py-2 text-sm text-dawn-navy focus:outline-none focus:ring-2 focus:ring-dawn-navy/20"
                 >
-                  <option>Brevixa — HR+/HER2− Metastatic Breast Cancer</option>
                   <option>Oncology</option>
-                  <option>Neurology</option>
+                
                 </select>
               </div>
               <div>
