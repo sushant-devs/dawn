@@ -23,7 +23,7 @@ export const BLYVOR_DOCUMENTS: DocumentCard[] = [
     relevance: 97,
     keyFinding: '42% reduction in risk of disease progression or death vs. endocrine therapy alone in HR+/HER2− mBC patients with prior systemic therapy',
     selected: true,
-    filePath: '/data/Clinical Review/Brexiva Clinical Review Report.pdf',
+    filePath: '/data/Clinical Review/BREXIVA_Clinical Review Report.pdf',
   },
   {
     id: 'blyvor2-pub1',
@@ -32,7 +32,7 @@ export const BLYVOR_DOCUMENTS: DocumentCard[] = [
     relevance: 96,
     keyFinding: '31.6 month median PFS vs. 13.2 months with endocrine therapy alone in HR+/HER2− mBC (p<0.0001)',
     selected: true,
-    filePath: '/data/Journals/Brexiva in  Metastatic Breast Cancer- A Clinical Review of Treatment Rationale, Patient Selection, and Evidence Considerations.pdf',
+    filePath: '/data/Journals/BREXIVA_Brexiva in Metastatic Breast Cancer- A Clinical Review of Treatment Rationale, Patient Selection, and Evidence Considerations.pdf',
   },
   {
     id: 'blyvor2-pub2',
@@ -41,7 +41,7 @@ export const BLYVOR_DOCUMENTS: DocumentCard[] = [
     relevance: 92,
     keyFinding: 'Sustained progression-free survival benefit maintained across extended follow-up',
     selected: true,
-    filePath: '/data/Journals/Treatment Sequencing and Clinical Decision-Making for Brexiva-Based Therapy.pdf',
+    filePath: '/data/Journals/BREXIVA_Treatment Sequencing and Clinical Decision-Making for Brexiva-Based Therapy.pdf',
   },
   {
     id: 'blyvor2-pub3',
@@ -50,7 +50,7 @@ export const BLYVOR_DOCUMENTS: DocumentCard[] = [
     relevance: 90,
     keyFinding: 'Long-term safety profile consistent with primary analysis across all patient populations including neutropenia and hepatotoxicity management',
     selected: true,
-    filePath: '/data/Journals/Safety Management and Practical Monitoring Considerations for Brexiva-Based Therapy .pdf',
+    filePath: '/data/Journals/BREXIVA_Safety Management and Practical Monitoring Considerations for Brexiva-Based Therapy.pdf',
   },
   {
     id: 'blyvor3',
@@ -59,7 +59,7 @@ export const BLYVOR_DOCUMENTS: DocumentCard[] = [
     relevance: 95,
     keyFinding: 'Median PFS 26.4 months on Brexiva + endocrine therapy; 58% of patients achieved confirmed objective response',
     selected: true,
-    filePath: '/data/Research Papers/A Simulated Multicenter Phase II Study Evaluating Efficacy, Safety, and Clinical Applicability in a Global Oncology Population.pdf',
+    filePath: '/data/Research Papers/BREXIVA_A Simulated Multicenter Phase II Study Evaluating Efficacy, Safety, and Clinical Applicability in a Global Oncology Population.pdf',
   },
   {
     id: 'brevixa-rwe',
@@ -68,7 +68,7 @@ export const BLYVOR_DOCUMENTS: DocumentCard[] = [
     relevance: 88,
     keyFinding: 'Real-world clinical outcomes and treatment patterns with Brexiva therapy across global oncology centers',
     selected: true,
-    filePath: '/data/Research Papers/Patient-Reported Outcomes and Treatment Persistence with Brexiva Metastatic Breast Cancer- Simulated Global Observational Research Manuscript.pdf',
+    filePath: '/data/Research Papers/BREXIVA_Patient-Reported Outcomes and Treatment Persistence with Brexiva Metastatic Breast Cancer- Simulated Global Observational Research Manuscript.pdf',
   },
   {
     id: 'blyvor-bio',
@@ -77,7 +77,7 @@ export const BLYVOR_DOCUMENTS: DocumentCard[] = [
     relevance: 83,
     keyFinding: 'Predictive biomarkers and genomic factors associated with Brexiva treatment response in HR+/HER2− mBC',
     selected: true,
-    filePath: '/data/Research Papers/Biomarker Patterns and Endocrine-Resistance Features Associated with Brexiva-Based Therapy in HR+HER2- Metastatic Breast Cancer.pdf',
+    filePath: '/data/Research Papers/BREXIVA_Biomarker Patterns and Endocrine-Resistance Features Associated with Brexiva-Based Therapy in HR+HER2- Metastatic Breast Cancer.pdf',
   },
 ];
 
