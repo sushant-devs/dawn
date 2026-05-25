@@ -8,7 +8,7 @@ interface FileTransferModalProps {
 }
 
 const TRANSFER_FILES = [
-  { name: 'HCP_Email_v3.html', icon: FileText, size: '2.4 MB' },
+  { name: 'HCP_Email.html', icon: FileText, size: '2.4 MB' },
   { name: 'Patient_Leaflet.pdf', icon: File, size: '1.8 MB' },
   { name: 'Congress_Poster.pdf', icon: Image, size: '8.2 MB' },
   { name: 'Digital_Detail_Aid.html', icon: FileText, size: '3.1 MB' },
