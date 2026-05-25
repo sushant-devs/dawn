@@ -60,7 +60,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser.
 ### Your First Campaign
 
 1. The chat interface will auto-start after 1 second
-2. Send the pre-populated message to set up a Hemlibra campaign
+2. Send the pre-populated message to set up a Brexiva campaign
 3. Follow the AI-guided workflow through 10 stages:
    - Campaign Setup
    - Content Finder (select clinical evidence)
@@ -139,7 +139,7 @@ npx tsc --noEmit
 ## 🌟 Key Features Overview
 
 ### 1. Content Finder
-Select from HAVEN 1-7 clinical trials with AI relevance scoring. Preview PDFs and filter by document type.
+Select from BLYVOR clinical trials with AI relevance scoring. Preview PDFs and filter by document type.
 
 ### 2. Brief Builder
 **Two modes**:

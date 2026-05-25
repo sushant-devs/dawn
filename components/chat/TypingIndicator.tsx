@@ -8,7 +8,7 @@ interface TypingIndicatorProps {
 }
 
 const THINKING_STREAM_SPEED = 99;
-const THINKING_STREAM_START_DELAY_MS = 300;
+const THINKING_STREAM_START_DELAY_MS = 150;
 
 function getDynamicThinkingTitle(message: string): string {
   const lines = message

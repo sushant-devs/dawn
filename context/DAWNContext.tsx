@@ -115,19 +115,22 @@ function dawnReducer(state: DAWNState, action: DAWNAction): DAWNState {
       const currentStep = STORYLINE[state.currentStepIndex];
       let nextIndex = state.currentStepIndex + 1;
 
-      // If we just completed manual brief input (step-3a), skip to template selection (step-4)
-      if (currentStep?.id === 'step-3a') {
-        // Skip step-3b (auto brief) and go to step-4 (template selection)
-        nextIndex = state.currentStepIndex + 2;
+      // Manual brief only: jump to compliance assets (3d), skip auto brief (3b) and step-3c.
+      // Auto mode is unchanged — still handled solely by step-3b below.
+      if (currentStep?.id === 'step-3a' && state.briefMode === 'manual') {
+        nextIndex = state.currentStepIndex + 3;
       }
 
-      // If current step has autoAdvanceAfterModal, skip step-3c, go to step-3d
+      // Auto brief builder: skip step-3c, go to step-3d (unchanged).
       if (currentStep?.autoAdvanceAfterModal && currentStep?.id === 'step-3b') {
         nextIndex = state.currentStepIndex + 2; // Skip step-3c only for step-3b
       }
 
       const nextStep = STORYLINE[nextIndex];
-      const shouldAutoAdvance = currentStep?.autoAdvanceAfterModal && nextStep;
+      const shouldAutoAdvance =
+        !!nextStep &&
+        (currentStep?.autoAdvanceAfterModal === true ||
+          (currentStep?.id === 'step-3a' && state.briefMode === 'manual'));
 
       return {
         ...state,
@@ -214,8 +217,8 @@ export function DAWNProvider({ children }: { children: React.ReactNode }) {
     const lines = thinkingMessage.split('\n').length;
 
     // Keep delay very close to stream duration to avoid post-stream idle time.
-    const estimatedStreamMs = (chars * 6) + (lines * 30) + 200;
-    return Math.max(estimatedStreamMs, 1200);
+    const estimatedStreamMs = (chars * 4) + (lines * 20) + 150;
+    return Math.max(estimatedStreamMs, 800);
   }, []);
 
   // Handle auto-advance steps (steps that should proceed without user input)

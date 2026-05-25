@@ -21,7 +21,6 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
   const availableDocs = GENERATED_ASSETS.map((asset) => ({
     id: asset.id,
     title: asset.title,
-    wordCount: asset.wordCount,
   }));
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,12 +44,12 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
   const canGenerate = (activeTab === 'select' && selectedDoc) || (activeTab === 'upload' && uploadedFile);
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
       {/* Panel */}
-      <div className="relative ml-auto w-full max-w-4xl bg-white h-full flex flex-col animate-slide-in-right shadow-2xl">
+      <div className="relative flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-dawn-border bg-white shadow-[0_24px_64px_rgba(15,23,42,0.2)] animate-scale-in">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-dawn-border bg-white">
           <div className="flex items-center gap-3">
@@ -119,7 +118,6 @@ export default function PLSGeneratorModal({ onClose }: PLSGeneratorModalProps) {
                           <FileText size={16} className="text-gray-400" />
                           <h4 className="text-sm font-semibold text-dawn-navy">{doc.title}</h4>
                         </div>
-                        <p className="text-xs text-gray-500">{doc.wordCount} words</p>
                       </div>
                     </div>
                   </button>

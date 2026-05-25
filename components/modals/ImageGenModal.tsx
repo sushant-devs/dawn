@@ -18,12 +18,12 @@ const VARIATIONS = [
     subline: 'Professional HCP Email Template',
     type: 'email'
   },
-  { 
-    id: 'poster-output', 
-    title: 'Congress Poster — Output', 
+  {
+    id: 'poster-output',
+    title: 'Congress Poster — Output',
     imageSrc: '/templates/previews/poster-output.png',
     previewUrl: '/templates/previews/poster-template-output.html',
-    headline: 'HAVEN 4 Clinical Data', 
+    headline: 'BLYVOR-3 Clinical Data',
     subline: 'Scientific Congress Poster',
     type: 'poster'
   },
@@ -36,9 +36,9 @@ const VARIATIONS = [
     subline: 'Digital Detail Aid Template',
     type: 'dda'
   },
-  { id: 'var-1', title: 'Variation 1 — Data-Led', gradient: 'linear-gradient(135deg, #0D1B3E 0%, #00A896 100%)', headline: '0.0 Median ABR', subline: '13 injections vs. 156 — HAVEN 4', type: 'design' },
-  { id: 'var-2', title: 'Variation 2 — Patient-Centric', gradient: 'linear-gradient(135deg, #1a2f5e 0%, #008575 100%)', headline: '56% Zero Bleeds', subline: 'Monthly prophylaxis. Real freedom.', type: 'design' },
-  { id: 'var-3', title: 'Variation 3 — Bold Minimal', gradient: 'linear-gradient(135deg, #0D1B3E 0%, #7C3AED 60%, #00A896 100%)', headline: '13 × / year', subline: 'Hemlibra Q4W — HAVEN 4 data', type: 'design' },
+  { id: 'var-1', title: 'Variation 1 — Data-Led', gradient: 'linear-gradient(135deg, #0D1B3E 0%, #00A896 100%)', headline: '26.4 mo Median PFS', subline: '26.4 months vs. 13.2 months — BLYVOR-3', type: 'design' },
+  { id: 'var-2', title: 'Variation 2 — Patient-Centric', gradient: 'linear-gradient(135deg, #1a2f5e 0%, #008575 100%)', headline: '58% Objective Response', subline: 'Once-daily oral dosing. Real progress.', type: 'design' },
+  { id: 'var-3', title: 'Variation 3 — Bold Minimal', gradient: 'linear-gradient(135deg, #0D1B3E 0%, #7C3AED 60%, #00A896 100%)', headline: 'Once Daily', subline: 'Brexiva — BLYVOR-3 data', type: 'design' },
 ];
 
 type ColorScheme = 'navy-teal' | 'white-blue' | 'warm-orange';
@@ -53,7 +53,7 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
   const [brandOverlay, setBrandOverlay] = useState(false);
   const [isiFooter, setIsiFooter] = useState(true);
   const [styleInstructions, setStyleInstructions] = useState(
-    'Congress poster for HAVEN 4 data presentation. Deep navy and teal brand palette. Prominently feature the "13 treatments per year" vs "156 infusions" benefit. Include Hemlibra logo, HAVEN 4 citation, and ISI footer zone. Clean clinical aesthetic.'
+    'Congress poster for BLYVOR-3 data presentation. Deep navy and teal brand palette. Prominently feature the "26.4 months median PFS" vs "13.2 months" benefit. Include Brexiva logo, BLYVOR-3 citation, and ISI footer zone. Clean clinical aesthetic.'
   );
 
   const selectedVar = VARIATIONS.find((v) => v.id === selected) ?? VARIATIONS[0];
@@ -65,9 +65,9 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative ml-auto w-full max-w-4xl bg-white h-full flex flex-col animate-slide-in-right shadow-2xl">
+      <div className="relative flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-dawn-border bg-white shadow-[0_24px_64px_rgba(15,23,42,0.2)] animate-scale-in">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-dawn-border">
           <div className="flex items-center gap-3">
@@ -114,8 +114,8 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
               <div>
                 <label className="block text-xs font-semibold text-dawn-navy mb-1.5">Focus Highlight</label>
                 <div className="flex flex-wrap gap-1">
-                  {['13 treatments/yr', '0.0 ABR', '56% zero bleeds', 'Monthly dosing'].map((chip) => (
-                    <span key={chip} className={`rounded-full px-2.5 py-1 text-[10px] font-medium cursor-pointer transition-colors ${chip === '13 treatments/yr' ? 'bg-dawn-teal text-white' : 'bg-gray-100 text-gray-600 hover:bg-dawn-sky'}`}>
+                  {['26.4 mo PFS', '58% ORR', 'Once-daily dosing', 'vs 13.2 months'].map((chip) => (
+                    <span key={chip} className={`rounded-full px-2.5 py-1 text-[10px] font-medium cursor-pointer transition-colors ${chip === '26.4 mo PFS' ? 'bg-dawn-teal text-white' : 'bg-gray-100 text-gray-600 hover:bg-dawn-sky'}`}>
                       {chip}
                     </span>
                   ))}
@@ -169,7 +169,7 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
                         <p className="text-white/70 text-xs mt-1 text-center px-3">{v.subline}</p>
                         {isiFooter && (
                           <div className="absolute bottom-0 left-0 right-0 bg-black/30 px-2 py-1">
-                            <p className="text-white/60 text-[7px] leading-tight">IMPORTANT SAFETY INFORMATION: See full Prescribing Information including Boxed Warning. HEMLIBRA® (emicizumab-kxwh)</p>
+                            <p className="text-white/60 text-[7px] leading-tight">IMPORTANT SAFETY INFORMATION: See full Prescribing Information including Boxed Warning. BREXIVA®</p>
                           </div>
                         )}
                       </div>

@@ -16,8 +16,8 @@ interface MessageBubbleProps {
   onContentExpand?: () => void;
 }
 
-const MESSAGE_STREAM_SPEED = 70;
-const MESSAGE_STREAM_START_DELAY_MS = 250;
+const MESSAGE_STREAM_SPEED = 92;
+const MESSAGE_STREAM_START_DELAY_MS = 150;
 
 function formatTime(date: Date) {
   const diff = Math.floor((Date.now() - date.getTime()) / 1000);
@@ -126,8 +126,6 @@ function ContentAssetsBlock({ assets }: { assets: NonNullable<AgentResponseConte
                   <span className="text-[10px] text-gray-400">{asset.persona}</span>
                   <span className="text-[10px] text-gray-300">·</span>
                   <span className="text-[10px] text-gray-400">{asset.language}</span>
-                  <span className="text-[10px] text-gray-300">·</span>
-                  <span className="text-[10px] text-gray-400">{asset.wordCount} words</span>
                 </div>
               </div>
               {prog >= 100 ? (

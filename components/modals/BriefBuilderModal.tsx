@@ -53,15 +53,15 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
     setMessages(next);
   };
 
-  const deliverableOptions = ['Congress Poster', 'HCP Email (US)', 'HCP Email (DE)', 'Patient Leaflet', 'Digital Detail Aid', 'Social Assets'];
+  const deliverableOptions = ['Congress Poster', 'HCP Email', 'Patient Leaflet', 'Digital Detail Aid', 'Social Assets'];
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
       {/* Panel */}
-      <div className="relative ml-auto w-full max-w-2xl bg-white h-full flex flex-col animate-slide-in-right shadow-2xl">
+      <div className="relative flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-dawn-border bg-white shadow-[0_24px_64px_rgba(15,23,42,0.2)] animate-scale-in">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-dawn-border bg-white">
           <div className="flex items-center gap-3">
@@ -104,9 +104,9 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
                   onChange={(e) => updateField('brand', e.target.value)}
                   className="w-full bg-dawn-teal/5 border border-dawn-teal/30 rounded-lg px-3 py-2 text-sm text-dawn-navy focus:outline-none focus:ring-2 focus:ring-dawn-navy/20"
                 >
-                  <option>Hemlibra (emicizumab-kxwh)</option>
-                  <option>Tecentriq</option>
-                  <option>Ocrevus</option>
+                  <option>Brexiva</option>
+                  <option>Ibrance</option>
+                  <option>Kisqali</option>
                 </select>
               </div>
               <div>
@@ -116,7 +116,7 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
                   onChange={(e) => updateField('therapeuticArea', e.target.value)}
                   className="w-full bg-dawn-teal/5 border border-dawn-teal/30 rounded-lg px-3 py-2 text-sm text-dawn-navy focus:outline-none focus:ring-2 focus:ring-dawn-navy/20"
                 >
-                  <option>Hematology — Hemophilia A</option>
+                  <option>Brevixa — HR+/HER2− Metastatic Breast Cancer</option>
                   <option>Oncology</option>
                   <option>Neurology</option>
                 </select>
@@ -169,7 +169,7 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">4. Mandatory Inclusions</h3>
             <div className="space-y-2">
               {[
-                'Boxed Warning — TMA/Thromboembolism with aPCC',
+                'Boxed Warning — Neutropenia & Hepatotoxicity',
                 'Important Safety Information (ISI)',
                 'Fair Balance — benefit/risk prominence',
               ].map((item) => (

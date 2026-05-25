@@ -33,12 +33,11 @@ export type MessageRole = 'user' | 'agent';
 export interface DocumentCard {
   id: string;
   title: string;
-  type: 'CSR' | 'Publication' | 'Brand Standard' | 'Regulatory';
+  type: 'CSR' | 'Publication' | 'Brand Standard' | 'Regulatory' | 'Clinical Review' | 'Journal' | 'Research Paper' | 'Market Insight';
   relevance: number; // 0–100
   keyFinding: string;
   selected?: boolean;
   filePath?: string;
-  pageCount?: number;
 }
 
 export interface TableData {
@@ -81,7 +80,6 @@ export interface ContentGenerationAsset {
   title: string;
   persona: string;
   language: string;
-  wordCount: number;
 }
 
 export interface ImageVariation {
@@ -275,7 +273,6 @@ export interface StorylineStep {
 export interface Asset {
   id: string;
   title: string;
-  wordCount: number;
   persona: string;
   language: string;
   content: string;

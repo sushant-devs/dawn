@@ -83,8 +83,7 @@ function TemplateVisualPreview({ template }: { template: ContentTemplate }) {
 export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSelectorModalProps) {
   const [selectedTemplates, setSelectedTemplates] = useState<Record<string, string>>({
     'Congress Poster': 'poster-scientific',
-    'HCP Email (US)': 'email-professional',
-    'HCP Email (DE)': 'email-professional',
+    'HCP Email': 'email-professional',
     'Patient Leaflet': 'leaflet-standard',
     'Digital Detail Aid': 'dda-modular',
   });
@@ -118,12 +117,12 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
       {/* Panel */}
-      <div className="relative ml-auto w-full max-w-3xl bg-white h-full flex flex-col animate-slide-in-right shadow-2xl">
+      <div className="relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-dawn-border bg-white shadow-[0_24px_64px_rgba(15,23,42,0.2)] animate-scale-in">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-dawn-border bg-white">
           <div className="flex items-center gap-3">
@@ -247,8 +246,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
                 // Reset to recommended templates
                 setSelectedTemplates({
                   'Congress Poster': 'poster-scientific',
-                  'HCP Email (US)': 'email-professional',
-                  'HCP Email (DE)': 'email-professional',
+                  'HCP Email': 'email-professional',
                   'Patient Leaflet': 'leaflet-standard',
                   'Digital Detail Aid': 'dda-modular',
                 });

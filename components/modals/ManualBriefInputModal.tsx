@@ -21,7 +21,7 @@ type ViewMode = 'form' | 'library';
 export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBriefInputModalProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('form');
   const [briefs, setBriefs] = useState<BriefItem[]>([
-    { id: '1', title: 'Primary Efficacy Claim', content: 'Hemlibra achieved a median ABR of 0.0 in HAVEN 4 study with monthly dosing, with 56% of patients experiencing zero treated bleeds.' },
+    { id: '1', title: 'Primary Efficacy Claim', content: 'Brexiva achieved a median PFS of 26.4 months in BLYVOR-3 study with once-daily oral dosing, with 58% of patients achieving confirmed objective response.' },
   ]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -71,11 +71,11 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
     const initialVariables: Record<string, string> = {};
     prompt.variables.forEach(v => {
       // Pre-fill with default values
-      if (v === 'CAMPAIGN_NAME') initialVariables[v] = 'Hemlibra Prophylaxis Advocacy 2026';
+      if (v === 'CAMPAIGN_NAME') initialVariables[v] = 'Brexiva Global Advocacy Campaign — HR+/HER2− mBC';
       else if (v === 'MARKETS') initialVariables[v] = 'US, EMEA, Germany';
-      else if (v === 'AUDIENCE') initialVariables[v] = 'Hematologists, Rheumatologists';
-      else if (v === 'DELIVERABLES') initialVariables[v] = 'Congress Poster, HCP Email (US), HCP Email (DE), Patient Leaflet, Digital Detail Aid, Social Assets';
-      else if (v === 'STUDY_NAME') initialVariables[v] = 'HAVEN 4';
+      else if (v === 'AUDIENCE') initialVariables[v] = 'Oncologists, Breast Cancer Specialists';
+      else if (v === 'DELIVERABLES') initialVariables[v] = 'Congress Poster, HCP Email, Patient Leaflet, Digital Detail Aid, Social Assets';
+      else if (v === 'STUDY_NAME') initialVariables[v] = 'BLYVOR-3';
       else initialVariables[v] = '';
     });
     setPromptVariables(initialVariables);
@@ -116,12 +116,12 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
   const canConfirm = briefs.some((b) => b.title.trim() && b.content.trim());
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
 
       {/* Panel */}
-      <div className="relative ml-auto w-full max-w-5xl bg-white h-full flex flex-col animate-slide-in-right shadow-2xl">
+      <div className="relative flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-dawn-border bg-white shadow-[0_24px_64px_rgba(15,23,42,0.2)] animate-scale-in">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-dawn-border bg-white">
           <div className="flex items-center gap-3">
@@ -244,11 +244,11 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
                 <div className="space-y-2 text-xs text-gray-600">
                   <div>
                     <span className="font-medium text-dawn-navy">Title:</span> "Primary Efficacy Claim"<br />
-                    <span className="font-medium text-dawn-navy">Content:</span> "Hemlibra achieved a median ABR of 0.0 in HAVEN 4 study with monthly dosing, with 56% of patients experiencing zero treated bleeds."
+                    <span className="font-medium text-dawn-navy">Content:</span> "Brexiva achieved a median PFS of 26.4 months in BLYVOR-3 study with once-daily oral dosing, with 58% of patients achieving confirmed objective response."
                   </div>
                   <div>
                     <span className="font-medium text-dawn-navy">Title:</span> "Treatment Burden Reduction"<br />
-                    <span className="font-medium text-dawn-navy">Content:</span> "Monthly subcutaneous dosing reduces annual treatments from 156 IV infusions to just 13 SC injections per year."
+                    <span className="font-medium text-dawn-navy">Content:</span> "Once-daily oral dosing with Brexiva offers convenient administration compared to IV infusion regimens."
                   </div>
                 </div>
               </div>

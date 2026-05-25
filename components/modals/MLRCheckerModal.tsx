@@ -75,9 +75,9 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
   const tier2Count = MLR_ASSETS.filter((a) => a.tier === 'Tier 2').length;
 
   return (
-    <div className="fixed inset-0 z-50 flex">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative ml-auto w-full max-w-4xl bg-white h-full flex flex-col animate-slide-in-right shadow-2xl">
+      <div className="relative flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-dawn-border bg-white shadow-[0_24px_64px_rgba(15,23,42,0.2)] animate-scale-in">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-dawn-border">
           <div className="flex items-center gap-3">
@@ -94,7 +94,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
 
         {/* Summary bar */}
         <div className="flex items-center gap-3 px-6 py-3 bg-gray-50 border-b border-dawn-border overflow-x-auto">
-          <span className="bg-dawn-navy/10 text-dawn-navy rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">5 Assets</span>
+          <span className="bg-dawn-navy/10 text-dawn-navy rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">4 Assets</span>
           <span className="bg-dawn-green/10 text-dawn-green rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">{passedCount} Passed</span>
           <span className="bg-dawn-amber/10 text-dawn-amber rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">{pendingCount} Pending</span>
           <span className="bg-blue-100 text-blue-700 rounded-full px-3 py-1 text-xs font-medium whitespace-nowrap">Tier 1: {tier1Count}</span>
@@ -166,7 +166,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
                       <span className="text-purple-600 font-bold">1.</span>
                       <div>
                         <p className="font-medium text-gray-800">Reference Documents Loaded</p>
-                        <p className="text-gray-600">• HAVEN 1-4 CSRs • MLR Review Protocols • Brand Guidelines</p>
+                        <p className="text-gray-600">• BLYVOR 1-3 CSRs • MLR Review Protocols • Brand Guidelines</p>
                       </div>
                     </div>
 
@@ -175,8 +175,8 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
                       <div>
                         <p className="font-medium text-gray-800">Prompt Construction</p>
                         <p className="text-gray-600">
-                          "Analyze {selectedAsset.name} for: claim substantiation against HAVEN data,
-                          fair balance per MLR protocols, ISI completeness, promotional language flags"
+                          &quot;Analyze {selectedAsset.name} for: claim substantiation against BLYVOR data,
+                          fair balance per MLR protocols, ISI completeness, promotional language flags&quot;
                         </p>
                       </div>
                     </div>
@@ -218,7 +218,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
 
                 <div className="bg-purple-100 rounded-lg p-2 text-[10px] text-purple-900">
                   <p className="font-semibold">You are in control:</p>
-                  <p className="mt-1">This process is deterministic and traceable. No "magic button" — every validation
+                  <p className="mt-1">This process is deterministic and traceable. No &quot;magic button&quot; — every validation
                   step references specific documents and follows defined MLR protocols.</p>
                 </div>
               </div>
@@ -286,7 +286,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
                 <div className="flex items-start gap-2">
                   <div className="w-1 h-1 rounded-full bg-purple-500 mt-1.5 shrink-0" />
                   <p className="text-[11px] text-gray-700">
-                    <strong>Context-aware:</strong> This {selectedAsset.name} references HAVEN 4 median ABR data.
+                    <strong>Context-aware:</strong> This {selectedAsset.name} references BLYVOR-3 median PFS data.
                     Cross-checked against selected evidence documents — claim substantiated.
                   </p>
                 </div>
@@ -294,13 +294,13 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
                   <div className="w-1 h-1 rounded-full bg-purple-500 mt-1.5 shrink-0" />
                   <p className="text-[11px] text-gray-700">
                     <strong>Smart alignment:</strong> Risk/benefit balance score could improve by adding
-                    bleeding event frequency context from HAVEN 1 data.
+                    neutropenia management context from BLYVOR-1 data.
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <div className="w-1 h-1 rounded-full bg-purple-500 mt-1.5 shrink-0" />
                   <p className="text-[11px] text-gray-700">
-                    <strong>Campaign cohesion:</strong> Messaging tone consistent with HCP Email (US) —
+                    <strong>Campaign cohesion:</strong> Messaging tone consistent with HCP Email —
                     professional clinical emphasis maintained across touchpoints.
                   </p>
                 </div>

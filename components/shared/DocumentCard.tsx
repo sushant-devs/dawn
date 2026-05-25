@@ -8,11 +8,15 @@ interface DocumentCardProps extends DocumentCardType {
   onPreview?: (filePath: string, title: string) => void;
 }
 
-const TYPE_CONFIG = {
+const TYPE_CONFIG: Record<string, { icon: typeof FileText; color: string; border: string }> = {
+  'Clinical Review': { icon: FileText, color: 'bg-blue-100 text-blue-700', border: 'border-blue-200' },
+  Journal: { icon: BookOpen, color: 'bg-purple-100 text-purple-700', border: 'border-purple-200' },
+  'Research Paper': { icon: FileText, color: 'bg-teal-100 text-teal-700', border: 'border-teal-200' },
+  'Brand Standard': { icon: Award, color: 'bg-dawn-teal/10 text-dawn-teal', border: 'border-dawn-teal/20' },
+  'Market Insight': { icon: BookOpen, color: 'bg-orange-100 text-orange-700', border: 'border-orange-200' },
+  Regulatory: { icon: ShieldCheck, color: 'bg-dawn-amber/10 text-dawn-amber', border: 'border-dawn-amber/20' },
   CSR: { icon: FileText, color: 'bg-blue-100 text-blue-700', border: 'border-blue-200' },
   Publication: { icon: BookOpen, color: 'bg-purple-100 text-purple-700', border: 'border-purple-200' },
-  'Brand Standard': { icon: Award, color: 'bg-dawn-teal/10 text-dawn-teal', border: 'border-dawn-teal/20' },
-  Regulatory: { icon: ShieldCheck, color: 'bg-dawn-amber/10 text-dawn-amber', border: 'border-dawn-amber/20' },
 };
 
 function getRelevanceColor(score: number) {
@@ -27,8 +31,8 @@ function getRelevanceBadgeColor(score: number) {
   return 'text-gray-500';
 }
 
-export default function DocumentCard({ id, title, type, relevance, keyFinding, filePath, pageCount, onPreview }: DocumentCardProps) {
-  const cfg = TYPE_CONFIG[type];
+export default function DocumentCard({ id, title, type, relevance, keyFinding, filePath, onPreview }: DocumentCardProps) {
+  const cfg = TYPE_CONFIG[type] || { icon: FileText, color: 'bg-gray-100 text-gray-700', border: 'border-gray-200' };
   const Icon = cfg.icon;
   const [barWidth, setBarWidth] = useState(0);
   const mounted = useRef(false);
@@ -58,11 +62,6 @@ export default function DocumentCard({ id, title, type, relevance, keyFinding, f
           {type}
         </span>
         <div className="flex items-center gap-2">
-          {pageCount && (
-            <span className="text-[10px] text-gray-400">
-              {pageCount} pages
-            </span>
-          )}
           <span className={`text-xs font-semibold ${getRelevanceBadgeColor(relevance)}`}>
             {relevance}%
           </span>
