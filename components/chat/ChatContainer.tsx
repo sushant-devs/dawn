@@ -49,97 +49,99 @@ export default function ChatContainer({ messages, isTyping, typingMessage }: Cha
     });
   };
 
-  const scrollToBottom = () => {
+  const scrollToBottom = (behavior: ScrollBehavior = 'auto') => {
     const container = containerRef.current;
     if (container) {
       container.scrollTo({
         top: container.scrollHeight,
-        behavior: 'smooth'
+        behavior,
       });
     }
   };
 
   const handleContentExpand = () => {
     if (shouldAutoScroll) {
-      requestAnimationFrame(() => {
-        scrollToBottom();
-      });
+      scrollToBottom();
     }
   };
 
-  // Check if user has scrolled up manually
+  // Track user-initiated scroll vs programmatic scroll
+  const isUserScrolling = useRef(false);
+  const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
+    const handleWheel = (e: WheelEvent) => {
+      isUserScrolling.current = true;
+      // If user scrolls up, immediately disable auto-scroll
+      if (e.deltaY < 0) {
+        setShouldAutoScroll(false);
+      }
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+      scrollTimeout.current = setTimeout(() => {
+        isUserScrolling.current = false;
+      }, 150);
+    };
+
+    const handleTouchStart = () => {
+      isUserScrolling.current = true;
+    };
+
+    const handleTouchEnd = () => {
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+      scrollTimeout.current = setTimeout(() => {
+        isUserScrolling.current = false;
+      }, 150);
+    };
+
     const handleScroll = () => {
       const { scrollTop, scrollHeight, clientHeight } = container;
       const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
-      setShouldAutoScroll(isNearBottom);
+
+      if (isUserScrolling.current && !isNearBottom) {
+        setShouldAutoScroll(false);
+      } else if (isUserScrolling.current && isNearBottom) {
+        setShouldAutoScroll(true);
+      }
     };
 
+    container.addEventListener('wheel', handleWheel, { passive: true });
+    container.addEventListener('touchstart', handleTouchStart, { passive: true });
+    container.addEventListener('touchend', handleTouchEnd, { passive: true });
     container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+      container.removeEventListener('touchstart', handleTouchStart);
+      container.removeEventListener('touchend', handleTouchEnd);
+      container.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+    };
   }, []);
 
-  // Auto-scroll with improved timing
+  // Scroll to bottom when new messages arrive
   useEffect(() => {
     if (shouldAutoScroll) {
-      // Use requestAnimationFrame for better timing
-      requestAnimationFrame(() => {
-        scrollToBottom();
-      });
-    }
-  }, [visibleMessages, isTyping, activeStreamIndex, shouldAutoScroll]);
-
-  // Force scroll when new content appears (like document cards, images)
-  useEffect(() => {
-    if (shouldAutoScroll) {
-      const timer = setTimeout(() => {
-        scrollToBottom();
-      }, 300);
-      return () => clearTimeout(timer);
+      scrollToBottom('smooth');
     }
   }, [messages.length, shouldAutoScroll]);
 
-  // Continuous scroll during streaming - check every 100ms
+  // Scroll during active streaming
   useEffect(() => {
     if (!shouldAutoScroll || activeStreamIndex === -1) return;
 
     const scrollInterval = setInterval(() => {
       const container = containerRef.current;
-      if (container) {
-        const { scrollTop, scrollHeight, clientHeight } = container;
-        const isAtBottom = scrollHeight - scrollTop - clientHeight < 10;
-
-        // Only scroll if not at bottom (content is growing)
-        if (!isAtBottom) {
-          scrollToBottom();
-        }
+      if (!container) return;
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      if (scrollHeight - scrollTop - clientHeight > 10) {
+        scrollToBottom();
       }
-    }, 100);
+    }, 150);
 
     return () => clearInterval(scrollInterval);
   }, [shouldAutoScroll, activeStreamIndex]);
-
-  // Watch for content changes and auto-scroll
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || !shouldAutoScroll) return;
-
-    const observer = new MutationObserver(() => {
-      // Content has changed, scroll to bottom
-      scrollToBottom();
-    });
-
-    observer.observe(container, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-    });
-
-    return () => observer.disconnect();
-  }, [shouldAutoScroll]);
 
   return (
     <div ref={containerRef} className="flex-1 overflow-y-auto px-6 py-6">

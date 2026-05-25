@@ -6,6 +6,7 @@ import { TypeAnimation } from 'react-type-animation';
 import type { ChatMessage, AgentResponseContent, DocumentCard as DocType } from '@/lib/types';
 import DocumentCard from '@/components/shared/DocumentCard';
 import StatusPill from '@/components/shared/StatusPill';
+import QAChart from '@/components/chat/QAChart';
 import { useDAWN } from '@/context/DAWNContext';
 import { STORYLINE } from '@/lib/storyline';
 
@@ -536,6 +537,9 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
 
           {/* Metrics */}
           {(hasFinishedStreaming || !shouldStream) && resp.metrics && <MetricsBlock metrics={resp.metrics} />}
+
+          {/* Chart */}
+          {(hasFinishedStreaming || !shouldStream) && resp.chart && <QAChart chart={resp.chart} />}
 
           {/* Recommendation - shown after all content */}
           {(hasFinishedStreaming || !shouldStream) && resp.recommendation && (

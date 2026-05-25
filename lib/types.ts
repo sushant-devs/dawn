@@ -120,6 +120,12 @@ export interface MLRApprovalDetails {
   comments?: string;
 }
 
+export interface ChartData {
+  type: 'bar' | 'donut';
+  title?: string;
+  data: Array<{ name: string; value: number; benchmark?: number; color?: string }>;
+}
+
 export interface AgentResponseContent {
   text: string;
   recommendation?: string;
@@ -135,6 +141,7 @@ export interface AgentResponseContent {
   statusSummary?: StatusSummary;
   actionButton?: ActionButton;
   notification?: NotificationData;
+  chart?: ChartData;
 }
 
 export interface ChatMessage {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { X, Mail, Tablet, Monitor, Users, Building, Share2, Check } from 'lucide-react';
+import { X, Mail, Tablet, Monitor, Users, Building, Share2, Check, Shield, Database, Tag, FileImage, Rocket } from 'lucide-react';
 import { DISTRIBUTION_CHANNELS } from '@/lib/mockData';
 
 interface DistributionModalProps {
@@ -14,11 +14,11 @@ const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 const VAULT_STEPS = [
-  'Packaging assets…',
-  'Uploading to Vault…',
-  'Metadata tagging…',
-  'Rendition generation…',
-  'Ready for Distribution',
+  { label: 'Packaging MLR-approved assets', description: '5 Brexiva assets bundled with approval metadata', icon: Shield },
+  { label: 'Uploading to DAM Platform', description: 'Secure transfer to DAM repository', icon: Database },
+  { label: 'Applying regulatory metadata', description: 'IND, market codes, expiry & version tags', icon: Tag },
+  { label: 'Generating channel renditions', description: 'PDF, HTML, DDA & print-ready formats', icon: FileImage },
+  { label: 'Distribution ready', description: 'All channels cleared for deployment', icon: Rocket },
 ];
 
 export default function DistributionModal({ onConfirm, onClose }: DistributionModalProps) {
@@ -26,7 +26,6 @@ export default function DistributionModal({ onConfirm, onClose }: DistributionMo
   const [vaultStep, setVaultStep] = useState(-1);
 
   useEffect(() => {
-    // Start vault animation after short delay
     const timer = setTimeout(() => {
       let step = 0;
       const interval = setInterval(() => {
@@ -65,7 +64,7 @@ export default function DistributionModal({ onConfirm, onClose }: DistributionMo
         {/* Status header */}
         <div className="px-6 py-3 bg-dawn-green/5 border-b border-dawn-green/20">
           <p className="text-sm font-medium text-dawn-green">
-            5 Assets — Passed Status Confirmed. Select distribution channels.
+            4 Assets — Passed Status Confirmed. Select distribution channels.
           </p>
         </div>
 
@@ -116,22 +115,65 @@ export default function DistributionModal({ onConfirm, onClose }: DistributionMo
             })}
           </div>
 
-          {/* Veeva Vault status */}
-          <div className="bg-dawn-navy/5 border border-dawn-navy/10 rounded-xl p-4">
-            <p className="text-xs font-semibold text-dawn-navy mb-3">Veeva Vault Integration</p>
-            <div className="space-y-2">
+          {/* DAM Platform Integration */}
+          <div className="rounded-xl border border-dawn-navy/10 overflow-hidden">
+            {/* Vault header */}
+            <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-dawn-navy/8 to-dawn-navy/3 border-b border-dawn-navy/10">
+              <div className="w-7 h-7 rounded-lg bg-dawn-navy/10 flex items-center justify-center">
+                <Database size={14} className="text-dawn-navy" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs font-semibold text-dawn-navy">DAM Platform</p>
+                <p className="text-[10px] text-gray-500">Brexiva HR+/HER2- Campaign — Auto-sync pipeline</p>
+              </div>
+              <div className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${vaultStep >= VAULT_STEPS.length - 1 ? 'bg-dawn-green/15 text-dawn-green' : 'bg-dawn-amber/15 text-dawn-amber'}`}>
+                {vaultStep >= VAULT_STEPS.length - 1 ? 'Complete' : 'In Progress'}
+              </div>
+            </div>
+
+            {/* Steps */}
+            <div className="px-4 py-4 space-y-0">
               {VAULT_STEPS.map((step, i) => {
                 const done = vaultStep >= i;
                 const active = vaultStep === i;
+                const isLast = i === VAULT_STEPS.length - 1;
+                const StepIcon = step.icon;
                 return (
-                  <div key={step} className={`flex items-center gap-2 transition-all duration-300 ${done ? 'opacity-100' : 'opacity-30'}`}>
-                    <div className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 ${done ? 'bg-dawn-green' : 'bg-gray-300'}`}>
-                      {done && <Check size={10} className="text-white" />}
+                  <div key={step.label} className="flex gap-3">
+                    <div className="flex flex-col items-center">
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 border-2 transition-all duration-500 ${
+                        done
+                          ? 'bg-dawn-green border-dawn-green/30 shadow-[0_0_8px_rgba(16,185,129,0.25)]'
+                          : active
+                            ? 'bg-white border-dawn-teal shadow-[0_0_8px_rgba(0,168,150,0.3)]'
+                            : 'bg-gray-50 border-gray-200'
+                      }`}>
+                        {done ? (
+                          <Check size={12} className="text-white" />
+                        ) : (
+                          <StepIcon size={12} className={active ? 'text-dawn-teal' : 'text-gray-400'} />
+                        )}
+                      </div>
+                      {!isLast && (
+                        <div className={`w-0.5 h-6 my-1 rounded-full transition-all duration-500 ${done ? 'bg-dawn-green/40' : 'bg-gray-200'}`} />
+                      )}
                     </div>
-                    <span className={`text-xs ${active ? 'text-dawn-teal font-medium' : done ? 'text-gray-600' : 'text-gray-400'}`}>
-                      {step}
-                    </span>
-                    {active && <div className="w-2 h-2 rounded-full bg-dawn-teal animate-pulse ml-auto" />}
+
+                    <div className={`pt-1 pb-3 transition-all duration-300 ${done || active ? 'opacity-100' : 'opacity-40'}`}>
+                      <div className="flex items-center gap-2">
+                        <p className={`text-xs font-medium ${active ? 'text-dawn-teal' : done ? 'text-dawn-navy' : 'text-gray-500'}`}>
+                          {step.label}
+                        </p>
+                        {active && (
+                          <span className="flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-dawn-teal animate-pulse" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-dawn-teal animate-pulse [animation-delay:150ms]" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-dawn-teal animate-pulse [animation-delay:300ms]" />
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[10px] text-gray-500 mt-0.5">{step.description}</p>
+                    </div>
                   </div>
                 );
               })}

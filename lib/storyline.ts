@@ -12,7 +12,7 @@ export const STORYLINE: StorylineStep[] = [
       text: "Campaign workspace initialized. Here's your confirmed campaign configuration - all downstream modules will inherit these parameters.",
       campaignSummary: {
         brand: 'Brexiva',
-        ta: 'Brevixa — HR+/HER2− Metastatic Breast Cancer',
+        ta: 'Oncology',
         markets: ['Global', 'USA', 'EU', 'APAC'],
         audience: ['Oncologists', 'Breast Cancer Specialists', 'Oncology Nurse Practitioners'],
         budget: '$90,000',
@@ -296,7 +296,7 @@ Done! Your content is ready for review.`,
     stage: 'mlr',
     userMessage: '',
     agentResponse: {
-      text: 'Internal MLR screen completed. It identifies flagged claims, explains tier risk, and shows what needs revision. Final approval is handled by Veeva Promomat, and you will receive a notification once the assets are approved.',
+      text: 'Internal MLR screen completed. It identifies flagged claims, explains tier risk, and shows what needs revision. Final approval is handled by DAM Platform, and you will receive a notification once the assets are approved.',
       mlrTable: [
         { asset: 'Poster', tier: 'Tier 2', aiPreScreen: '2 flags', status: 'Pending' },
         { asset: 'HCP Email', tier: 'Tier 1', aiPreScreen: 'Clean', status: 'Passed' },
@@ -311,7 +311,7 @@ Done! Your content is ready for review.`,
       notification: {
         type: 'mlr-approved',
         title: 'MLR Review Approved',
-        message: 'All campaign assets have been reviewed and approved by Veeva Promomat.',
+        message: 'All campaign assets have been reviewed and approved by DAM Platform.',
         timestamp: '2026-04-10 14:23:00',
         details: {
           approvedAssets: [
@@ -320,7 +320,7 @@ Done! Your content is ready for review.`,
             { asset: 'Patient Leaflet', tier: 'Tier 1', aiPreScreen: 'Clean', status: 'Passed' },
             { asset: 'Digital Detail Aid', tier: 'Tier 2', aiPreScreen: 'Clean', status: 'Passed' },
           ],
-          approver: 'Sarah Mitchell (Veeva Promomat)',
+          approver: 'Sarah Mitchell (DAM Platform)',
           approvalDate: '2026-04-10',
           comments: 'All claims substantiated. Minor edits applied to poster and DDA for fair balance. Ready for distribution.',
         },

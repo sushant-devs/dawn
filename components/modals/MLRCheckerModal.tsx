@@ -356,20 +356,20 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
               </p>
             </div>
 
-            {/* Veeva Integration Notice */}
+            {/* DAM Platform Integration Notice */}
             <div className="bg-dawn-sky/20 border border-dawn-teal/30 rounded-xl p-4 space-y-2">
               <p className="text-xs font-semibold text-dawn-navy flex items-center gap-2">
                 <FileCheck size={14} />
-                Veeva PromoMats Integration
+                DAM Platform Integration
               </p>
               <p className="text-xs text-dawn-navy">
                 This is an <strong>internal AI pre-screen only</strong>. Final medical/legal/regulatory approval
-                is performed in Veeva PromoMats (system of record).
+                is performed in DAM Platform (system of record).
               </p>
               <div className="flex items-start gap-2 bg-white/50 rounded-lg p-2 mt-2">
                 <CheckCircle size={14} className="text-green-600 mt-0.5 shrink-0" />
                 <div className="text-[10px] text-gray-700">
-                  <p className="font-medium">Pre-check results will transfer to Veeva with visual indicators:</p>
+                  <p className="font-medium">Pre-check results will transfer to DAM Platform with visual indicators:</p>
                   <ul className="mt-1 space-y-0.5 ml-2">
                     <li>• Green badges for pre-validated content</li>
                     <li>• Amber flags for items needing attention</li>
@@ -383,7 +383,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
 
         {/* Footer */}
         <div className="px-6 py-4 border-t border-dawn-border bg-white flex items-center justify-between">
-          <p className="text-xs text-gray-500">Internal pre-screen complete. Final approval occurs in Veeva Promomat.</p>
+          <p className="text-xs text-gray-500">Internal pre-screen complete. Final approval occurs in DAM Platform.</p>
           <div className="flex gap-3">
             <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-dawn-navy border border-dawn-border rounded-lg transition-colors cursor-pointer">Cancel</button>
             <button onClick={onConfirm} className="px-5 py-2 bg-dawn-teal text-white text-sm font-medium rounded-lg hover:bg-dawn-teal/90 transition-all shadow-sm cursor-pointer">
