@@ -161,6 +161,11 @@ interface ContentEditorModalProps {
 
 const PERSONAS = ['Clinical Researcher', 'Nurse Practitioner', 'Patient'];
 
+function pdfPreviewUrl(path: string) {
+  const viewParams = 'view=FitH&toolbar=0&navpanes=0';
+  return path.includes('#') ? `${path}&${viewParams}` : `${path}#${viewParams}`;
+}
+
 const IMAGE_VARIATIONS = [
   {
     id: 'poster',
@@ -171,7 +176,7 @@ const IMAGE_VARIATIONS = [
   },
   {
     id: 'email',
-    title: 'HCP Email Template',
+    title: 'HCP Email',
     pdf: '/templates/BREXIVA_HCP_Email_Clinical_Focus.pdf',
     description: 'Professional HCP email format with data highlights',
     type: 'Digital',
@@ -217,7 +222,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative flex max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-dawn-border bg-white shadow-[0_24px_64px_rgba(15,23,42,0.2)] animate-scale-in">
+      <div className="relative flex h-[92vh] max-h-[92vh] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-dawn-border bg-white shadow-[0_24px_64px_rgba(15,23,42,0.2)] animate-scale-in">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-dawn-border bg-white">
           <div className="flex items-center gap-4">
@@ -252,7 +257,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
                 : 'bg-white text-gray-600 hover:text-dawn-navy border border-dawn-border'
             }`}
           >
-            Visual Templates
+            Visual Content
           </button>
           <div className="ml-auto text-xs text-gray-500 font-body">
             {viewMode === 'content' ? `${GENERATED_ASSETS.length} assets to review` : `${IMAGE_VARIATIONS.length} templates available`}
@@ -633,19 +638,21 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
                 </div>
               </div>
 
-              <div className="flex-1 overflow-auto p-8 flex items-center justify-center">
+              <div className="flex-1 min-h-0 overflow-hidden bg-[#e8ecf0]">
                 {selectedImage ? (
-                  <div className="relative bg-white rounded-lg shadow-2xl border border-gray-200" style={{ maxWidth: '800px', width: '100%', height: '600px' }}>
+                  <div className="pdf-preview-shell bg-white shadow-inner thin-scrollbar">
                     <iframe
-                      src={IMAGE_VARIATIONS.find(v => v.id === selectedImage)?.pdf}
+                      src={pdfPreviewUrl(IMAGE_VARIATIONS.find(v => v.id === selectedImage)?.pdf ?? '')}
                       title="Template PDF"
-                      className="w-full h-full rounded-lg"
+                      className="pdf-preview-iframe"
                     />
                   </div>
                 ) : (
-                  <div className="text-center text-gray-400 font-body">
-                    <FileImage size={48} className="mx-auto mb-3 opacity-40" />
-                    <p className="text-sm">Select a template to start editing</p>
+                  <div className="flex h-full items-center justify-center text-center text-gray-400 font-body">
+                    <div>
+                      <FileImage size={48} className="mx-auto mb-3 opacity-40" />
+                      <p className="text-sm">Select a template to start editing</p>
+                    </div>
                   </div>
                 )}
               </div>

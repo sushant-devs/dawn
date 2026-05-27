@@ -171,3 +171,62 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 9999px; }
 ::-webkit-scrollbar-thumb:hover { background: #D1D5DB; }
+
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--dawn-border) transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--dawn-border);
+  border-radius: 9999px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #D1D5DB;
+}
+
+/* PDF preview: clip wide native scrollbar, leave a ~6px strip + theme styling */
+.pdf-preview-shell {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.pdf-preview-iframe {
+  display: block;
+  height: 100%;
+  width: calc(100% + 11px);
+  max-width: none;
+  margin-right: -11px;
+  border: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dawn-border) transparent;
+}
+
+.pdf-preview-iframe::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.pdf-preview-iframe::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pdf-preview-iframe::-webkit-scrollbar-thumb {
+  background: var(--dawn-border);
+  border-radius: 9999px;
+}
+
+.pdf-preview-iframe::-webkit-scrollbar-thumb:hover {
+  background: #D1D5DB;
+}
