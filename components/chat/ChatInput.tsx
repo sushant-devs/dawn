@@ -1,6 +1,6 @@
 'use client';
 
-import { Send, MessageSquare, HelpCircle } from 'lucide-react';
+import { Send, MessageSquare, MessageCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export type ChatMode = 'normal' | 'question';
@@ -80,7 +80,7 @@ export default function ChatInput({ prePopulatedMessage, questionPrePopulated = 
               : 'bg-white/40 text-gray-500 border border-white/50 hover:bg-white/60 hover:text-gray-700'
           }`}
         >
-          <HelpCircle size={12} />
+          <MessageCircle size={12} />
           Chat
         </button>
       </div>

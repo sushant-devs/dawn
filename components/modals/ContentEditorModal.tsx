@@ -165,28 +165,28 @@ const IMAGE_VARIATIONS = [
   {
     id: 'poster',
     title: 'Congress Poster',
-    image: '/templates/poster.png',
+    pdf: '/templates/BREXIVA_Congress_Poster_BLYVOR3.pdf',
     description: 'Scientific poster layout with Brexiva clinical data',
     type: 'Scientific',
   },
   {
     id: 'email',
     title: 'HCP Email Template',
-    image: '/templates/email.png',
+    pdf: '/templates/BREXIVA_HCP_Email_Clinical_Focus.pdf',
     description: 'Professional HCP email format with data highlights',
     type: 'Digital',
   },
   {
     id: 'leaflet',
     title: 'Patient Leaflet',
-    image: '/templates/patient-leaflet.png',
+    pdf: '/templates/BREXIVA_Patient_Leaflet_Guide.pdf',
     description: 'Patient-friendly educational leaflet with clear safety info',
     type: 'Print',
   },
   {
     id: 'dda',
     title: 'Digital Detail Aid',
-    image: '/templates/dda.png',
+    pdf: '/templates/BREXIVA_Digital_Detail_Aid.pdf',
     description: 'Interactive modular presentation for field teams',
     type: 'Interactive',
   },
@@ -635,17 +635,12 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
 
               <div className="flex-1 overflow-auto p-8 flex items-center justify-center">
                 {selectedImage ? (
-                  <div className="relative bg-white rounded-lg shadow-2xl border border-gray-200" style={{ maxWidth: '800px', width: '100%' }}>
-                    <img
-                      src={IMAGE_VARIATIONS.find(v => v.id === selectedImage)?.image}
-                      alt="Template canvas"
-                      className="w-full h-auto rounded-lg"
+                  <div className="relative bg-white rounded-lg shadow-2xl border border-gray-200" style={{ maxWidth: '800px', width: '100%', height: '600px' }}>
+                    <iframe
+                      src={IMAGE_VARIATIONS.find(v => v.id === selectedImage)?.pdf}
+                      title="Template PDF"
+                      className="w-full h-full rounded-lg"
                     />
-                    <div className="absolute inset-0 pointer-events-none">
-                      <div className="absolute top-4 left-4 bg-dawn-teal/10 border-2 border-dawn-teal/40 rounded px-3 py-1.5">
-                        <span className="text-xs font-semibold text-dawn-teal font-body">Editable Area</span>
-                      </div>
-                    </div>
                   </div>
                 ) : (
                   <div className="text-center text-gray-400 font-body">
