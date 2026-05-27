@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { X, Mail, Tablet, Monitor, Users, Building, Share2, Check, Shield, Database, Tag, FileImage, Rocket } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { X, Mail, Tablet, Monitor, Users, Building, Share2, Check, Shield, Tag, FileImage, Rocket } from 'lucide-react';
 import { DISTRIBUTION_CHANNELS } from '@/lib/mockData';
 
 interface DistributionModalProps {
@@ -13,28 +13,73 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Mail, Tablet, Monitor, Users, Building, Share2,
 };
 
-const VAULT_STEPS = [
-  { label: 'Packaging MLR-approved assets', description: '5 Brexiva assets bundled with approval metadata', icon: Shield },
-  { label: 'Uploading to DAM Platform', description: 'Secure transfer to DAM repository', icon: Database },
-  { label: 'Applying regulatory metadata', description: 'IND, market codes, expiry & version tags', icon: Tag },
-  { label: 'Generating channel renditions', description: 'PDF, HTML, DDA & print-ready formats', icon: FileImage },
-  { label: 'Distribution ready', description: 'All channels cleared for deployment', icon: Rocket },
+const STEP_INITIAL_DELAY_MS = 1000;
+const STEP_INTERVAL_MS = 1500;
+
+const DISTRIBUTION_STEPS = [
+  { label: 'Loading MLR-approved assets', description: '4 Brexiva assets retrieved with DAM approval metadata', icon: Shield },
+  { label: 'Mapping assets to channels', description: 'Poster, email, leaflet & DDA aligned to selected channels', icon: Share2 },
+  { label: 'Applying channel metadata', description: 'Audience segments, delivery dates & market codes', icon: Tag },
+  { label: 'Generating channel renditions', description: 'PDF, HTML, DDA & print-ready formats per channel', icon: FileImage },
+  { label: 'Ready for deployment', description: 'All channels cleared — confirm to start transfer', icon: Rocket },
 ];
 
 export default function DistributionModal({ onConfirm, onClose }: DistributionModalProps) {
   const [channels, setChannels] = useState(DISTRIBUTION_CHANNELS);
   const [vaultStep, setVaultStep] = useState(-1);
+  const bodyScrollRef = useRef<HTMLDivElement>(null);
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    if (vaultStep < 0) return;
+
+    const stepIndex = Math.min(vaultStep, DISTRIBUTION_STEPS.length - 1);
+    const scrollEl = bodyScrollRef.current;
+    const stepEl = stepRefs.current[stepIndex];
+    if (!scrollEl || !stepEl) return;
+
+    const timer = setTimeout(() => {
+      const scrollRect = scrollEl.getBoundingClientRect();
+      const stepRect = stepEl.getBoundingClientRect();
+      const relativeTop = stepRect.top - scrollRect.top + scrollEl.scrollTop;
+      const target = relativeTop - scrollEl.clientHeight / 2 + stepRect.height / 2;
+
+      scrollEl.scrollTo({
+        top: Math.max(0, target),
+        behavior: 'smooth',
+      });
+    }, 80);
+
+    return () => clearTimeout(timer);
+  }, [vaultStep]);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | undefined;
+    let finishTimer: ReturnType<typeof setTimeout> | undefined;
+
     const timer = setTimeout(() => {
       let step = 0;
-      const interval = setInterval(() => {
-        setVaultStep(step);
+      setVaultStep(step);
+      interval = setInterval(() => {
         step++;
-        if (step >= VAULT_STEPS.length) clearInterval(interval);
-      }, 600);
-    }, 400);
-    return () => clearTimeout(timer);
+        if (step >= DISTRIBUTION_STEPS.length) {
+          if (interval) clearInterval(interval);
+          return;
+        }
+        setVaultStep(step);
+        if (step === DISTRIBUTION_STEPS.length - 1) {
+          finishTimer = setTimeout(() => {
+            setVaultStep(DISTRIBUTION_STEPS.length);
+          }, STEP_INTERVAL_MS);
+        }
+      }, STEP_INTERVAL_MS);
+    }, STEP_INITIAL_DELAY_MS);
+
+    return () => {
+      clearTimeout(timer);
+      if (finishTimer) clearTimeout(finishTimer);
+      if (interval) clearInterval(interval);
+    };
   }, []);
 
   const toggleChannel = (id: string) => {
@@ -69,7 +114,7 @@ export default function DistributionModal({ onConfirm, onClose }: DistributionMo
         </div>
 
         {/* Body */}
-        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+        <div ref={bodyScrollRef} className="flex-1 overflow-y-auto px-6 py-4 space-y-4 scroll-smooth">
           {/* Channel grid */}
           <div className="grid grid-cols-2 gap-3">
             {channels.map((channel) => {
@@ -115,53 +160,62 @@ export default function DistributionModal({ onConfirm, onClose }: DistributionMo
             })}
           </div>
 
-          {/* DAM Platform Integration */}
+          {/* Distribution pipeline */}
           <div className="rounded-xl border border-dawn-navy/10 overflow-hidden">
-            {/* Vault header */}
             <div className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-dawn-navy/8 to-dawn-navy/3 border-b border-dawn-navy/10">
               <div className="w-7 h-7 rounded-lg bg-dawn-navy/10 flex items-center justify-center">
-                <Database size={14} className="text-dawn-navy" />
+                <Share2 size={14} className="text-dawn-navy" />
               </div>
               <div className="flex-1">
-                <p className="text-xs font-semibold text-dawn-navy">DAM Platform</p>
-                <p className="text-[10px] text-gray-500">Brexiva HR+/HER2- Campaign — Auto-sync pipeline</p>
+                <p className="text-xs font-semibold text-dawn-navy">Distribution Pipeline</p>
+                <p className="text-[10px] text-gray-500">Brexiva HR+/HER2− Campaign — Channel preparation</p>
               </div>
-              <div className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${vaultStep >= VAULT_STEPS.length - 1 ? 'bg-dawn-green/15 text-dawn-green' : 'bg-dawn-amber/15 text-dawn-amber'}`}>
-                {vaultStep >= VAULT_STEPS.length - 1 ? 'Complete' : 'In Progress'}
+              <div className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${vaultStep >= DISTRIBUTION_STEPS.length ? 'bg-dawn-green/15 text-dawn-green' : 'bg-dawn-amber/15 text-dawn-amber'}`}>
+                {vaultStep >= DISTRIBUTION_STEPS.length ? 'Complete' : 'In Progress'}
               </div>
             </div>
 
-            {/* Steps */}
-            <div className="px-4 py-4 space-y-0">
-              {VAULT_STEPS.map((step, i) => {
-                const done = vaultStep >= i;
+            <div className="pipeline-steps px-4 py-4 space-y-0">
+              {DISTRIBUTION_STEPS.map((step, i) => {
+                const completed = vaultStep > i;
                 const active = vaultStep === i;
-                const isLast = i === VAULT_STEPS.length - 1;
+                const flowInProgress = vaultStep >= 0 && vaultStep < DISTRIBUTION_STEPS.length;
+                const isLast = i === DISTRIBUTION_STEPS.length - 1;
                 const StepIcon = step.icon;
+                const rowState = active ? 'pipeline-step-row--active' : completed ? 'pipeline-step-row--completed' : 'pipeline-step-row--pending';
+                const faded = flowInProgress && !active;
                 return (
-                  <div key={step.label} className="flex gap-3">
+                  <div
+                    key={step.label}
+                    ref={(el) => { stepRefs.current[i] = el; }}
+                    className={`pipeline-step-row flex gap-3 rounded-lg px-2 py-1 -mx-2 ${rowState}${faded ? ' pipeline-step-row--faded' : ''}`}
+                  >
                     <div className="flex flex-col items-center">
-                      <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 border-2 transition-all duration-500 ${
-                        done
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 border-2 transition-all duration-700 ease-out ${
+                        completed
                           ? 'bg-dawn-green border-dawn-green/30 shadow-[0_0_8px_rgba(16,185,129,0.25)]'
                           : active
-                            ? 'bg-white border-dawn-teal shadow-[0_0_8px_rgba(0,168,150,0.3)]'
+                            ? 'bg-white border-dawn-teal shadow-[0_0_12px_rgba(0,168,150,0.35)]'
                             : 'bg-gray-50 border-gray-200'
                       }`}>
-                        {done ? (
+                        {completed ? (
                           <Check size={12} className="text-white" />
                         ) : (
                           <StepIcon size={12} className={active ? 'text-dawn-teal' : 'text-gray-400'} />
                         )}
                       </div>
                       {!isLast && (
-                        <div className={`w-0.5 h-6 my-1 rounded-full transition-all duration-500 ${done ? 'bg-dawn-green/40' : 'bg-gray-200'}`} />
+                        <div className={`w-0.5 h-6 my-1 rounded-full transition-all duration-700 ease-out ${
+                          completed ? 'bg-dawn-green/40' : active ? 'bg-dawn-teal/30' : 'bg-gray-200'
+                        }`} />
                       )}
                     </div>
 
-                    <div className={`pt-1 pb-3 transition-all duration-300 ${done || active ? 'opacity-100' : 'opacity-40'}`}>
+                    <div className="pt-1 pb-3 transition-all duration-700 ease-out">
                       <div className="flex items-center gap-2">
-                        <p className={`text-xs font-medium ${active ? 'text-dawn-teal' : done ? 'text-dawn-navy' : 'text-gray-500'}`}>
+                        <p className={`text-xs font-medium transition-colors duration-700 ${
+                          active ? 'text-dawn-teal' : completed ? 'text-dawn-navy' : 'text-gray-500'
+                        }`}>
                           {step.label}
                         </p>
                         {active && (
@@ -172,7 +226,9 @@ export default function DistributionModal({ onConfirm, onClose }: DistributionMo
                           </span>
                         )}
                       </div>
-                      <p className="text-[10px] text-gray-500 mt-0.5">{step.description}</p>
+                      <p className={`text-[10px] mt-0.5 transition-colors duration-700 ${
+                        active ? 'text-gray-600' : 'text-gray-500'
+                      }`}>{step.description}</p>
                     </div>
                   </div>
                 );

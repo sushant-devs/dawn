@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Monitor, Database, Share2, Check, FileText, Image, File } from 'lucide-react';
 
 interface FileTransferModalProps {
@@ -14,35 +14,52 @@ const TRANSFER_FILES = [
   { name: 'Digital_Detail_Aid.html', icon: FileText, size: '3.1 MB' },
 ];
 
+const INITIAL_DELAY_MS = 1200;
+const FILE_TRANSFER_MS = 1800;
+const BETWEEN_FILES_MS = 500;
+const COMPLETE_DELAY_MS = 2000;
+
 export default function FileTransferModal({ onComplete }: FileTransferModalProps) {
   const [transferProgress, setTransferProgress] = useState(0);
   const [activeFileIndex, setActiveFileIndex] = useState(-1);
   const [completedFiles, setCompletedFiles] = useState<number[]>([]);
   const [transferComplete, setTransferComplete] = useState(false);
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   useEffect(() => {
-    let fileIdx = 0;
-    const startNextFile = () => {
-      if (fileIdx >= TRANSFER_FILES.length) {
-        setTransferComplete(true);
-        setTimeout(() => onComplete(), 1500);
-        return;
-      }
-      setActiveFileIndex(fileIdx);
-      const duration = 800 + Math.random() * 400;
-      const progressPerFile = 100 / TRANSFER_FILES.length;
-
-      setTimeout(() => {
-        setCompletedFiles((prev) => [...prev, fileIdx]);
-        setTransferProgress((fileIdx + 1) * progressPerFile);
-        fileIdx++;
-        setTimeout(startNextFile, 200);
-      }, duration);
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    const schedule = (fn: () => void, ms: number) => {
+      const id = setTimeout(fn, ms);
+      timeouts.push(id);
     };
 
-    const initialDelay = setTimeout(startNextFile, 600);
-    return () => clearTimeout(initialDelay);
-  }, [onComplete]);
+    let fileIdx = 0;
+
+    const transferNext = () => {
+      if (fileIdx >= TRANSFER_FILES.length) {
+        setTransferComplete(true);
+        schedule(() => onCompleteRef.current(), COMPLETE_DELAY_MS);
+        return;
+      }
+
+      const idx = fileIdx;
+      setActiveFileIndex(idx);
+
+      schedule(() => {
+        setCompletedFiles((prev) => (prev.includes(idx) ? prev : [...prev, idx]));
+        setTransferProgress(((idx + 1) / TRANSFER_FILES.length) * 100);
+        fileIdx = idx + 1;
+        schedule(transferNext, BETWEEN_FILES_MS);
+      }, FILE_TRANSFER_MS);
+    };
+
+    schedule(transferNext, INITIAL_DELAY_MS);
+
+    return () => {
+      timeouts.forEach(clearTimeout);
+    };
+  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -87,7 +104,7 @@ export default function FileTransferModal({ onComplete }: FileTransferModalProps
                 <div
                   key={activeFileIndex}
                   className="absolute left-1 top-1/2 -translate-y-1/2"
-                  style={{ ['--fly-distance' as string]: 'calc(100% - 12px)', animation: 'file-fly 0.75s ease-in-out forwards' }}
+                  style={{ ['--fly-distance' as string]: 'calc(100% - 12px)', animation: 'file-fly 1.6s ease-in-out forwards' }}
                 >
                   <div className="w-8 h-8 rounded-lg bg-white border border-dawn-teal/30 flex items-center justify-center shadow-sm">
                     {(() => { const IconComp = TRANSFER_FILES[activeFileIndex]?.icon ?? FileText; return <IconComp size={14} className="text-dawn-teal" />; })()}
@@ -114,7 +131,11 @@ export default function FileTransferModal({ onComplete }: FileTransferModalProps
           <div className="mb-5">
             <div className="flex items-center justify-between mb-2">
               <p className="text-xs font-medium text-dawn-navy">
-                {transferComplete ? 'All files transferred' : `Transferring ${completedFiles.length + 1} of ${TRANSFER_FILES.length}...`}
+                {transferComplete || completedFiles.length >= TRANSFER_FILES.length
+                  ? 'All files transferred'
+                  : activeFileIndex >= 0
+                    ? `Transferring ${activeFileIndex + 1} of ${TRANSFER_FILES.length}...`
+                    : 'Preparing transfer...'}
               </p>
               <p className="text-xs font-medium text-dawn-teal tabular-nums">{Math.round(transferProgress)}%</p>
             </div>
