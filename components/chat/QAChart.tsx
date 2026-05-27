@@ -1,12 +1,14 @@
 'use client';
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
 import type { ChartData } from '@/lib/types';
 
 interface QAChartProps {
   chart: ChartData;
 }
 
+const DEFAULT_BAR_COLOR = '#00a896';
+const BENCHMARK_BAR_COLOR = '#cbd5e1';
 const DONUT_COLORS = ['#00a896', '#f59e0b', '#ef4444', '#6366f1'];
 
 export default function QAChart({ chart }: QAChartProps) {
@@ -24,17 +26,36 @@ export default function QAChart({ chart }: QAChartProps) {
             <Tooltip
               contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', fontSize: '12px' }}
             />
-            <Legend wrapperStyle={{ fontSize: '11px' }} />
             <Bar dataKey="value" name="Actual" radius={[4, 4, 0, 0]}>
               {chart.data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color || '#00a896'} />
+                <Cell key={`cell-${index}`} fill={entry.color || DEFAULT_BAR_COLOR} />
               ))}
             </Bar>
             {chart.data.some(d => d.benchmark !== undefined) && (
-              <Bar dataKey="benchmark" name="Benchmark" fill="#cbd5e1" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="benchmark" name="Benchmark" fill={BENCHMARK_BAR_COLOR} radius={[4, 4, 0, 0]} />
             )}
           </BarChart>
         </ResponsiveContainer>
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+          {chart.data.map((entry, index) => (
+            <div key={entry.name} className="flex items-center gap-1.5">
+              <div
+                className="w-2.5 h-2.5 rounded-sm shrink-0"
+                style={{ backgroundColor: entry.color || DEFAULT_BAR_COLOR }}
+              />
+              <span className="text-[11px] text-gray-600">{entry.name}</span>
+            </div>
+          ))}
+          {chart.data.some(d => d.benchmark !== undefined) && (
+            <div className="flex items-center gap-1.5">
+              <div
+                className="w-2.5 h-2.5 rounded-sm shrink-0"
+                style={{ backgroundColor: BENCHMARK_BAR_COLOR }}
+              />
+              <span className="text-[11px] text-gray-600">Benchmark</span>
+            </div>
+          )}
+        </div>
       </div>
     );
   }
