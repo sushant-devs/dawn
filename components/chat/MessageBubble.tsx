@@ -191,6 +191,65 @@ function ImageVariationsBlock({ variations }: { variations: NonNullable<AgentRes
   );
 }
 
+// Generic data table (used for QA analytics responses)
+function DataTableBlock({ table }: { table: NonNullable<AgentResponseContent['table']> }) {
+  const highlightIdx = table.highlightRowIndex;
+  return (
+    <div className="mt-4 overflow-hidden rounded-xl border border-dawn-border bg-white">
+      {table.title && (
+        <div className="px-4 py-2.5 border-b border-dawn-border bg-gray-50">
+          <p className="text-xs font-semibold text-dawn-navy uppercase tracking-wide">{table.title}</p>
+        </div>
+      )}
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="bg-gray-50/60 border-b border-dawn-border">
+              {table.headers.map((h, i) => (
+                <th
+                  key={`${h}-${i}`}
+                  className={`px-3 py-2.5 font-semibold text-gray-500 uppercase tracking-wide text-[10px] ${i === 0 ? 'text-left' : 'text-right'}`}
+                >
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {table.rows.map((row, ri) => {
+              const isHighlight = highlightIdx === ri;
+              return (
+                <tr
+                  key={`row-${ri}`}
+                  className={`border-b border-dawn-border last:border-0 transition-colors ${
+                    isHighlight ? 'bg-dawn-teal/5' : 'hover:bg-gray-50'
+                  }`}
+                >
+                  {row.map((cell, ci) => (
+                    <td
+                      key={`cell-${ri}-${ci}`}
+                      className={`px-3 py-2.5 ${ci === 0 ? 'text-left text-dawn-navy font-medium' : 'text-right text-gray-700 tabular-nums'} ${
+                        isHighlight ? 'font-semibold text-dawn-teal' : ''
+                      }`}
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {table.caption && (
+        <div className="px-4 py-2 border-t border-dawn-border bg-gray-50/60">
+          <p className="text-[11px] text-gray-500 italic">{table.caption}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // MLR table
 function MLRTableBlock({ rows }: { rows: NonNullable<AgentResponseContent['mlrTable']> }) {
   return (
@@ -365,7 +424,9 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
         resp.imageVariations ||
         resp.mlrTable ||
         resp.plsScores ||
-        resp.metrics
+        resp.metrics ||
+        resp.table ||
+        resp.chart
       );
 
       if (hasRichContent && onContentExpand) {
@@ -537,6 +598,9 @@ export default function MessageBubble({ message, shouldStream = true, onStreamCo
 
           {/* Metrics */}
           {(hasFinishedStreaming || !shouldStream) && resp.metrics && <MetricsBlock metrics={resp.metrics} />}
+
+          {/* Generic data table (QA analytics) */}
+          {(hasFinishedStreaming || !shouldStream) && resp.table && <DataTableBlock table={resp.table} />}
 
           {/* Chart */}
           {(hasFinishedStreaming || !shouldStream) && resp.chart && <QAChart chart={resp.chart} />}

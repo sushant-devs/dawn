@@ -62,6 +62,8 @@ export default function QAChart({ chart }: QAChartProps) {
 
   if (chart.type === 'donut') {
     const total = chart.data.reduce((sum, d) => sum + d.value, 0);
+    const unit = chart.valueUnit ?? 'assets';
+    const showTotal = !chart.hideTotal && chart.valueUnit !== '%';
     return (
       <div className="mt-4 bg-white border border-dawn-border rounded-xl p-4">
         {chart.title && (
@@ -94,12 +96,17 @@ export default function QAChart({ chart }: QAChartProps) {
                   style={{ backgroundColor: entry.color || DONUT_COLORS[index % DONUT_COLORS.length] }}
                 />
                 <span className="text-xs text-gray-600 flex-1">{entry.name}</span>
-                <span className="text-xs font-semibold text-dawn-navy">{entry.value}</span>
+                <span className="text-xs font-semibold text-dawn-navy">
+                  {entry.value}
+                  {chart.valueUnit === '%' ? '%' : ''}
+                </span>
               </div>
             ))}
-            <div className="pt-1 border-t border-gray-100">
-              <span className="text-[10px] text-gray-400 uppercase tracking-wide">Total: {total} assets</span>
-            </div>
+            {showTotal && (
+              <div className="pt-1 border-t border-gray-100">
+                <span className="text-[10px] text-gray-400 uppercase tracking-wide">Total: {total} {unit}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -19,56 +19,139 @@ import FileTransferModal from '@/components/modals/FileTransferModal';
 import EffectivenessModal from '@/components/modals/EffectivenessModal';
 import NotificationModal from '@/components/modals/NotificationModal';
 import PLSGeneratorModal from '@/components/modals/PLSGeneratorModal';
-import type { AgentResponseContent, ChatMessage, ChartData, NotificationData } from '@/lib/types';
+import type { AgentResponseContent, ChatMessage, ChartData, NotificationData, TableData } from '@/lib/types';
 
 interface QAStep {
   userMessage: string;
   agentResponse: string;
+  recommendation?: string;
+  table?: TableData;
   chart?: ChartData;
 }
 
 const QA_STORYLINE: QAStep[] = [
+  // ── Q1 ──────────────────────────────────────────────────────────────────────
   {
-    userMessage: "What's the current status of my Brexiva campaign assets?",
-    agentResponse: "Your Brexiva HR+/HER2- campaign has 4 assets in the MLR pipeline. 2 have passed (HCP Email & Patient Leaflet — both Tier 1, clean). 2 are pending review (Congress Poster — Tier 2, 2 flags; Digital Detail Aid — Tier 2, 1 flag).\n\nFinal approval is routed through DAM Platform and you'll receive a notification once cleared.",
+    userMessage: "Which audience segments should be targeted for BREXIVA (Brenova)?",
+    agentResponse:
+      "Here's the audience segment analysis for BREXIVA based on engagement and prescription growth performance.\n\nMedical Oncologists generated the highest engagement (48%) and contributed the strongest prescription growth (+22%) for BREXIVA — clearly the highest-value segment.",
+    table: {
+      title: 'DAWN Analysis — Audience Segment Performance',
+      headers: ['Audience Segment', 'Engagement Rate', 'Prescription Growth'],
+      rows: [
+        ['Medical Oncologists', '48%', '+22%'],
+        ['Hemato-Oncologists', '44%', '+18%'],
+        ['Oncology KOLs', '41%', '+16%'],
+        ['General Physicians', '19%', '+4%'],
+      ],
+      highlightRowIndex: 0,
+    },
+    recommendation:
+      "Focus future campaigns on Medical Oncologists and Oncology KOLs. Allocate approximately 65% of campaign resources to these high-value segments to maximize engagement and conversion.",
+  },
+
+  // ── Q2 ──────────────────────────────────────────────────────────────────────
+  {
+    userMessage: "Which content formats generate the highest engagement for BREXIVA?",
+    agentResponse:
+      "Here's the content format performance analysis for BREXIVA across all active channels.\n\nPersonalized Emails generated 72% more engagement than Congress Posters and consistently delivered the highest physician interaction rates.",
+    table: {
+      title: 'DAWN Analysis — Content Format Engagement',
+      headers: ['Content Format', 'Engagement Rate'],
+      rows: [
+        ['Personalized Email', '43%'],
+        ['Digital Detail Aid', '40%'],
+        ['Leaflet', '25%'],
+        ['Congress Poster', '17%'],
+      ],
+      highlightRowIndex: 0,
+    },
     chart: {
       type: 'donut',
-      title: 'MLR Pipeline Status',
+      title: 'Engagement Share by Content Format',
+      valueUnit: '%',
       data: [
-        { name: 'Passed', value: 2, color: '#00a896' },
-        { name: 'Pending Review', value: 2, color: '#f59e0b' },
+        { name: 'Personalized Email', value: 43, color: '#00a896' },
+        { name: 'Digital Detail Aid', value: 40, color: '#0891b2' },
+        { name: 'Leaflet', value: 25, color: '#6366f1' },
+        { name: 'Congress Poster', value: 17, color: '#f59e0b' },
       ],
     },
   },
+
+  // ── Q3 ──────────────────────────────────────────────────────────────────────
   {
-    userMessage: "Can you summarise what the Brexiva Clinical Review Report says about patient selection?",
-    agentResponse: "Based on the Brexiva Clinical Review Report (97% match, CSR) in your asset library: the report recommends selecting HR+/HER2- metastatic breast cancer patients who have progressed on at least one prior endocrine therapy.\n\nKey biomarker criteria include confirmed HER2-negativity and HR-positivity by local testing. The report highlights caution in patients with visceral crisis, where faster-acting chemotherapy may be preferred.",
+    userMessage: "Which promotional channels deliver the best ROI for BREXIVA?",
+    agentResponse:
+      "Here's the channel-level ROI analysis for BREXIVA based on last-cycle promotional spend and downstream prescription value.\n\nEmail Campaigns delivered the highest ROI while reaching 32% more target physicians compared to field-force-only activities.",
+    table: {
+      title: 'DAWN Analysis — Promotional Channel ROI',
+      headers: ['Channel', 'ROI'],
+      rows: [
+        ['Email Campaigns', '5.2x'],
+        ['Digital Detailing Platforms', '4.8x'],
+        ['Medical Congress Activities', '4.1x'],
+        ['Representative Visits', '3.6x'],
+      ],
+      highlightRowIndex: 0,
+    },
+    recommendation:
+      "Increase investment in Email Campaigns and Digital Detailing Platforms by 25% in upcoming campaign cycles to maximize return on marketing spend.",
   },
+
+  // ── Q4 ──────────────────────────────────────────────────────────────────────
   {
-    userMessage: "We ran a Brexiva campaign last quarter — what were the open rate and DDA engagement results?",
-    agentResponse: "Here's the performance summary for the Brexiva Q1 oncology campaign:\n\n**Email open rate:** 34% (↑8% vs 28% benchmark)\n**Email CTR:** 12.4% (↑4.1% vs 8.3% benchmark)\n**DDA engagement:** 4.2 min avg (↑1.1 min vs 3.1 min avg)\n**Rx switches:** 223 (↑47 MoM vs 180 target)",
+    userMessage: "How do marketing activities influence sales performance for BREXIVA?",
+    agentResponse:
+      "Analysis of campaign and prescription data indicates a strong relationship between marketing engagement and sales growth for BREXIVA.\n\n**Key Findings:**\n• Physicians exposed to at least three marketing touchpoints showed a 24% increase in prescription volume.\n• Email-engaged physicians generated 18% higher brand adoption compared to non-engaged physicians.\n• Multi-channel campaigns achieved 31% higher sales uplift than single-channel initiatives.",
+    table: {
+      title: 'DAWN Analysis — Marketing Exposure vs Prescription Growth',
+      headers: ['Marketing Exposure', 'Average Prescription Growth'],
+      rows: [
+        ['Single Touchpoint', '+5%'],
+        ['Two Touchpoints', '+11%'],
+        ['Three or More Touchpoints', '+24%'],
+      ],
+      highlightRowIndex: 2,
+    },
+  },
+
+  // ── Q5 ──────────────────────────────────────────────────────────────────────
+  {
+    userMessage: "How does BREXIVA's performance compare with competitors?",
+    agentResponse:
+      "Here's the head-to-head benchmarking of BREXIVA against the competitor average across the four most commercially relevant KPIs.\n\nBREXIVA is outperforming competitor brands across all major engagement and conversion metrics.",
     chart: {
       type: 'bar',
-      title: 'Q1 Campaign Performance vs Benchmark',
+      title: 'BREXIVA vs Competitor Average (%)',
       data: [
-        { name: 'Open Rate', value: 34, benchmark: 28, color: '#00a896' },
-        { name: 'CTR', value: 12.4, benchmark: 8.3, color: '#0891b2' },
-        { name: 'DDA (min)', value: 4.2, benchmark: 3.1, color: '#6366f1' },
-        { name: 'Rx Switches', value: 223, benchmark: 180, color: '#f59e0b' },
+        { name: 'Engagement', value: 43, benchmark: 34, color: '#00a896' },
+        { name: 'Open Rate', value: 49, benchmark: 37, color: '#0891b2' },
+        { name: 'Conversion', value: 18, benchmark: 13, color: '#6366f1' },
+        { name: 'Mkt Share Δ', value: 9, benchmark: 5, color: '#f59e0b' },
       ],
     },
   },
+
+  // ── Q6 ──────────────────────────────────────────────────────────────────────
   {
-    userMessage: "What compliance assets do we have pre-approved for Brexiva in the oncology therapeutic area?",
-    agentResponse: "I've pulled all pre-approved compliance assets from your library for the Brexiva / Brenova therapeutic area. Here's what's cleared for use:\n\n• Brexiva Logo Package — brand logo files & usage guidelines (95% match, Brand Standard)\n• Brexiva Clinical Review Report — treatment rationale & evidence considerations (92% match, Regulatory)\n• Safety Management & Monitoring Considerations — practical Brexiva monitoring guide (90% match, Regulatory)\n• Medical Communication Templates — MLR-reviewed communication templates\n\nAll assets are cleared for pharmaceutical content creation.",
-  },
-  {
-    userMessage: "I want to set up a new patient advocacy campaign — where do I start?",
-    agentResponse: "I can initialise a new campaign workspace in two steps. First, confirm your campaign configuration — brand, therapeutic area, target audience (e.g. oncologists, breast cancer specialists), markets (global or regional), and budget.\n\nOnce confirmed, I'll automatically pull all relevant clinical evidence from your data repository, retrieve pre-approved brand compliance assets, and offer you two brief modes:\n\n• **Auto mode** — I analyse your documents and generate a comprehensive brief\n• **Manual mode** — you provide briefs directly and I create content from your input",
-  },
-  {
-    userMessage: "Why does the Congress Poster have 2 MLR flags and what needs to be fixed?",
-    agentResponse: "The Congress Poster is a Tier 2 asset and the AI pre-screen identified 2 flagged claims. These typically fall into two risk categories:\n\n• **Comparative efficacy language** — any claim implying superiority over standard of care without direct trial citation\n• **Unsubstantiated survival data** — OS/PFS figures cited without the qualifying study reference\n\nYou can review the exact flag details and suggested revisions in the MLR Pre-Screen panel. Final approval remains with DAM Platform — revising and resubmitting the flagged claims should move the poster from Pending to Passed.",
+    userMessage: "What type of content should be created for future BREXIVA campaigns?",
+    agentResponse:
+      "Based on historical performance, physician engagement patterns, and campaign outcomes, here is DAWN's predictive recommendation for the next campaign cycle.\n\n**Expected Impact:**\n• +18% increase in physician engagement\n• +12% increase in campaign conversions\n• +9% increase in prescription growth\n\nThe data indicates that Personalized Emails and Digital Detail Aids consistently deliver the highest engagement, conversion, and ROI. A campaign strategy centred around these formats is projected to generate the strongest commercial outcomes for BREXIVA in upcoming campaign cycles.",
+    table: {
+      title: 'DAWN Predictive Recommendation — Predicted Engagement by Content Type',
+      headers: ['Content Type', 'Predicted Engagement'],
+      rows: [
+        ['Personalized Email', '46%'],
+        ['Digital Detail Aid', '42%'],
+        ['Leaflet', '30%'],
+        ['Congress Poster', '21%'],
+      ],
+      highlightRowIndex: 0,
+      caption: 'Forecast based on prior-cycle engagement, channel-mix data, and DAWN ML model v2.4',
+    },
+    recommendation:
+      "Future BREXIVA campaigns should prioritize Personalized Emails and Digital Detail Aids as primary content assets. Leaflets and Congress Posters should be used as supporting materials to reinforce brand messaging and increase visibility during congress and field-force activities.",
   },
 ];
 
@@ -132,8 +215,14 @@ export default function ChatPage() {
 
     setTimeout(() => {
       const agentContent: AgentResponseContent = { text: currentStep.agentResponse };
+      if (currentStep.table) {
+        agentContent.table = currentStep.table;
+      }
       if (currentStep.chart) {
         agentContent.chart = currentStep.chart;
+      }
+      if (currentStep.recommendation) {
+        agentContent.recommendation = currentStep.recommendation;
       }
       const agentMsg: ChatMessage = {
         id: `q-agent-${Date.now()}`,

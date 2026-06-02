@@ -41,8 +41,13 @@ export interface DocumentCard {
 }
 
 export interface TableData {
+  title?: string;
   headers: string[];
   rows: string[][];
+  // Optional row-level highlighting (1-based or 0-based index supported)
+  highlightRowIndex?: number;
+  // Optional caption shown beneath the table
+  caption?: string;
 }
 
 export interface MetricBlock {
@@ -124,6 +129,11 @@ export interface ChartData {
   type: 'bar' | 'donut';
   title?: string;
   data: Array<{ name: string; value: number; benchmark?: number; color?: string }>;
+  // Donut-specific: unit suffix shown next to each value (e.g. '%', 'assets').
+  // When omitted, the total row is hidden.
+  valueUnit?: string;
+  // Donut-specific: hide the "Total" row beneath the legend.
+  hideTotal?: boolean;
 }
 
 export interface AgentResponseContent {
@@ -142,6 +152,7 @@ export interface AgentResponseContent {
   actionButton?: ActionButton;
   notification?: NotificationData;
   chart?: ChartData;
+  table?: TableData;
 }
 
 export interface ChatMessage {
