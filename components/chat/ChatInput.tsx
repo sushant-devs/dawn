@@ -105,7 +105,7 @@ export default function ChatInput({ prePopulatedMessage, questionPrePopulated = 
               </p>
             ) : (
               <p className="text-sm text-slate-500 leading-relaxed text-left">
-                {questionDisabled ? 'DAWN is responding…' : 'All questions answered'}
+                {questionDisabled ? 'DAWN is responding…' : 'Ask DAWN anything…'}
               </p>
             )
           )}

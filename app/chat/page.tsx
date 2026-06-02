@@ -34,7 +34,7 @@ const QA_STORYLINE: QAStep[] = [
   {
     userMessage: "Which audience segments should be targeted for BREXIVA (Brenova)?",
     agentResponse:
-      "Here's the audience segment analysis for BREXIVA based on engagement and prescription growth performance.\n\nMedical Oncologists generated the highest engagement (48%) and contributed the strongest prescription growth (+22%) for BREXIVA — clearly the highest-value segment.",
+      "Here's the audience segment analysis for BREXIVA based on engagement and prescription growth performance.\nMedical Oncologists generated the highest engagement (48%) and contributed the strongest prescription growth (+22%) for BREXIVA — clearly the highest-value segment.",
     table: {
       title: 'DAWN Analysis — Audience Segment Performance',
       headers: ['Audience Segment', 'Engagement Rate', 'Prescription Growth'],
@@ -54,7 +54,7 @@ const QA_STORYLINE: QAStep[] = [
   {
     userMessage: "Which content formats generate the highest engagement for BREXIVA?",
     agentResponse:
-      "Here's the content format performance analysis for BREXIVA across all active channels.\n\nPersonalized Emails generated 72% more engagement than Congress Posters and consistently delivered the highest physician interaction rates.",
+      "Here's the content format performance analysis for BREXIVA across all active channels.\nPersonalized Emails generated 72% more engagement than Congress Posters and consistently delivered the highest physician interaction rates.",
     chart: {
       type: 'donut',
       title: 'Engagement Share by Content Format',
@@ -72,7 +72,7 @@ const QA_STORYLINE: QAStep[] = [
   {
     userMessage: "Which promotional channels deliver the best ROI for BREXIVA?",
     agentResponse:
-      "Here's the channel-level ROI analysis for BREXIVA based on last-cycle promotional spend and downstream prescription value.\n\nEmail Campaigns delivered the highest ROI while reaching 32% more target physicians compared to field-force-only activities.",
+      "Here's the channel-level ROI analysis for BREXIVA based on last-cycle promotional spend and downstream prescription value.\nEmail Campaigns delivered the highest ROI while reaching 32% more target physicians compared to field-force-only activities.",
     table: {
       title: 'DAWN Analysis — Promotional Channel ROI',
       headers: ['Channel', 'ROI'],
@@ -92,7 +92,7 @@ const QA_STORYLINE: QAStep[] = [
   {
     userMessage: "How do marketing activities influence sales performance for BREXIVA?",
     agentResponse:
-      "Analysis of campaign and prescription data indicates a strong relationship between marketing engagement and sales growth for BREXIVA.\n\n**Key Findings:**\n• Physicians exposed to at least three marketing touchpoints showed a 24% increase in prescription volume.\n• Email-engaged physicians generated 18% higher brand adoption compared to non-engaged physicians.\n• Multi-channel campaigns achieved 31% higher sales uplift than single-channel initiatives.",
+      "Analysis of campaign and prescription data indicates a strong relationship between marketing engagement and sales growth for BREXIVA.\n**Key Findings:**\n• Physicians exposed to at least three marketing touchpoints showed a 24% increase in prescription volume.\n• Email-engaged physicians generated 18% higher brand adoption compared to non-engaged physicians.\n• Multi-channel campaigns achieved 31% higher sales uplift than single-channel initiatives.",
     table: {
       title: 'DAWN Analysis — Marketing Exposure vs Prescription Growth',
       headers: ['Marketing Exposure', 'Average Prescription Growth'],
@@ -109,7 +109,7 @@ const QA_STORYLINE: QAStep[] = [
   {
     userMessage: "How does BREXIVA's performance compare with competitors?",
     agentResponse:
-      "Here's the head-to-head benchmarking of BREXIVA against the competitor average across the four most commercially relevant KPIs.\n\nBREXIVA is outperforming competitor brands across all major engagement and conversion metrics.",
+      "Here's the head-to-head benchmarking of BREXIVA against the competitor average across the four most commercially relevant KPIs.\nBREXIVA is outperforming competitor brands across all major engagement and conversion metrics.",
     chart: {
       type: 'bar',
       title: 'BREXIVA vs Competitor Average (%)',
@@ -126,7 +126,7 @@ const QA_STORYLINE: QAStep[] = [
   {
     userMessage: "What type of content should be created for future BREXIVA campaigns?",
     agentResponse:
-      "Based on historical performance, physician engagement patterns, and campaign outcomes, here is DAWN's predictive recommendation for the next campaign cycle.\n\n**Expected Impact:**\n• +18% increase in physician engagement\n• +12% increase in campaign conversions\n• +9% increase in prescription growth\n\nThe data indicates that Personalized Emails and Digital Detail Aids consistently deliver the highest engagement, conversion, and ROI. A campaign strategy centred around these formats is projected to generate the strongest commercial outcomes for BREXIVA in upcoming campaign cycles.",
+      "Based on historical performance, physician engagement patterns, and campaign outcomes, here is DAWN's predictive recommendation for the next campaign cycle.\n**Expected Impact:**\n• +18% increase in physician engagement\n• +12% increase in campaign conversions\n• +9% increase in prescription growth\nThe data indicates that Personalized Emails and Digital Detail Aids consistently deliver the highest engagement, conversion, and ROI. A campaign strategy centred around these formats is projected to generate the strongest commercial outcomes for BREXIVA in upcoming campaign cycles.",
     table: {
       title: 'DAWN Predictive Recommendation — Predicted Engagement by Content Type',
       headers: ['Content Type', 'Predicted Engagement'],
