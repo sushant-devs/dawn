@@ -55,17 +55,6 @@ const QA_STORYLINE: QAStep[] = [
     userMessage: "Which content formats generate the highest engagement for BREXIVA?",
     agentResponse:
       "Here's the content format performance analysis for BREXIVA across all active channels.\n\nPersonalized Emails generated 72% more engagement than Congress Posters and consistently delivered the highest physician interaction rates.",
-    table: {
-      title: 'DAWN Analysis — Content Format Engagement',
-      headers: ['Content Format', 'Engagement Rate'],
-      rows: [
-        ['Personalized Email', '43%'],
-        ['Digital Detail Aid', '40%'],
-        ['Leaflet', '25%'],
-        ['Congress Poster', '17%'],
-      ],
-      highlightRowIndex: 0,
-    },
     chart: {
       type: 'donut',
       title: 'Engagement Share by Content Format',
