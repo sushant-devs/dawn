@@ -34,7 +34,7 @@ export interface DocumentCard {
   id: string;
   title: string;
   type: 'CSR' | 'Publication' | 'Brand Standard' | 'Regulatory' | 'Clinical Review' | 'Journal' | 'Research Paper' | 'Market Insight';
-  relevance: number; // 0–100
+  relevance?: number; 
   keyFinding: string;
   selected?: boolean;
   filePath?: string;

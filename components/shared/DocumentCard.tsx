@@ -34,15 +34,16 @@ function getRelevanceBadgeColor(score: number) {
 export default function DocumentCard({ id, title, type, relevance, keyFinding, filePath, onPreview }: DocumentCardProps) {
   const cfg = TYPE_CONFIG[type] || { icon: FileText, color: 'bg-gray-100 text-gray-700', border: 'border-gray-200' };
   const Icon = cfg.icon;
+  const hasRelevance = typeof relevance === 'number';
   const [barWidth, setBarWidth] = useState(0);
   const mounted = useRef(false);
 
   useEffect(() => {
-    if (!mounted.current) {
+    if (!mounted.current && hasRelevance) {
       mounted.current = true;
-      setTimeout(() => setBarWidth(relevance), 100);
+      setTimeout(() => setBarWidth(relevance as number), 100);
     }
-  }, [relevance]);
+  }, [relevance, hasRelevance]);
 
   const handlePreview = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -61,20 +62,24 @@ export default function DocumentCard({ id, title, type, relevance, keyFinding, f
           <Icon size={10} />
           {type}
         </span>
-        <div className="flex items-center gap-2">
-          <span className={`text-xs font-semibold ${getRelevanceBadgeColor(relevance)}`}>
-            {relevance}%
-          </span>
-        </div>
+        {hasRelevance && (
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-semibold ${getRelevanceBadgeColor(relevance as number)}`}>
+              {relevance}%
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Relevance bar */}
-      <div className="w-full bg-gray-100 rounded-full h-1 mb-3">
-        <div
-          className={`h-1 rounded-full transition-all duration-500 ease-out ${getRelevanceColor(relevance)}`}
-          style={{ width: `${barWidth}%` }}
-        />
-      </div>
+      {hasRelevance && (
+        <div className="w-full bg-gray-100 rounded-full h-1 mb-3">
+          <div
+            className={`h-1 rounded-full transition-all duration-500 ease-out ${getRelevanceColor(relevance as number)}`}
+            style={{ width: `${barWidth}%` }}
+          />
+        </div>
+      )}
 
       {/* Title */}
       <h4 className="text-sm font-semibold text-dawn-navy mb-1 leading-tight">{title}</h4>

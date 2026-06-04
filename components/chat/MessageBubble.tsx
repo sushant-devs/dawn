@@ -7,6 +7,7 @@ import type { ChatMessage, AgentResponseContent, DocumentCard as DocType } from 
 import DocumentCard from '@/components/shared/DocumentCard';
 import StatusPill from '@/components/shared/StatusPill';
 import QAChart from '@/components/chat/QAChart';
+import { ImageViewerModal, PdfViewerModal, isImageUrl } from '@/components/modals/DocumentPreviewModal';
 import { useDAWN } from '@/context/DAWNContext';
 import { STORYLINE } from '@/lib/storyline';
 
@@ -75,9 +76,17 @@ function CampaignSummaryCard({ data }: { data: NonNullable<AgentResponseContent[
 
 // Document grid
 function DocumentGrid({ docs }: { docs: DocType[] }) {
+  const [docViewerUrl, setDocViewerUrl] = useState<string | null>(null);
+  const [docViewerTitle, setDocViewerTitle] = useState('');
+
   const handlePreview = (filePath: string, title: string) => {
-    // Open PDF in new window
-    window.open(filePath, '_blank');
+    setDocViewerUrl(filePath);
+    setDocViewerTitle(title);
+  };
+
+  const closeViewer = () => {
+    setDocViewerUrl(null);
+    setDocViewerTitle('');
   };
 
   return (
@@ -92,6 +101,23 @@ function DocumentGrid({ docs }: { docs: DocType[] }) {
           />
         ))}
       </div>
+
+      {/* In-page preview viewer */}
+      {docViewerUrl && (
+        isImageUrl(docViewerUrl) ? (
+          <ImageViewerModal
+            url={docViewerUrl}
+            title={docViewerTitle}
+            onClose={closeViewer}
+          />
+        ) : (
+          <PdfViewerModal
+            url={docViewerUrl}
+            title={docViewerTitle}
+            onClose={closeViewer}
+          />
+        )
+      )}
     </div>
   );
 }
