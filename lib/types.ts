@@ -76,7 +76,6 @@ export interface CampaignSummaryCard {
   ta: string;
   markets: string[];
   audience: string[];
-  budget: string;
   campaignId: string;
 }
 

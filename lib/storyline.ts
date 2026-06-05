@@ -7,7 +7,7 @@ export const STORYLINE: StorylineStep[] = [
     id: 'step-0',
     stage: 'setup',
     userMessage:
-      'Set up a new Brexiva patient advocacy campaign for HR+/HER2− metastatic breast cancer under the Brevixa therapeutic area — the market will be global, targeting oncologists and breast cancer specialists, with a $90,000 budget.',
+      'Set up a new Brexiva patient advocacy campaign for HR+/HER2− metastatic breast cancer under the Brevixa therapeutic area — the market will be global, targeting oncologists and breast cancer specialists.',
     agentResponse: {
       text: "Campaign workspace initialized. Here's your confirmed campaign configuration - all downstream modules will inherit these parameters.",
       campaignSummary: {
@@ -15,7 +15,6 @@ export const STORYLINE: StorylineStep[] = [
         ta: 'Oncology',
         markets: ['Global', 'USA', 'EU', 'APAC'],
         audience: ['Oncologists', 'Breast Cancer Specialists', 'Oncology Nurse Practitioners'],
-        budget: '$90,000',
         campaignId: 'DAWN-BRX-2026-0042',
       },
     },
@@ -99,9 +98,9 @@ export const STORYLINE: StorylineStep[] = [
   {
     id: 'step-3d',
     stage: 'brief',
-    userMessage: 'Yes, proceed with pre-MLR checks and show me the available compliance assets from the brand library.',
+    userMessage: "",
     agentResponse: {
-      text: 'I have pulled all pre-approved compliance assets and MLR guidelines from your asset library. These documents ensure faster review cycles and regulatory compliance.\n\n**Pre-Approved Brand Assets:**\n• Brexiva logo files and usage guidelines\n• Brexiva Market Insight Reference Report\n• Brexiva MLR Compliance Report\n\nClick "Preview Document" on any asset to view the full file. All assets are pre-approved for use in pharmaceutical content creation.',
+      text: 'Before generating campaign content, I am building the Pre-MLR context by retrieving approved brand assets, market insights, and compliance guidance. These resources provide the guardrails that govern how content can be created, including approved claims, safety considerations, regulatory requirements, brand standards, and regional recommendations. This context will be referenced throughout content generation to ensure that all outputs remain compliant, on-brand, and suitable for the target audience.\n\nClick "Preview Document" on any asset to view the full file. All assets are pre-approved for use in pharmaceutical content creation.',
       documentCards: [
         {
           id: 'brexiva-logo',
@@ -130,7 +129,20 @@ export const STORYLINE: StorylineStep[] = [
       ],
     },
     autoAdvance: true,
-    thinkingMessage: 'DAWN is integrating compliance guidelines and preparing template recommendations...',
+    thinkingMessage: `✓ Building Pre-MLR Context
+   → Retrieving regulatory, medical, and compliance guidance
+ 
+✓ Loading Brand Standards
+   → Identifying approved messaging and visual requirements
+ 
+✓ Analyzing Market Intelligence
+   → Understanding audience, market, and regional considerations
+ 
+✓ Loading Approved Assets
+   → Preparing pre-approved logos and imagery
+ 
+✓ Creating Generation Guardrails
+   → Combining compliance, brand, and market knowledge for content generation`,
   },
 
   // ─── Step 4: Template Selection ───────────────────────────────────────────

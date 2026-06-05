@@ -60,7 +60,6 @@ function CampaignSummaryCard({ data }: { data: NonNullable<AgentResponseContent[
         {[
           { label: 'Brand', value: data.brand },
           { label: 'Therapeutic Area', value: data.ta },
-          { label: 'Budget', value: data.budget },
           { label: 'Markets', value: data.markets.join(', ') },
           { label: 'Audience', value: data.audience.join(', ') },
         ].map(({ label, value }) => (
