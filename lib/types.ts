@@ -203,7 +203,6 @@ export interface BriefData {
   keyMessages: string[];
   deliverables: string[];
   deadline: string;
-  budget: string;
 }
 
 // ─── Distribution Types ───────────────────────────────────────────────────────

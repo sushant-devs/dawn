@@ -98,7 +98,6 @@ export const MOCK_BRIEF: BriefData = {
   ],
   deliverables: ['Congress Poster', 'HCP Email', 'Patient Leaflet', 'Digital Detail Aid'],
   deadline: '4 weeks from today',
-  budget: '$90,000 / $90,000',
 };
 
 // ─── Generated Assets ─────────────────────────────────────────────────────────
