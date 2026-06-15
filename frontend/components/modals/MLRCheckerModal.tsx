@@ -171,7 +171,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
                             <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${asset.tier === 'Tier 1' ? 'bg-blue-100 text-blue-700' : asset.tier === 'Tier 2' ? 'bg-purple-100 text-purple-700' : 'bg-red-100 text-red-700'}`}>
                               {asset.tier}
                             </span>
-                            <StatusPill status={asset.status} size="sm" />
+                            <StatusPill status={asset.tier === 'Tier 1' ? 'Passed' : asset.status} size="sm" />
                           </div>
                         </div>
                         {selectedAsset.id === asset.id && (
@@ -224,8 +224,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
                       <div>
                         <p className="font-medium text-gray-800">Prompt Construction</p>
                         <p className="text-gray-600">
-                          "Analyze {selectedAsset.name} for: claim substantiation against Brexiva clinical data,
-                          fair balance per MLR protocols, ISI completeness, promotional language flags"
+                          {`"Analyze ${selectedAsset.name} for: claim substantiation against Brexiva clinical data, fair balance per MLR protocols, ISI completeness, promotional language flags"`}
                         </p>
                       </div>
                     </div>
