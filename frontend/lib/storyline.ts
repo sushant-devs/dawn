@@ -29,7 +29,7 @@ export const STORYLINE: StorylineStep[] = [
     stage: 'finder',
     userMessage: '',
     agentResponse: {
-      text: "The evidence curation has highlighted key documents related to Brexiva, focusing on its clinical application in oncology.\n\n• BREXIVA_Brexiva in Metastatic Breast Cancer- A Clinical Review of Treatment Rationale, Patient Selection, and Evidence Considerations.pdf\n• BREXIVA_Safety Management and Practical Monitoring Considerations for Brexiva-Based Therapy.pdf\n• BREXIVA_Treatment Sequencing and Clinical Decision-Making for Brexiva-Based Therapy.pdf\n• BREXIVA_A Simulated Multicenter Phase II Study Evaluating Efficacy, Safety, and Clinical Applicability in a Global Oncology Population.pdf\n\nThese documents represent a curated subset of the total evidence collected.",
+      text: "The evidence curation has highlighted key documents related to Brexiva, focusing on its clinical application in oncology.\n\n• BREXIVA_Clinical Review Report.pdf\n• BREXIVA_Brexiva in Metastatic Breast Cancer- A Clinical Review of Treatment Rationale, Patient Selection, and Evidence Considerations.pdf\n• BREXIVA_Safety Management and Practical Monitoring Considerations for Brexiva-Based Therapy.pdf\n• BREXIVA_Treatment Sequencing and Clinical Decision-Making for Brexiva-Based Therapy.pdf\n• BREXIVA_A Simulated Multicenter Phase II Study Evaluating Efficacy, Safety, and Clinical Applicability in a Global Oncology Population.pdf\n\nThese documents represent a curated subset of the total evidence collected.",
       documentCards: CLINICAL_DOCUMENTS,
     },
     autoAdvance: true,

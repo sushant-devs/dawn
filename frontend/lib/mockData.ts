@@ -17,6 +17,15 @@ import type {
 
 export const CLINICAL_DOCUMENTS: DocumentCard[] = [
   {
+    id: 'clinical-review-report',
+    title: 'BREXIVA_Clinical Review Report.pdf',
+    type: 'Clinical Report',
+    relevance: 75,
+    keyFinding: 'Clinical review report summarizing Brexiva\'s scientific rationale, therapeutic context, and oncology communication considerations.',
+    filePath: '/data/brexiva/Clinical Review/BREXIVA_Clinical Review Report.pdf',
+    pageCount: 48,
+  },
+  {
     id: 'brexiva-mbc-review',
     title: 'BREXIVA_Brexiva in Metastatic Breast Cancer- A Clinical Review of Treatment Rationale, Patient Selection, and Evidence Considerations.pdf',
     type: 'Journal',

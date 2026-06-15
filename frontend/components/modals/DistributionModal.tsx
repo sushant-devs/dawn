@@ -10,8 +10,7 @@ interface DistributionModalProps {
   onClose: () => void;
 }
 
-// Approval date shown in the content table (matches the MLR approval).
-const APPROVED_DATE = '16 Jun 2026';
+const APPROVED_DATE = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
 // Pipeline animation timing. Tuned so each step has room to slide-in / fade
 // before the next one takes the spotlight (matches the 0.75s CSS transitions).
