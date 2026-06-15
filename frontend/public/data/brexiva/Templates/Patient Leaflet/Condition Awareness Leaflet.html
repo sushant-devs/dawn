@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>BREXIVA - Patient Leaflet Template 04</title>
+<style>
+
+  /* ── Reset ── */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: linear-gradient(145deg, #d6e4f0 0%, #e8f0f8 50%, #d0dcea 100%);
+    font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+    padding: 32px 20px 48px;
+    min-height: 100vh;
+  }
+
+  /* ── Leaflet frame ── */
+  .leaflet-frame {
+    width: 794px;
+    min-height: 1123px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #b8cfe0;
+    box-shadow: 0 8px 0 #8aaec8, 0 14px 40px rgba(26,58,92,0.16);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ══════════════════════════════
+     HEADER
+  ══════════════════════════════ */
+  .leaflet-header {
+    background: linear-gradient(135deg, #0e2340 0%, #1a3a5c 42%, #1e5a8a 75%, #2d5f8a 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .leaflet-header::before {
+    content: '';
+    position: absolute;
+    top: -45px; right: -45px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    pointer-events: none;
+  }
+  .leaflet-header::after {
+    content: '';
+    position: absolute;
+    top: 20px; right: 110px;
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: rgba(168,208,230,0.10);
+    pointer-events: none;
+  }
+
+  .header-inner {
+    padding: 28px 48px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-inner img.logo { height: 36px; }
+
+  .logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.20);
+  }
+
+  .awareness-ribbon {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.30);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .header-wave {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    line-height: 0;
+  }
+  .header-wave svg { display: block; width: 100%; }
+
+  /* ══════════════════════════════
+     HERO SECTION
+  ══════════════════════════════ */
+  .hero-section {
+    padding: 36px 48px 32px;
+    background: linear-gradient(180deg, #f0f8ff 0%, #f8fbfd 100%);
+    text-align: center;
+    border-bottom: 1px solid #d0e4f0;
+  }
+
+  .hero-section .category {
+    font-family: 'Inter', sans-serif;
+    display: inline-block;
+    background: linear-gradient(135deg, #eaf4fb, #daeef8);
+    border: 1px solid #b8d4e8;
+    color: #1a3a5c;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+
+  .hero-section h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #0e2340;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+  }
+
+  /* gradient bar under headline */
+  .hero-section h1::after {
+    content: '';
+    display: block;
+    width: 52px;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(to right, #1a3a5c, #4a90c4);
+    margin: 14px auto 0;
+  }
+
+  .hero-section > p {
+    font-family: 'Inter', sans-serif;
+    color: #3a6080;
+    font-size: 14px;
+    line-height: 1.75;
+    max-width: 580px;
+    margin: 16px auto 0;
+  }
+
+  .hero-img { margin-top: 24px; }
+  .hero-img img {
+    width: 100%;
+    max-width: 560px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1.5px solid #c4d8ec;
+    box-shadow: 0 6px 0 #a0c0d4, 0 10px 20px rgba(26,58,92,0.13);
+  }
+  .hero-img .caption {
+    font-family: 'Inter', sans-serif;
+    color: #7090aa;
+    font-size: 11px;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ══════════════════════════════
+     STATS BAR
+  ══════════════════════════════ */
+  .stats-bar {
+    display: flex;
+    background: linear-gradient(135deg, #0e2340 0%, #1a3a5c 45%, #2d5f8a 100%);
+  }
+
+  .stats-bar .stat {
+    flex: 1;
+    text-align: center;
+    padding: 26px 16px;
+    border-right: 1px solid rgba(74,144,196,0.30);
+  }
+  .stats-bar .stat:last-child { border-right: none; }
+
+  .stats-bar .stat .number {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #a8d8f0;
+    font-size: 30px;
+    font-weight: 800;
+    display: block;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.20);
+  }
+
+  .stats-bar .stat .label {
+    font-family: 'Inter', sans-serif;
+    color: #7aaec8;
+    font-size: 10px;
+    font-weight: 600;
+    margin-top: 6px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  /* ══════════════════════════════
+     CONTENT AREA
+  ══════════════════════════════ */
+  .content-area {
+    padding: 36px 48px 28px;
+    background: #f8fbfd;
+  }
+
+  .content-area h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #0e2340;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #d0e4f0;
+    letter-spacing: -0.2px;
+  }
+
+  .content-area > p {
+    font-family: 'Inter', sans-serif;
+    color: #3a6080;
+    font-size: 13px;
+    line-height: 1.80;
+    margin-bottom: 20px;
+  }
+
+  /* ── Two column cards ── */
+  .two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 8px 0;
+  }
+
+  .column-card {
+    background: linear-gradient(160deg, #f4f9ff 0%, #eaf3fb 100%);
+    border-radius: 12px;
+    padding: 22px 20px;
+    border: 1.5px solid #c4d8ec;
+    box-shadow: 0 5px 0 #aac4d8, 0 8px 16px rgba(26,58,92,0.09);
+  }
+
+  .column-card h3 {
+    font-family: 'Inter', sans-serif;
+    color: #0e2340;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #d0e4f0;
+  }
+
+  .column-card h3 .icon { font-size: 16px; }
+
+  .column-card ul {
+    font-family: 'Inter', sans-serif;
+    color: #3a6080;
+    font-size: 12px;
+    line-height: 1.90;
+    padding-left: 0;
+    list-style: none;
+  }
+  .column-card ul li {
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .column-card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a3a5c, #4a90c4);
+  }
+
+  .column-card .card-img { margin-top: 14px; }
+  .column-card .card-img img {
+    width: 100%; height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1.5px solid #c4d8ec;
+    box-shadow: 0 3px 8px rgba(26,58,92,0.09);
+  }
+
+  /* ══════════════════════════════
+     INFOGRAPHIC STRIP
+  ══════════════════════════════ */
+  .infographic-strip {
+    background: linear-gradient(160deg, #eaf4fb 0%, #daeef8 100%);
+    padding: 32px 48px;
+    border-top: 1px solid #c4d8ec;
+    border-bottom: 1px solid #c4d8ec;
+  }
+
+  .infographic-strip h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #0e2340;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+    letter-spacing: -0.2px;
+  }
+
+  .infographic-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .infographic-item {
+    text-align: center;
+    flex: 1;
+    max-width: 160px;
+    position: relative;
+  }
+
+  /* connector line between items */
+  .infographic-item:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    top: 20px;
+    right: -14px;
+    color: #4a90c4;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .infographic-item .circle {
+    width: 64px; height: 64px;
+    background: linear-gradient(145deg, #ffffff, #eaf4fb);
+    border: 2px solid #2d5f8a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 24px;
+    box-shadow: 0 4px 0 #a0c0d8, 0 6px 14px rgba(26,58,92,0.14);
+  }
+
+  .infographic-item h4 {
+    font-family: 'Inter', sans-serif;
+    color: #0e2340;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .infographic-item p {
+    font-family: 'Inter', sans-serif;
+    color: #3a6080;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  /* ══════════════════════════════
+     ISI BOX
+  ══════════════════════════════ */
+  .isi-wrapper {
+    padding: 20px 48px 16px;
+    background: #f4f9ff;
+  }
+
+  .isi-box {
+    background: linear-gradient(160deg, #e8f4fb 0%, #f0f9ff 100%);
+    border: 1.5px solid #2d5f8a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 0 #9ab8cc, 0 8px 18px rgba(26,58,92,0.10);
+  }
+
+  .isi-header {
+    background: linear-gradient(90deg, #0e2340 0%, #1a3a5c 55%, #2d5f8a 100%);
+    padding: 11px 22px;
+  }
+
+  .isi-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin: 0;
+  }
+
+  .isi-inner { padding: 16px 22px; }
+
+  .isi-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #3a5878;
+    line-height: 1.75;
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* ══════════════════════════════
+     FOOTER
+  ══════════════════════════════ */
+  .footer {
+    background: linear-gradient(135deg, #0e2340 0%, #1a3a5c 45%, #2d5f8a 100%);
+    position: relative;
+    overflow: hidden;
+    margin-top: auto;
+  }
+
+  .footer-accent-strip {
+    height: 3px;
+    background: linear-gradient(to right, #1a3a5c, #4a90c4, #a8d0e6, #4a90c4, #1a3a5c);
+  }
+
+  .footer-wave {
+    display: block;
+    width: 100%;
+    line-height: 0;
+  }
+  .footer-wave svg { display: block; width: 100%; }
+
+  .footer-deco {
+    position: absolute;
+    bottom: -30px; left: -30px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(45,95,138,0.18);
+    pointer-events: none;
+  }
+  .footer-deco2 {
+    position: absolute;
+    bottom: 8px; right: 24px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(168,208,230,0.10);
+    pointer-events: none;
+  }
+
+  .footer-inner {
+    padding: 8px 48px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-inner img { height: 26px; opacity: 0.90; }
+
+  .footer-logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.92;
+    text-shadow: 0 2px 8px rgba(45,95,138,0.30);
+  }
+
+</style>
+</head>
+<body>
+<div class="leaflet-frame">
+
+  <!-- HEADER -->
+  <div class="leaflet-header">
+    <div class="header-inner">
+      <img src="logo.png" alt="BREXIVA Logo" class="logo"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <span class="logo-text" style="display:none;">BREXIVA</span>
+      <div class="awareness-ribbon">&#127895;</div>
+    </div>
+    <div class="header-wave">
+      <svg viewBox="0 0 794 52" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,18 C90,48 180,0 280,26 C380,52 480,8 580,28 C660,42 720,30 794,24 L794,52 L0,52 Z" fill="#f0f8ff"/>
+        <path d="M0,30 C110,54 230,10 350,34 C470,58 590,14 794,36 L794,52 L0,52 Z" fill="rgba(240,248,255,0.32)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <div class="hero-section">
+    <div class="category">[Condition/Disease Area Placeholder]</div>
+    <h1>[Awareness Leaflet Title Placeholder]</h1>
+    <p>[Introduction paragraph placeholder. Empathetic, informative opening about the condition for patients and caregivers.]</p>
+    <div class="hero-img">
+      <img src="https://dummyimage.com/560x200/e8f4fd/2d5f8a&text=Awareness+Hero+Image" alt="Awareness Image">
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="number">[X in X]</span>
+      <span class="label">[Stat Label 1]</span>
+    </div>
+    <div class="stat">
+      <span class="number">[XX%]</span>
+      <span class="label">[Stat Label 2]</span>
+    </div>
+    <div class="stat">
+      <span class="number">[XX M]</span>
+      <span class="label">[Stat Label 3]</span>
+    </div>
+    <div class="stat">
+      <span class="number">[XX]</span>
+      <span class="label">[Stat Label 4]</span>
+    </div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div class="content-area">
+    <h2>[Understanding the Condition Heading]</h2>
+    <p>[Explanatory paragraph placeholder about the condition in patient-friendly language.]</p>
+
+    <div class="two-column">
+      <div class="column-card">
+        <h3><span class="icon">&#128269;</span> [Signs &amp; Symptoms]</h3>
+        <ul>
+          <li>[Symptom 1 placeholder]</li>
+          <li>[Symptom 2 placeholder]</li>
+          <li>[Symptom 3 placeholder]</li>
+          <li>[Symptom 4 placeholder]</li>
+        </ul>
+        <div class="card-img">
+          <img src="https://dummyimage.com/320x100/f0f7ff/2d5f8a&text=Symptoms+Visual" alt="Symptoms">
+        </div>
+      </div>
+      <div class="column-card">
+        <h3><span class="icon">&#128161;</span> [Risk Factors]</h3>
+        <ul>
+          <li>[Risk factor 1 placeholder]</li>
+          <li>[Risk factor 2 placeholder]</li>
+          <li>[Risk factor 3 placeholder]</li>
+          <li>[Risk factor 4 placeholder]</li>
+        </ul>
+        <div class="card-img">
+          <img src="https://dummyimage.com/320x100/e8f4fd/1a3a5c&text=Risk+Factors+Visual" alt="Risk Factors">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFOGRAPHIC STRIP -->
+  <div class="infographic-strip">
+    <h2>[Treatment Journey Heading Placeholder]</h2>
+    <div class="infographic-row">
+      <div class="infographic-item">
+        <div class="circle">&#128172;</div>
+        <h4>[Step 1]</h4>
+        <p>[Brief description placeholder]</p>
+      </div>
+      <div class="infographic-item">
+        <div class="circle">&#128300;</div>
+        <h4>[Step 2]</h4>
+        <p>[Brief description placeholder]</p>
+      </div>
+      <div class="infographic-item">
+        <div class="circle">&#128138;</div>
+        <h4>[Step 3]</h4>
+        <p>[Brief description placeholder]</p>
+      </div>
+      <div class="infographic-item">
+        <div class="circle">&#9989;</div>
+        <h4>[Step 4]</h4>
+        <p>[Brief description placeholder]</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ISI BOX -->
+  <div class="isi-wrapper">
+    <div class="isi-box">
+      <div class="isi-header">
+        <p class="isi-title">Important Safety Information (ISI)</p>
+      </div>
+      <div class="isi-inner">
+        <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here]</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-accent-strip"></div>
+    <div class="footer-wave">
+      <svg viewBox="0 0 794 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,22 C100,0 200,40 320,18 C440,-4 560,36 680,14 C730,6 760,10 794,8 L794,0 L0,0 Z" fill="#f4f9ff"/>
+        <path d="M0,14 C120,34 260,2 400,22 C540,42 680,8 794,20 L794,0 L0,0 Z" fill="rgba(244,249,255,0.28)"/>
+      </svg>
+    </div>
+    <div class="footer-deco"></div>
+    <div class="footer-deco2"></div>
+    <div class="footer-inner">
+      <img src="logo.png" alt="BREXIVA"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <span class="footer-logo-text" style="display:none;">BREXIVA</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

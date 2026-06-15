@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BREXIVA - Congress Poster</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #dde5ee;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ═══════════════════════
+   POSTER FRAME
+═══════════════════════ */
+.poster-frame {
+  width: 1080px;
+  height: 1536px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #b8cfe0;
+  box-shadow: 0 8px 0 #7aaac8, 0 16px 48px rgba(26,58,92,0.18);
+}
+
+/* ═══════════════════════
+   HEADER
+   Wave bottom edge via CSS background-image (SVG data URI)
+═══════════════════════ */
+.poster-header {
+  position: relative;
+  flex-shrink: 0;
+  height: 220px;
+
+  background:
+    radial-gradient(circle at 95% 5%, rgba(74,144,196,0.22) 0%, transparent 40%),
+    linear-gradient(135deg, #0d2240 0%, #1a3a5c 40%, #2d6fa0 75%, #4a90c4 100%);
+
+  border-top: 5px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Top accent bar */
+.poster-header::before {
+  content: '';
+  position: absolute;
+  top: -5px; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #2d7ab0 0%, #a8d0e6 40%, #4a90c4 70%, #2d5f8a 100%);
+  z-index: 3;
+}
+
+/* Inner content of header */
+.header-inner {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 34px 52px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 28px;
+  z-index: 2;
+  max-height: 150px;
+  overflow: hidden;
+}
+
+.header-logo-side {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  line-height: 1.2;
+}
+
+.congress-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.45);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  line-height: 1.4;
+}
+
+.header-content { flex: 1; }
+
+.poster-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.3;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  margin-bottom: 10px;
+}
+
+.poster-authors {
+  color: #a8d0e6;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.poster-affiliations {
+  color: #7fb3d4;
+  font-size: 11px;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* ═══════════════════════
+   GRID BODY
+═══════════════════════ */
+.poster-body {
+  flex: 1;
+  padding: 18px 44px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px 26px;
+  background: #f0f6fc;
+  align-content: start;
+  overflow: hidden;
+}
+
+/* ═══════════════════════
+   SECTION BLOCKS (cards)
+═══════════════════════ */
+.section-block {
+  background: #ffffff;
+  border: 1.5px solid #b8d4e8;
+  border-radius: 14px;
+  padding: 16px 18px;
+  box-shadow: 0 6px 0 #8ab4d0, 0 8px 18px rgba(26,58,92,0.10);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top colour strip on each card */
+.section-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1a3a5c, #4a90c4);
+}
+
+.section-block.full-width { grid-column: 1 / -1; }
+
+.section-block h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #1a3a5c;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #2d5f8a;
+}
+
+.section-block h2::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a3a5c, #4a90c4);
+  flex-shrink: 0;
+}
+
+.section-block p { font-size: 11px; color: #2e4a60; line-height: 1.65; margin-bottom: 6px; }
+.section-block ul { font-size: 11px; color: #2e4a60; line-height: 1.8; padding-left: 14px; }
+.section-block ul li { margin-bottom: 3px; }
+
+/* Figure placeholder */
+.figure-placeholder {
+  margin: 8px 0;
+  text-align: center;
+}
+.figure-placeholder img {
+  width: 100%; max-height: 150px;
+  object-fit: cover; border-radius: 8px;
+  box-shadow: 0 4px 0 #8ab4d0, 0 6px 12px rgba(26,58,92,0.12);
+}
+.figure-placeholder .caption {
+  color: #718096; font-size: 10px; margin-top: 5px; font-style: italic;
+}
+
+/* Results highlight */
+.results-highlight {
+  background: linear-gradient(135deg, #e0eef8 0%, #cce0f4 100%);
+  border-left: 4px solid #2d5f8a;
+  padding: 10px 12px;
+  margin: 8px 0;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 3px 3px 0px #8ab4d0, 0 4px 10px rgba(45,95,138,0.10);
+}
+.results-highlight p { color: #1a3a5c; font-weight: 600; font-size: 11px; margin: 0; }
+
+/* ISI block (full-width dark-header card) */
+.isi-block {
+  padding: 0;
+  overflow: hidden;
+}
+.isi-block::before { display: none; }
+
+.isi-header {
+  background: linear-gradient(90deg, #0d2240, #1a3a5c 60%, #2d6fa0);
+  padding: 18px 16px;
+}
+.isi-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+}
+.isi-inner { padding: 33px 16px; }
+.isi-body {
+  font-size: 11px;
+  color: #3a5060;
+  line-height: 1.75;
+  font-style: italic;
+  margin: 0;
+}
+
+/* ═══════════════════════
+   FOOTER
+   Wave top edge via CSS background-image (SVG data URI)
+═══════════════════════ */
+.poster-footer {
+  position: relative;
+  flex-shrink: 0;
+  height: 120px;
+
+  background:
+    /* Wave layer 2 — subtle secondary wave */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 120' preserveAspectRatio='none'%3E%3Cpath d='M0%2C68 C80%2C68 140%2C44 220%2C38 C300%2C32 380%2C58 460%2C62 C540%2C66 620%2C40 700%2C34 C780%2C28 860%2C54 940%2C60 C1000%2C64 1044%2C50 1080%2C52 L1080%2C120 L0%2C120 Z' fill='rgba(255%2C255%2C255%2C0.05)'/%3E%3C/svg%3E") center top / 100% 120px no-repeat,
+    /* Wave layer 1 — white cutout from body colour (#f0f6fc) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 120' preserveAspectRatio='none'%3E%3Cpath d='M0%2C0 L1080%2C0 L1080%2C55 C1026%2C55 1000%2C28 972%2C18 C900%2C-2 828%2C42 756%2C50 C684%2C58 612%2C16 540%2C12 C468%2C8 396%2C36 324%2C42 C252%2C48 180%2C16 108%2C22 C54%2C27 27%2C28 0%2C55 Z' fill='%23f0f6fc'/%3E%3C/svg%3E") center top / 100% 120px no-repeat,
+    /* Decorative radial glows */
+    radial-gradient(circle at 5% 90%, rgba(26,58,92,0.20) 0%, transparent 40%),
+    radial-gradient(circle at 95% 85%, rgba(74,144,196,0.12) 0%, transparent 35%),
+    /* Main footer gradient */
+    linear-gradient(135deg, #0a1e30 0%, #0d2240 50%, #0a1e30 100%);
+}
+
+/* Bottom accent bar */
+.poster-footer::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1a3a5c 0%, #4a90c4 40%, #2d5f8a 70%, #7ab8d8 100%);
+  z-index: 3;
+}
+
+.footer-inner {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 52px 20px;
+  z-index: 2;
+  top: 55px;
+}
+
+.footer-logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  opacity: 0.92;
+  text-shadow: 0 2px 12px rgba(74,144,196,0.30);
+  text-align: center;
+}
+
+.footer-accent-strip {
+  height: 3px;
+  background: linear-gradient(to right, #1a3a5c, #4a90c4, #2d5f8a, #7ab8d8);
+  border-radius: 2px;
+  width: 100px;
+  margin: 5px auto 0;
+}
+</style>
+</head>
+<body>
+<div class="poster-frame">
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="poster-header">
+    <div class="header-inner">
+      <div class="header-logo-side">
+        <img src="logo.png" alt="BREXIVA" style="height:44px; opacity:0.90;">
+      </div>
+      <div class="header-content">
+        <h1 class="poster-title">[Poster Title Placeholder — Primary Research Question or Finding]</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BODY GRID ═══ -->
+  <div class="poster-body">
+
+    <div class="section-block">
+      <h2>[Background]</h2>
+      <p>[Background paragraph placeholder. Context setting for the research question.]</p>
+      <ul>
+        <li>[Background point 1 placeholder]</li>
+        <li>[Background point 2 placeholder]</li>
+        <li>[Background point 3 placeholder]</li>
+      </ul>
+    </div>
+
+    <div class="section-block">
+      <h2>[Objectives]</h2>
+      <p>[Study objectives paragraph placeholder.]</p>
+      <ul>
+        <li>[Primary objective placeholder]</li>
+        <li>[Secondary objective placeholder]</li>
+      </ul>
+      <div class="figure-placeholder">
+        <img src="https://dummyimage.com/400x120/ddeef8/1a3a5c&text=Study+Design+Diagram" alt="Study Design">
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2>[Methods]</h2>
+      <p>[Methods description placeholder. Study design, patient population, endpoints.]</p>
+      <ul>
+        <li>[Method point 1 placeholder]</li>
+        <li>[Method point 2 placeholder]</li>
+        <li>[Method point 3 placeholder]</li>
+        <li>[Method point 4 placeholder]</li>
+      </ul>
+    </div>
+
+    <div class="section-block">
+      <h2>[Results]</h2>
+      <p>[Results summary paragraph placeholder.]</p>
+      <div class="figure-placeholder">
+        <img src="https://dummyimage.com/400x120/f0f7ff/1a3a5c&text=Results+Chart+Placeholder" alt="Results Chart">
+      </div>
+      <div class="results-highlight">
+        <p>[Key Result Highlight Placeholder — Primary finding statement]</p>
+      </div>
+    </div>
+
+    <div class="section-block full-width isi-block">
+      <div class="isi-header">
+        <p class="isi-title">Important Safety Information (ISI)</p>
+      </div>
+      <div class="isi-inner">
+        <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here. This section should contain all relevant warnings, contraindications, adverse reactions, and drug interactions as required by regulatory guidelines.]</p>
+      </div>
+    </div>
+
+  </div><!-- /poster-body -->
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="poster-footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo-text">
+          <img src="logo.png" alt="BREXIVA" style="height:40px; opacity:0.90;">
+        </div>
+        <div class="footer-accent-strip"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

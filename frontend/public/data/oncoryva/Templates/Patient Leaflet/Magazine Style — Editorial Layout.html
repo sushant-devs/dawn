@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Magazine Style — Editorial Layout</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: #e4ecec;
+  width: 794px;
+  margin: 0 auto;
+}
+
+.leaflet {
+  width: 794px;
+  min-height: 1123px;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #c2d8d6;
+  box-shadow: 0 8px 0 #8abfbd, 0 14px 36px rgba(13,107,110,0.20);
+}
+
+/* ── MASTHEAD / HEADER ── */
+.masthead {
+  background: linear-gradient(135deg, #0a3d40 0%, #0D6B6E 45%, #1a9a8a 75%, #C17B3A 100%);
+  padding: 22px 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: visible;
+}
+.masthead-deco {
+  position: absolute; top: -24px; right: -24px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+.masthead-deco2 {
+  position: absolute; top: 14px; right: 130px;
+  width: 80px; height: 80px; border-radius: 50%;
+  background: rgba(193,123,58,0.18);
+}
+.masthead img {
+  height: 32px;
+  position: relative; z-index: 2;
+}
+.masthead-logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  position: relative; z-index: 2;
+  display: none;
+}
+.edition {
+  font-size: 10px;
+  color: rgba(255,255,255,0.80);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.30);
+  padding: 5px 14px;
+  border-radius: 20px;
+  position: relative; z-index: 2;
+}
+.masthead-wave {
+  display: block;
+  width: 100%;
+  line-height: 0;
+  margin-top: 14px;
+  position: relative; z-index: 2;
+}
+.masthead-wave svg { display: block; width: 100%; }
+
+/* ── HERO SPLIT ── */
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 220px;
+}
+.hero-text {
+  background: #0F2027;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-text::before {
+  content: '';
+  position: absolute; bottom: -30px; left: -30px;
+  width: 140px; height: 140px; border-radius: 50%;
+  background: rgba(13,107,110,0.18);
+}
+.hero-text .category {
+  font-size: 10px;
+  color: #C17B3A;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 10px;
+  position: relative; z-index: 1;
+}
+.hero-text h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.35;
+  margin-bottom: 12px;
+  letter-spacing: -0.3px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+  position: relative; z-index: 1;
+}
+.hero-text p {
+  color: #b8e0de;
+  font-size: 12px;
+  line-height: 1.65;
+  font-family: 'Inter', sans-serif;
+  position: relative; z-index: 1;
+}
+.hero-image {
+  background: linear-gradient(145deg, #e0f5f3, #cceeeb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.hero-image img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ── ARTICLE SECTION ── */
+.article-section {
+  padding: 24px 40px;
+  column-count: 2;
+  column-gap: 28px;
+  background: #f7fbfb;
+}
+.article-section .drop-cap {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 52px;
+  float: left;
+  line-height: 1;
+  color: #0D6B6E;
+  font-weight: 800;
+  margin-right: 6px;
+  margin-top: 2px;
+}
+.article-section p {
+  font-size: 12px;
+  color: #3a4f5c;
+  line-height: 1.75;
+  margin-bottom: 12px;
+  font-family: 'Inter', sans-serif;
+}
+
+.pull-quote {
+  background: linear-gradient(145deg, #e0f5f3, #cceeeb);
+  border-left: 5px solid #C17B3A;
+  border-top: 1px solid #c2e4e0;
+  border-right: 1px solid #c2e4e0;
+  border-bottom: 1px solid #c2e4e0;
+  padding: 16px 18px;
+  margin: 14px 0;
+  border-radius: 0 10px 10px 0;
+  break-inside: avoid;
+  box-shadow: 4px 5px 0 #aad4d0, 6px 8px 16px rgba(13,107,110,0.10);
+}
+.pull-quote p {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px;
+  color: #0a3d40;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* ── INFO CARDS ── */
+.info-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 0 40px 24px;
+  background: #f7fbfb;
+}
+.info-card {
+  background: #ffffff;
+  border: 1.5px solid #d0e6e4;
+  border-radius: 12px;
+  padding: 18px 16px;
+  text-align: center;
+  box-shadow: 0 5px 0 #aad4d0, 0 8px 18px rgba(13,107,110,0.10);
+}
+.info-card .icon {
+  width: 42px; height: 42px;
+  background: linear-gradient(145deg, #0D6B6E, #0a3d40);
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 18px;
+  box-shadow: 0 4px 0 #0a4a4d, 0 6px 14px rgba(13,107,110,0.22);
+}
+.info-card h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 13px;
+  color: #0a3d40;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.info-card p {
+  font-size: 11px;
+  color: #5d6f82;
+  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── TIPS SECTION ── */
+.tips-section {
+  padding: 0 40px 24px;
+  background: #eef7f6;
+}
+.tips-section h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  color: #0a3d40;
+  font-weight: 800;
+  margin-bottom: 14px;
+  padding-top: 22px;
+  letter-spacing: -0.2px;
+}
+.tips-section h2::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(to right, #0D6B6E, #C17B3A);
+  margin-bottom: 10px;
+}
+.tips-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.tip-item {
+  background: #ffffff;
+  border: 1.5px solid #d0e6e4;
+  border-radius: 12px;
+  padding: 16px 14px;
+  text-align: center;
+  box-shadow: 0 5px 0 #aad4d0, 0 8px 18px rgba(13,107,110,0.10);
+}
+.tip-item .number {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  color: #0D6B6E;
+  font-weight: 800;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.tip-item p {
+  font-size: 11px;
+  color: #3a4f5c;
+  line-height: 1.5;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── CTA BAR ── */
+.cta-bar {
+  margin: 0 40px 24px;
+  background: linear-gradient(145deg, #C17B3A, #8a4e1a);
+  border-radius: 12px;
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6px 0 #9a5a1a, 0 10px 24px rgba(193,123,58,0.22);
+}
+.cta-bar h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 800;
+}
+.cta-bar p {
+  color: rgba(255,255,255,0.88);
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+  margin-top: 4px;
+}
+.cta-bar a {
+  display: inline-block;
+  background: #ffffff;
+  color: #C17B3A;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 0 #ddb880, 0 6px 14px rgba(193,123,58,0.18);
+  letter-spacing: 0.3px;
+}
+
+/* ── ISI ── */
+.isi-wrap {
+  padding: 4px 40px 24px;
+  background: #f4faf9;
+}
+.isi-box {
+  background: #f0faf8;
+  border: 1.5px solid #9ed0cc;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 0 #a8ceca, 0 8px 18px rgba(13,107,110,0.12);
+}
+.isi-header {
+  background: linear-gradient(90deg, #0a3d40 0%, #0D6B6E 60%, #1a8a7a 100%);
+  padding: 10px 22px;
+}
+.isi-title {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+}
+.isi-inner { padding: 14px 22px; }
+.isi-body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: #3a6060;
+  line-height: 1.75;
+  font-style: italic;
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: linear-gradient(160deg, #0a2830 0%, #0F2027 50%, #0a3030 100%);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.footer-wave { display: block; width: 100%; line-height: 0; }
+.footer-wave svg { display: block; width: 100%; }
+.footer-deco {
+  position: absolute; bottom: -30px; left: -30px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: rgba(13,107,110,0.18);
+}
+.footer-deco2 {
+  position: absolute; bottom: 8px; right: 20px;
+  width: 90px; height: 90px; border-radius: 50%;
+  background: rgba(193,123,58,0.12);
+}
+.footer-inner {
+  padding: 4px 40px 22px;
+  position: relative; z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  opacity: 0.92;
+  text-shadow: 0 2px 12px rgba(13,200,180,0.25);
+  display: none;
+}
+.footer-accent-strip {
+  height: 3px;
+  background: linear-gradient(to right, #0D6B6E, #1ac9b0, #C17B3A, #e8a060);
+  border-radius: 2px;
+  width: 80px;
+  margin-top: 5px;
+}
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+</style>
+</head>
+<body>
+<div class="leaflet">
+
+  <!-- Masthead / Header -->
+  <div class="masthead">
+    <div class="masthead-deco"></div>
+    <div class="masthead-deco2"></div>
+    <img src="logo.png" alt="ONCORYVA" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+    <span class="masthead-logo-text">ONCORYVA</span>
+    <span class="edition">Patient Guide — Edition Placeholder</span>
+    <div class="masthead-wave">
+      <svg viewBox="0 0 794 48" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,18 C100,46 200,0 300,26 C400,52 500,8 600,28 C680,42 740,32 794,24 L794,48 L0,48 Z" fill="#ffffff"/>
+        <path d="M0,30 C130,54 280,10 420,34 C560,56 680,16 794,32 L794,48 L0,48 Z" fill="rgba(255,255,255,0.28)"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 50/50 Split Hero -->
+  <div class="hero-split">
+    <div class="hero-text">
+      <span class="category">Treatment Guide</span>
+      <h1>Placeholder Magazine-Style Headline for Patients</h1>
+      <p>Subtitle placeholder — empowering patients with clear, accessible information about their treatment.</p>
+    </div>
+    <div class="hero-image">
+      <img src="https://dummyimage.com/400x220/0D6B6E/ffffff&text=Hero+Image" alt="Hero">
+    </div>
+  </div>
+
+  <!-- Two-Column Article -->
+  <div class="article-section">
+    <p><span class="drop-cap">P</span>.</p>
+    <p></p>
+    <div class="pull-quote">
+      <p>"Placeholder inspirational quote or key takeaway message that patients should remember about their care."</p>
+    </div>
+    <p> Continuing placeholder text for the article body.</p>
+    <p></p>
+  </div>
+
+  <!-- Info Cards -->
+  <div class="info-cards">
+    <div class="info-card">
+      <div class="icon">&#9829;</div>
+      <h4>Card Title One</h4>
+      <p>Placeholder description for this info card section.</p>
+    </div>
+    <div class="info-card">
+      <div class="icon">&#9733;</div>
+      <h4>Card Title Two</h4>
+      <p>Placeholder description for this info card section.</p>
+    </div>
+    <div class="info-card">
+      <div class="icon">&#10003;</div>
+      <h4>Card Title Three</h4>
+      <p>Placeholder description for this info card section.</p>
+    </div>
+    <div class="info-card">
+      <div class="icon">&#9830;</div>
+      <h4>Card Title Four</h4>
+      <p>Placeholder description for this info card section.</p>
+    </div>
+  </div>
+
+  <!-- Tips Section -->
+  <div class="tips-section">
+    <h2>Helpful Tips</h2>
+    <div class="tips-grid">
+      <div class="tip-item">
+        <div class="number">01</div>
+        <p>Placeholder tip one for patients</p>
+      </div>
+      <div class="tip-item">
+        <div class="number">02</div>
+        <p>Placeholder tip two for patients</p>
+      </div>
+      <div class="tip-item">
+        <div class="number">03</div>
+        <p>Placeholder tip three for patients</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Bar -->
+  <div class="cta-bar">
+    <div>
+      <h3>Placeholder CTA Heading</h3>
+      <p>Supporting text for the call-to-action</p>
+    </div>
+  </div>
+
+  <!-- ISI + Box Warning -->
+  <div class="isi-wrap">
+    <div class="isi-box">
+      <div class="isi-header">
+        <p class="isi-title">Important Safety Information (ISI)</p>
+      </div>
+      <div class="isi-inner">
+        <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here]</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-wave">
+      <svg viewBox="0 0 794 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,22 C100,0 210,40 340,18 C470,-4 600,36 720,14 C758,8 778,6 794,4 L794,0 L0,0 Z" fill="#f4faf9"/>
+        <path d="M0,12 C140,34 300,2 460,24 C610,44 720,8 794,20 L794,0 L0,0 Z" fill="rgba(244,250,249,0.38)"/>
+      </svg>
+    </div>
+    <div class="footer-deco"></div>
+    <div class="footer-deco2"></div>
+    <div class="footer-inner">
+      <div>
+        <img src="logo.png" alt="ONCORYVA" style="height:20px; opacity:0.90;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <span class="footer-logo-text">ONCORYVA</span>
+        <div class="footer-accent-strip"></div>
+      </div>
+      <div class="footer-right"></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

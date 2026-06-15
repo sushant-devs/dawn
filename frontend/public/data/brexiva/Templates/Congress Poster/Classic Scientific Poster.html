@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BREXIVA - Congress Poster Template 01</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #e8edf2; font-family: 'Segoe UI', Arial, Helvetica, sans-serif; padding: 20px; }
+
+  .poster-frame {
+    width: 1080px;
+    height: 1536px;
+    margin: 0 auto;
+    background: #ffffff;
+    box-shadow: 0 8px 60px rgba(0,0,0,0.18);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .poster-header {
+    position: relative;
+    background: linear-gradient(135deg, #0f2843 0%, #1a3a5c 45%, #1e4d7a 80%, #2d5f8a 100%);
+    padding: 32px 52px 72px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .poster-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(74,144,196,0.22) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .header-wave {
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 100%;
+    height: 70px;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 1080 70' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,30 C120,65 200,5 320,28 C440,52 520,8 640,26 C760,44 860,10 980,30 C1020,36 1050,34 1080,30 L1080,70 L0,70 Z' fill='rgba(168,208,230,0.25)'/%3E%3Cpath d='M0,42 C80,18 180,58 300,38 C420,18 500,54 640,36 C780,18 880,52 1000,34 C1040,27 1060,30 1080,36 L1080,70 L0,70 Z' fill='rgba(74,144,196,0.30)'/%3E%3Cpath d='M0,52 C100,30 220,68 360,48 C480,30 580,62 700,46 C820,30 940,58 1080,44 L1080,70 L0,70 Z' fill='%23ffffff'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  .header-accent-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #4a90c4 0%, #a8d0e6 40%, #5ba8d4 70%, #2d7ab0 100%);
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+  }
+  .header-top img.logo { height: 44px; }
+  .header-top .congress-badge {
+    background: rgba(255,255,255,0.13);
+    color: #cee4f3;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    border: 1px solid rgba(255,255,255,0.18);
+  }
+
+  .poster-title {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .poster-authors {
+    color: #a8d0e6;
+    font-size: 13px;
+    line-height: 1.5;
+    position: relative;
+    z-index: 2;
+  }
+  .poster-affiliations {
+    color: #7fb3d4;
+    font-size: 11px;
+    margin-top: 8px;
+    line-height: 1.4;
+    position: relative;
+    z-index: 2;
+  }
+
+  .poster-body {
+    flex: 1;
+    padding: 20px 48px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    overflow: hidden;
+  }
+
+  .section-block {
+    background: linear-gradient(160deg, #f8fafc 0%, #f2f7fb 100%);
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid #dde8f2;
+    border-bottom: 1px solid #c8d8ea;
+    border-right: 1px solid #c8d8ea;
+    box-shadow:
+      4px 4px 0px #c2d3e6,
+      6px 6px 0px #b8cbe0,
+      8px 8px 0px rgba(26,58,92,0.10),
+      0 12px 28px rgba(26,58,92,0.12);
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  .section-block.full-width { grid-column: 1 / -1; }
+  .section-block h2 {
+    color: #1a3a5c;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.9px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #2d5f8a;
+  }
+  .section-block p { color: #4a5568; font-size: 12px; line-height: 1.6; margin-bottom: 8px; }
+  .section-block ul { color: #4a5568; font-size: 12px; line-height: 1.7; padding-left: 18px; }
+  .section-block ul li { margin-bottom: 4px; }
+
+  .figure-placeholder {
+    background: #e8f4fd;
+    border: 2px dashed #2d5f8a;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    margin: 8px 0;
+  }
+  .figure-placeholder img {
+    width: 100%; height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  .figure-placeholder .caption {
+    color: #718096; font-size: 11px; margin-top: 6px; font-style: italic;
+  }
+
+  .results-highlight {
+    background: linear-gradient(135deg, #eef6ff 0%, #e4f0fb 100%);
+    border-left: 4px solid #2d5f8a;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 3px 3px 0px #c8d8ea, 0 4px 12px rgba(45,95,138,0.10);
+  }
+  .results-highlight p { color: #1a3a5c; font-weight: 600; font-size: 12px; margin: 0; }
+
+  .isi-block {
+    background: linear-gradient(160deg, #f4f8fc 0%, #eef4fa 100%);
+    border-top: 3px solid rgba(45,95,138,0.45);
+    box-shadow:
+      4px 4px 0px #c2d3e6,
+      6px 6px 0px #b8cbe0,
+      8px 8px 0px rgba(26,58,92,0.10),
+      0 12px 28px rgba(26,58,92,0.12);
+  }
+  .isi-inner { padding: 14px 20px; }
+  .isi-inner .isi-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #1a3a5c;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin: 0 0 8px;
+
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(45,95,138,0.14);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .isi-inner .isi-body {
+    font-size: 12px;
+    color: #5a6a80;
+    margin-top: -20px;
+    line-height: 1.65;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .poster-footer {
+    position: relative;
+    background: linear-gradient(135deg, #0f2843 0%, #1a3a5c 50%, #1e4d7a 100%);
+    padding: 54px 52px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .footer-wave {
+    position: absolute;
+    top: -2px; left: 0;
+    width: 100%;
+    height: 62px;
+    pointer-events: none;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  .footer-accent-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2d7ab0 0%, #a8d0e6 40%, #4a90c4 70%, #2d5f8a 100%);
+  }
+
+  .poster-footer::before {
+    content: '';
+    position: absolute;
+    bottom: -50px; left: -50px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(74,144,196,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .footer-references {
+    color: #8ab4cc;
+    font-size: 9px;
+    line-height: 1.55;
+    max-width: 58%;
+    position: relative;
+    z-index: 2;
+  }
+  .footer-qr {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  .footer-qr img { width: 64px; height: 64px; border-radius: 6px; }
+  .footer-qr p { color: #8ab4cc; font-size: 9px; margin-top: 5px; }
+  .footer-disclosure {
+    color: #6a96b4;
+    font-size: 9px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-logo-wrap {
+    position: relative;
+    z-index: 2;
+  }
+  
+</style>
+</head>
+<body>
+<div class="poster-frame">
+
+  <div class="poster-header">
+    <div class="header-accent-bar"></div>
+
+    <div class="header-top">
+      <img src="logo.png" alt="BREXIVA Logo" class="logo">
+    </div>
+
+    <h1 class="poster-title">[Poster Title Placeholder — Primary Research Question or Finding]</h1>
+
+    <div class="header-wave"></div>
+  </div>
+
+  <div class="poster-body">
+
+    <div class="section-block">
+      <h2>[Background]</h2>
+      <p>[Background paragraph placeholder. Context setting for the research question.]</p>
+      <ul>
+        <li>[Background point 1 placeholder]</li>
+        <li>[Background point 2 placeholder]</li>
+        <li>[Background point 3 placeholder]</li>
+      </ul>
+    </div>
+
+    <div class="section-block">
+      <h2>[Objectives]</h2>
+      <p>[Study objectives paragraph placeholder.]</p>
+      <ul>
+        <li>[Primary objective placeholder]</li>
+        <li>[Secondary objective placeholder]</li>
+      </ul>
+      <div class="figure-placeholder">
+        <img src="https://dummyimage.com/400x150/e8f4fd/2d5f8a&text=Study+Design+Diagram" alt="Study Design">
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h2>[Methods]</h2>
+      <p>[Methods description placeholder. Study design, patient population, endpoints.]</p>
+      <ul>
+        <li>[Method point 1 placeholder]</li>
+        <li>[Method point 2 placeholder]</li>
+        <li>[Method point 3 placeholder]</li>
+        <li>[Method point 4 placeholder]</li>
+      </ul>
+    </div>
+
+    <div class="section-block">
+      <h2>[Results]</h2>
+      <p>[Results summary paragraph placeholder.]</p>
+      <div class="figure-placeholder">
+        <img src="https://dummyimage.com/400x150/f0f7ff/1a3a5c&text=Results+Chart+Placeholder" alt="Results Chart">
+      </div>
+      <div class="results-highlight">
+        <p>[Key Result Highlight Placeholder — Primary finding statement]</p>
+      </div>
+    </div>
+
+    <div class="section-block full-width" style="margin-bottom:90px;">
+      <div class="isi-inner">
+        <p class="isi-title">Important Safety Information (ISI)</p>
+        <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here]</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="poster-footer">
+    <div class="footer-wave"></div>
+
+    <div class="footer-logo-wrap">
+      <img src="logo.png" alt="BREXIVA" style="height:44px; opacity:0.90;">
+    </div>
+    <div class="footer-accent-bar"></div>
+  </div>
+
+</div>
+</body>
+</html>

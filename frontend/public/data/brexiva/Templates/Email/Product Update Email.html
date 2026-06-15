@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BREXIVA - HCP Email Template 05</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  body {
+    margin: 0; padding: 0;
+    background-color: #e8edf4;
+    font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+  }
+  .email-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    box-shadow: 0 12px 60px rgba(15,40,67,0.18);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #ffffff;
+    padding: 26px 44px;
+    text-align: center;
+    border-bottom: 1px solid #e8edf4;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #0f2843 0%, #2d5f8a 50%, #4a90c4 100%);
+  }
+  .header img.logo { height: 40px; position: relative; z-index: 2; }
+
+  /* ── ANNOUNCEMENT BAR ── */
+  .announcement-bar {
+    position: relative;
+    background: linear-gradient(135deg, #0a1e34 0%, #0f2843 30%, #1a3a5c 65%, #2d5f8a 100%);
+    padding: 14px 44px 78px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .announcement-bar::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    background: radial-gradient(circle, rgba(74,144,196,0.20) 0%, transparent 65%);
+    border-radius: 50%;
+  }
+  .announcement-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 30px; left: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(168,208,230,0.12) 0%, transparent 65%);
+    border-radius: 50%;
+  }
+  .announcement-bar span {
+    color: #c4dff2;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    position: relative; z-index: 2;
+    display: inline-block;
+    padding: 5px 16px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 20px;
+  }
+  .announcement-wave {
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 100%; line-height: 0;
+    pointer-events: none; z-index: 3;
+  }
+  .announcement-wave svg { display: block; width: 100%; height: 70px; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 44px 44px 36px;
+    text-align: center;
+    background: #ffffff;
+  }
+  .hero .icon-badge {
+    width: 68px; height: 68px;
+    background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+    border-radius: 18px;
+    display: inline-block;
+    margin-bottom: 22px;
+    line-height: 68px;
+    box-shadow: 4px 4px 0px #a4bedc, 6px 6px 0px #8aaece, 0 10px 24px rgba(26,58,92,0.18);
+  }
+  .hero .icon-badge img { width: 32px; height: 32px; vertical-align: middle; }
+  .hero h1 {
+    color: #0f2843;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 14px;
+    line-height: 1.28;
+    letter-spacing: -0.3px;
+  }
+  .hero p {
+    color: #3a4a5c;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    margin: 0;
+    line-height: 1.75;
+    letter-spacing: 0.05px;
+    max-width: 480px;
+    display: inline-block;
+  }
+
+  /* ── FEATURES ── */
+  .features-section { padding: 32px 44px 20px; }
+  .features-section h2 {
+    color: #0f2843;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 26px;
+    text-align: center;
+    letter-spacing: -0.2px;
+    position: relative;
+    padding-bottom: 14px;
+  }
+  .features-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, #2d5f8a, #4a90c4);
+    border-radius: 2px;
+  }
+
+  .feature-item {
+    display: table;
+    width: 100%;
+    margin-bottom: 22px;
+    background: linear-gradient(160deg, #f8fbfd 0%, #f2f7fb 100%);
+    border-radius: 10px;
+    border: 1px solid #dde8f2;
+    border-top: 3px solid rgba(45,95,138,0.30);
+    padding: 18px 20px;
+    box-sizing: border-box;
+    box-shadow: 4px 4px 0px #c2d3e6, 6px 6px 0px #b0c6dc, 0 10px 22px rgba(26,58,92,0.09);
+  }
+  .feature-item .icon { display: table-cell; width: 52px; vertical-align: top; }
+  .feature-item .icon span {
+    display: inline-block;
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, #deeef9, #e8f4ff);
+    border-radius: 10px;
+    text-align: center;
+    line-height: 42px;
+    color: #1a3a5c;
+    font-size: 18px;
+    box-shadow: 2px 2px 6px rgba(26,58,92,0.12);
+  }
+  .feature-item .text { display: table-cell; vertical-align: top; padding-left: 16px; }
+  .feature-item .text h4 {
+    color: #0f2843;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    letter-spacing: -0.1px;
+  }
+  .feature-item .text p {
+    color: #5a6e84;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.65;
+    margin: 0;
+    letter-spacing: 0.05px;
+  }
+
+  /* ── IMAGE SECTION ── */
+  .image-section { padding: 0 44px 32px; text-align: center; }
+  .image-section img {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #dde8f2;
+    display: block;
+    box-shadow: 5px 5px 0px #b8cfe6, 8px 8px 0px #a4bedc, 0 14px 32px rgba(26,58,92,0.12);
+  }
+  .image-section .caption {
+    color: #7a96b0;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10.5px;
+    font-weight: 400;
+    margin-top: 10px;
+    font-style: italic;
+    letter-spacing: 0.2px;
+  }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    margin: 0 44px 32px;
+    background: linear-gradient(135deg, #deeef9 0%, #e8f4ff 60%, #f0f8ff 100%);
+    border-radius: 14px;
+    padding: 28px 28px 24px;
+    text-align: center;
+    border: 1px solid #c8dff0;
+    border-top: 4px solid #1a3a5c;
+    box-shadow: 5px 5px 0px #b8cfe6, 8px 8px 0px #a4bedc, 0 12px 28px rgba(26,58,92,0.10);
+  }
+  .info-box h3 {
+    color: #0f2843;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 10px;
+    letter-spacing: -0.2px;
+  }
+  .info-box p {
+    color: #3a4a5c;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13.5px;
+    font-weight: 400;
+    margin: 0 0 18px;
+    line-height: 1.65;
+    letter-spacing: 0.05px;
+  }
+  .info-box a {
+    display: inline-block;
+    background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 11px 30px;
+    border-radius: 6px;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 3px 3px 0px #0f2843, 0 6px 16px rgba(26,58,92,0.20);
+  }
+
+  /* ── CTA ── */
+  .cta-section { text-align: center; padding: 16px 44px 36px; }
+  .cta-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #0f2843, #1a3a5c, #2d5f8a);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 15px 44px;
+    border-radius: 6px;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 4px 4px 0px #0a1e34, 0 8px 22px rgba(15,40,67,0.22);
+  }
+  .cta-links { margin-top: 16px; }
+  .cta-links a {
+    color: #2d5f8a;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    margin: 0 10px;
+    border-bottom: 1px solid rgba(45,95,138,0.35);
+    padding-bottom: 1px;
+  }
+
+  /* ── ISI ── */
+  .isi-outer { padding: 0 40px 20px; }
+  .isi-box {
+    background: linear-gradient(160deg, #f2f7fc 0%, #eaf2f9 100%);
+    border-radius: 12px;
+    border: 1px solid #ccdded;
+    border-top: 4px solid #1a3a5c;
+    box-shadow: 5px 5px 0px #b8cfe6, 8px 8px 0px #a4bedc, 0 12px 28px rgba(26,58,92,0.10);
+  }
+  .isi-box td { padding: 20px 24px; }
+  .isi-box .isi-title {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #0f2843;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(26,58,92,0.16);
+  }
+  .isi-box .isi-body {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #4a5e72;
+    margin: 0;
+    line-height: 1.70;
+    letter-spacing: 0.05px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    position: relative;
+    background: linear-gradient(140deg, #0a1e34 0%, #0f2843 35%, #1a3a5c 70%, #1e4d7a 100%);
+    padding: 66px 44px 32px;
+    overflow: hidden;
+    text-align: center;
+  }
+  .footer::before {
+    content: '';
+    position: absolute;
+    bottom: -50px; left: -50px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(74,144,196,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .footer-wave {
+    position: absolute;
+    top: -2px; left: 0;
+    width: 100%; line-height: 0;
+    pointer-events: none; z-index: 3;
+  }
+  .footer-wave svg { display: block; width: 100%; height: 62px; }
+  .footer-accent-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2d7ab0 0%, #a8d0e6 40%, #4a90c4 70%, #2d5f8a 100%);
+  }
+  .footer .branding { position: relative; z-index: 2; margin-bottom: 14px; }
+  .footer .branding img {
+    height: 28px;
+    display: inline-block;
+    opacity: 0.88;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+  }
+  .footer p {
+    color: #6e96b4;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.65;
+    margin: 0 0 8px;
+    position: relative; z-index: 2;
+    letter-spacing: 0.2px;
+  }
+  .footer .prescribing {
+    color: #4e7a9a;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10px;
+    border-top: 1px solid rgba(255,255,255,0.09);
+    padding-top: 14px;
+    margin-top: 14px;
+    position: relative; z-index: 2;
+    line-height: 1.65;
+  }
+
+  /* ── UNSUBSCRIBE ── */
+  .unsubscribe {
+    text-align: center;
+    padding: 14px 16px;
+    background: #eef2f6;
+    position: relative; z-index: 2;
+    border-top: 1px solid #dde4ec;
+  }
+  .unsubscribe a {
+    color: #5a7a96;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10.5px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid rgba(90,122,150,0.35);
+    padding-bottom: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="email-wrapper">
+
+  <div class="header">
+    <img src="logo.png" alt="BREXIVA Logo" class="logo">
+  </div>
+
+  <div class="announcement-bar">
+    <span>[Announcement / Update Category Placeholder]</span>
+    <div class="announcement-wave">
+      <svg viewBox="0 0 600 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,30 C80,62 140,5 220,28 C300,52 360,8 440,26 C500,40 550,18 600,30 L600,70 L0,70 Z" fill="rgba(168,208,230,0.22)"/>
+        <path d="M0,42 C60,18 130,56 210,38 C290,20 360,54 440,36 C510,20 560,44 600,36 L600,70 L0,70 Z" fill="rgba(74,144,196,0.28)"/>
+        <path d="M0,52 C70,32 160,66 260,48 C360,30 440,62 520,46 C560,38 580,50 600,46 L600,70 L0,70 Z" fill="#ffffff"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>[Product Update Headline Placeholder]</h1>
+    
+  </div>
+
+  <div class="features-section">
+    <h2>[What's New Section Heading]</h2>
+
+    <div class="feature-item">
+      <div class="text">
+        <h4>[Feature/Update Point 1]</h4>
+        <p>[Brief description placeholder for this update point.]</p>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="text">
+        <h4>[Feature/Update Point 2]</h4>
+        <p>[Brief description placeholder for this update point.]</p>
+      </div>
+    </div>
+
+    <div class="feature-item">
+      <div class="text">
+        <h4>[Feature/Update Point 3]</h4>
+        <p>[Brief description placeholder for this update point.]</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="image-section">
+    <img src="https://dummyimage.com/520x220/f0f7ff/1a3a5c&text=Product+Visual+Placeholder" alt="Product Visual">
+  </div>
+
+
+
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td class="isi-outer" style="padding: 0 40px 20px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="isi-box">
+          <tr>
+            <td>
+              <p class="isi-title">Important Safety Information (ISI)</p>
+              <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here]</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <div class="footer">
+    <div class="footer-wave">
+      <svg viewBox="0 0 600 62" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,18 C70,38 140,2 240,22 C340,40 400,8 480,24 C530,34 565,18 600,26 L600,0 L0,0 Z" fill="#ffffff"/>
+        <path d="M0,30 C60,50 140,12 220,32 C300,52 380,16 460,34 C520,46 560,28 600,32 L600,0 L0,0 Z" fill="rgba(74,144,196,0.26)"/>
+        <path d="M0,44 C80,22 180,56 280,40 C380,24 460,54 560,40 C580,36 592,38 600,42 L600,0 L0,0 Z" fill="rgba(168,208,230,0.16)"/>
+      </svg>
+    </div>
+    <div class="branding">
+      <img src="logo.png" alt="BREXIVA">
+    </div>
+    <div class="unsubscribe">
+      <a href="#">[Unsubscribe / Email Preferences]</a>
+    </div>
+    <div class="footer-accent-bar"></div>
+  </div>
+
+</div>
+</body>
+</html>

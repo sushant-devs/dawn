@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZOFLEVRIX | Clinical Focus Email Template</title>
+<style>
+  body { margin: 0; padding: 0; background-color: #eef2f7; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+
+  /* Email shell */
+  .email-wrapper { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 6px; overflow: hidden; box-shadow: 0 6px 40px rgba(11, 36, 71, 0.08); }
+
+  /* Preheader */
+  .preheader { background: #0B2447; color: #8FB8E5; font-size: 10px; letter-spacing: 0.4px; padding: 8px 40px; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, #0B2447 0%, #19376D 60%, #2451A6 100%); padding: 30px 40px; text-align: center; position: relative; }
+  .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, #14B8A6, #19376D, #576CBC, #14B8A6); }
+  .header img.logo { height: 38px; margin-bottom: 8px; }
+  .header .tagline { color: #B9D6F2; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; font-weight: 500; }
+
+  /* Hero */
+  .hero-section { position: relative; }
+  .hero-section img { width: 100%; height: 220px; object-fit: cover; display: block; }
+  .hero-overlay { position: absolute; inset: auto 0 0 0; padding: 50px 40px 22px;
+    background: linear-gradient(transparent, rgba(11, 36, 71, 0.92)); }
+  .hero-overlay h1 { color: #fff; font-size: 21px; font-weight: 700; line-height: 1.35; margin: 0; }
+
+  /* Subject bar */
+  .subject-bar { background: #F4F7FB; border-bottom: 1px solid #E2E8F0; padding: 16px 40px; }
+  .subject-bar .subject { font-size: 14px; font-weight: 700; color: #0B2447; }
+  .subject-bar .from { font-size: 11px; color: #64748B; margin-top: 4px; }
+
+  /* Content */
+  .content-block { padding: 32px 40px; }
+  .salutation { color: #19376D; font-size: 15px; font-weight: 600; margin: 0 0 16px; }
+  .content-block p { color: #334155; font-size: 14px; line-height: 1.75; margin: 0 0 18px; }
+
+  /* Key message box */
+  .key-message-box { background: linear-gradient(135deg, #E0F2FE, #F0FDFA);
+    border-left: 4px solid #14B8A6; padding: 20px 24px; margin: 24px 0; border-radius: 0 8px 8px 0; }
+  .key-message-box p { color: #0B2447; font-size: 15px; font-weight: 600; line-height: 1.5; margin: 0; }
+
+  /* Highlights list */
+  .highlights-section { padding: 0 40px 28px; }
+  .highlights-section h3 { color: #0B2447; font-size: 15px; font-weight: 700; margin: 0 0 14px; }
+  .highlight-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .highlight-dot { width: 8px; height: 8px; background: #14B8A6; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .highlight-text { color: #334155; font-size: 13.5px; line-height: 1.6; }
+  .highlight-text strong { color: #0B2447; }
+
+  /* Supporting image */
+  .visual-section { padding: 0 40px 28px; }
+  .visual-section img { width: 100%; border-radius: 8px; display: block; box-shadow: 0 2px 14px rgba(11,36,71,0.06); }
+  .visual-section .caption { color: #64748B; font-size: 10px; text-align: center; font-style: italic; margin-top: 8px; }
+
+  /* CTA */
+  .cta-section { text-align: center; padding: 8px 40px 32px; }
+  .cta-button { display: inline-block; background: linear-gradient(135deg, #14B8A6, #0E9488); color: #fff;
+    text-decoration: none; padding: 14px 40px; border-radius: 6px; font-size: 14px; font-weight: 600;
+    letter-spacing: 0.3px; box-shadow: 0 4px 14px rgba(20,184,166,0.32); }
+  .cta-secondary { display: block; margin-top: 12px; font-size: 12px; color: #19376D; text-decoration: underline; }
+
+  /* Divider */
+  .divider { height: 1px; background: #E2E8F0; margin: 0 40px; }
+
+  /* Disclaimer placeholder */
+  .disclaimer-section { padding: 22px 40px; background: #F8FAFC; border-top: 1px solid #E2E8F0; }
+  .disclaimer-section p { color: #64748B; font-size: 10.5px; line-height: 1.6; margin: 0; }
+
+  /* Footer */
+  .footer { padding: 24px 40px; background: #0B2447; color: #B9D6F2; }
+  .footer p { color: #B9D6F2; font-size: 10.5px; line-height: 1.6; margin: 0 0 6px; }
+  .footer .company-info { font-size: 10px; color: #8FB8E5; border-top: 1px solid #19376D; padding-top: 14px; margin-top: 12px; }
+
+  /* Safety guideline box in footer */
+  .safety-guideline { background: linear-gradient(90deg, #FFF8F8, #FFF1F1); border-left: 4px solid #E02424; padding: 12px 16px; border-radius: 4px; color: #401010; font-size: 12px; margin-top: 12px; }
+
+  .unsubscribe { text-align: center; padding: 14px; background: #061a36; }
+  .unsubscribe a { color: #8FB8E5; font-size: 10px; text-decoration: underline; margin: 0 6px; }
+</style>
+</head>
+<body>
+
+<div class="email-wrapper">
+  <!-- Preheader Placeholder -->
+  <div class="preheader">Preheader text placeholder &mdash; short summary line</div>
+
+  <!-- Header / Logo -->
+  <div class="header">
+    <img src="logo.png" alt="ZOFLEVRIX Logo" class="logo">
+    <div class="tagline">Tagline Placeholder</div>
+  </div>
+
+  <!-- Hero Image with Overlay Heading -->
+  <div class="hero-section">
+    <img src="https://dummyimage.com/600x220/19376D/ffffff&text=Hero+Image+Placeholder" alt="Hero image placeholder">
+    <div class="hero-overlay">
+      <h1>Main Heading Placeholder</h1>
+    </div>
+  </div>
+
+  <!-- Subject Bar -->
+  <div class="subject-bar">
+    <div class="subject">Subject: Email subject placeholder</div>
+    <div class="from">From: Sender name placeholder</div>
+  </div>
+
+  <!-- Main Content Block -->
+  <div class="content-block">
+    <p class="salutation">Dear [Recipient Name],</p>
+    <p>Opening paragraph placeholder. Replace this text with the introductory message that frames the topic and the relevance to the HCP audience.</p>
+    <p>Supporting paragraph placeholder. Use this space for context, background, or a continuation of the opening narrative.</p>
+
+    <div class="key-message-box">
+      <p>Key message placeholder &mdash; one strong statement summarising the core message of the communication.</p>
+    </div>
+  </div>
+
+  <!-- Highlights / Bulleted Points -->
+  <div class="highlights-section">
+    <h3>Section Heading Placeholder</h3>
+    <div class="highlight-item">
+      <div class="highlight-dot"></div>
+      <div class="highlight-text"><strong>Highlight label:</strong> short supporting text placeholder.</div>
+    </div>
+    <div class="highlight-item">
+      <div class="highlight-dot"></div>
+      <div class="highlight-text"><strong>Highlight label:</strong> short supporting text placeholder.</div>
+    </div>
+    <div class="highlight-item">
+      <div class="highlight-dot"></div>
+      <div class="highlight-text"><strong>Highlight label:</strong> short supporting text placeholder.</div>
+    </div>
+    <div class="highlight-item">
+      <div class="highlight-dot"></div>
+      <div class="highlight-text"><strong>Highlight label:</strong> short supporting text placeholder.</div>
+    </div>
+  </div>
+
+  <!-- Supporting Image -->
+  <div class="visual-section">
+    <img src="https://dummyimage.com/520x260/0B2447/ffffff&text=Supporting+Image+Placeholder" alt="Supporting image placeholder">
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Disclaimer Placeholder (non-regulatory) -->
+  <div class="disclaimer-section">
+    <p><strong>Disclaimer placeholder.</strong> Insert any non-promotional, non-regulatory descriptive note here.</p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="safety-guideline">
+      <strong>Important safety guideline:</strong> Placeholder — include critical safety information here.
+    </div>
+  </div>
+
+  <!-- Unsubscribe -->
+  <div class="unsubscribe">
+    <a href="#">Unsubscribe</a> | <a href="#">Email Preferences</a> | <a href="#">Privacy Policy</a>
+  </div>
+
+</div>
+
+</body>
+</html>

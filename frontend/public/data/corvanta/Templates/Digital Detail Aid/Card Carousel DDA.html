@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORVANTA | Card Carousel DDA Template</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 30px; background: #2D0612; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
+
+  .deck { width: 1024px; height: 768px; margin: 0 auto; background: #ffffff; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); border-radius: 4px; display: flex; flex-direction: column; }
+
+  /* Top header */
+  .top-header { padding: 18px 36px; display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #EFE0D1; }
+  .top-header img.logo { height: 32px; }
+  .top-header .crumbs { font-size: 11px; color: #8A6F58; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .top-header .crumbs strong { color: #4A0D1F; }
+
+  .accent-line { height: 4px; background: linear-gradient(90deg, #4A0D1F, #C99B3B, #8E1E3F); }
+
+  /* Section header */
+  .section-header { padding: 26px 50px 4px; text-align: center; }
+  .section-header .pretitle { font-size: 11px; color: #C99B3B; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+  .section-header h1 { color: #4A0D1F; font-size: 26px; font-weight: 800; margin: 8px 0 6px; line-height: 1.25; }
+  .section-header p { color: #8A6F58; font-size: 13.5px; line-height: 1.55; margin: 0; max-width: 660px; margin: 0 auto; }
+
+  /* Carousel area */
+  .carousel-area { flex: 1; padding: 26px 16px; overflow: hidden; position: relative; display: flex; align-items: center; }
+  .carousel-track { display: flex; gap: 20px; transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    padding: 0 30px; }
+
+  .card { flex: 0 0 calc((1024px - 32px - 60px - 40px) / 3); background: #FFF8F0; border: 1px solid #EFE0D1;
+    border-radius: 14px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 14px 30px rgba(91, 14, 45, 0.14); }
+  .card.featured { background: linear-gradient(135deg, #4A0D1F, #7C1D2F); color: #fff; }
+  .card.featured .card-body h3 { color: #fff; }
+  .card.featured .card-body p { color: #F8E7C9; }
+  .card.featured .card-cta { color: #C99B3B; }
+  .card.featured .tag { background: rgba(201, 155, 59, 0.30); color: #fff; }
+
+  .card-img { width: 100%; height: 130px; object-fit: cover; display: block; }
+  .card-body { padding: 18px 20px 22px; }
+  .tag { display: inline-block; background: #FFF4E0; color: #A6802E; font-size: 9.5px; padding: 4px 10px;
+    border-radius: 12px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; }
+  .card-body h3 { color: #4A0D1F; font-size: 15px; font-weight: 800; margin: 10px 0 8px; line-height: 1.3; }
+  .card-body p { color: #6B5544; font-size: 12.5px; line-height: 1.6; margin: 0 0 12px; }
+  .card-cta { color: #C99B3B; font-size: 12px; font-weight: 700; text-decoration: none; }
+
+  /* Pagination */
+  .pagination { padding: 14px 36px; display: flex; justify-content: space-between; align-items: center;
+    background: #FFF8F0; border-top: 1px solid #EFE0D1; }
+  .dot-row { display: flex; gap: 6px; }
+  .dot-row .pdot { width: 9px; height: 9px; border-radius: 50%; background: #D8C5B0; cursor: pointer; transition: all 0.2s; }
+  .dot-row .pdot.active { background: #C99B3B; width: 26px; border-radius: 4px; }
+  .arrows { display: flex; gap: 10px; }
+  .arrow { width: 38px; height: 38px; background: #ffffff; border: 1px solid #EFE0D1; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; color: #7C1D2F; font-weight: 800; cursor: pointer; }
+  .arrow:hover { background: #C99B3B; color: #fff; border-color: #C99B3B; }
+  .pagination-info { font-size: 11px; color: #8A6F58; letter-spacing: 1px; font-weight: 600; }
+  /* ISI Card */
+.card.isi-card {
+  background: linear-gradient(135deg, #4A0D1F, #7C1D2F);
+  color: #fff;
+  border: 2px solid #C99B3B;
+}
+
+.card.isi-card .card-body {
+  padding: 20px;
+}
+
+.card.isi-card .tag {
+  background: rgba(201,155,59,0.25);
+  color: #fff;
+}
+
+.card.isi-card h3 {
+  color: #E8C77E;
+  font-size: 18px;
+}
+
+.card.isi-card p,
+.card.isi-card li {
+  color: #F8E7C9;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.card.isi-card ul {
+  padding-left: 18px;
+  margin: 10px 0;
+}
+
+.card.isi-card .card-cta {
+  color: #E8C77E;
+  font-weight: 700;
+}
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- Top header -->
+  <div class="top-header">
+    <img src="logo.png" alt="CORVANTA Logo" class="logo">
+    <div class="crumbs">Home &middot; <strong>Carousel Section Placeholder</strong></div>
+  </div>
+
+  <div class="accent-line"></div>
+
+  <!-- Section header -->
+  <div class="section-header">
+    <div class="pretitle">Topic Pretitle Placeholder</div>
+    <h1>Carousel Heading Placeholder</h1>
+    <p>Carousel description placeholder &mdash; one or two sentences framing the cards below.</p>
+  </div>
+
+  <!-- Carousel -->
+  <div class="carousel-area">
+    <div class="carousel-track" id="track">
+
+      <!-- Featured card -->
+      <div class="card featured">
+        <img src="https://dummyimage.com/360x260/C99B3B/ffffff&text=Featured" alt="Featured card image" class="card-img">
+        <div class="card-body">
+          <span class="tag">Featured</span>
+          <h3>Featured Card Heading</h3>
+          <p>Featured card body placeholder &mdash; longer description for the highlight card.</p>
+          <a href="#" class="card-cta">Open &rarr;</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://dummyimage.com/360x260/4A0D1F/ffffff&text=Card+02" alt="Card 02 image" class="card-img">
+        <div class="card-body">
+          <span class="tag">Topic 02</span>
+          <h3>Card Heading Placeholder</h3>
+          <p>Card body placeholder &mdash; short description for this topic card.</p>
+          <a href="#" class="card-cta">Open &rarr;</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://dummyimage.com/360x260/7C1D2F/ffffff&text=Card+03" alt="Card 03 image" class="card-img">
+        <div class="card-body">
+          <span class="tag">Topic 03</span>
+          <h3>Card Heading Placeholder</h3>
+          <p>Card body placeholder.</p>
+          <a href="#" class="card-cta">Open &rarr;</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://dummyimage.com/360x260/8E1E3F/ffffff&text=Card+04" alt="Card 04 image" class="card-img">
+        <div class="card-body">
+          <span class="tag">Topic 04</span>
+          <h3>Card Heading Placeholder</h3>
+          <p>Card body placeholder.</p>
+          <a href="#" class="card-cta">Open &rarr;</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://dummyimage.com/360x260/A6802E/ffffff&text=Card+05" alt="Card 05 image" class="card-img">
+        <div class="card-body">
+          <span class="tag">Topic 05</span>
+          <h3>Card Heading Placeholder</h3>
+          <p>Card body placeholder.</p>
+          <a href="#" class="card-cta">Open &rarr;</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="https://dummyimage.com/360x260/C99B3B/ffffff&text=Card+06" alt="Card 06 image" class="card-img">
+        <div class="card-body">
+          <span class="tag">Topic 06</span>
+          <h3>Card Heading Placeholder</h3>
+          <p>Card body placeholder.</p>
+          <a href="#" class="card-cta">Open &rarr;</a>
+        </div>
+      </div>
+      <div class="card isi-card">
+  <div class="card-body">
+    <span class="tag">Important Safety Information</span>
+
+    <h3>ISI Summary</h3>
+
+    <p>
+      [Indication placeholder. Replace with approved prescribing information.]
+    </p>
+
+    <ul>
+      <li>[Contraindication placeholder]</li>
+      <li>[Warning placeholder]</li>
+      <li>[Precaution placeholder]</li>
+    </ul>
+
+    <p>
+      [Adverse reaction placeholder]
+    </p>
+
+    <a href="#" class="card-cta">
+      View Full Prescribing Information →
+    </a>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <div class="dot-row" id="dots">
+      <div class="pdot active" data-page="0"></div>
+      <div class="pdot" data-page="1"></div>
+    </div>
+    <div class="pagination-info" id="pinfo">Page 1 / 2</div>
+    <div class="arrows">
+      <div class="arrow" id="prev">&larr;</div>
+      <div class="arrow" id="next">&rarr;</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const track = document.getElementById('track');
+  const cards = document.querySelectorAll('.card');
+  const dotsContainer = document.getElementById('dots');
+  const pinfo = document.getElementById('pinfo');
+
+  const cardsPerPage = 3;
+  const pages = Math.ceil(cards.length / cardsPerPage);
+
+  let page = 0;
+
+  // Create dots dynamically
+  dotsContainer.innerHTML = '';
+  for (let i = 0; i < pages; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'pdot' + (i === 0 ? ' active' : '');
+    dot.dataset.page = i;
+    dot.addEventListener('click', () => go(i));
+    dotsContainer.appendChild(dot);
+  }
+
+  function go(p) {
+    if (p < 0 || p >= pages) return;
+
+    page = p;
+
+    const cardWidth = cards[0].offsetWidth;
+    const gap = 20; // same as CSS gap
+
+    const moveX = p * (cardWidth + gap) * cardsPerPage;
+
+    track.style.transform = `translateX(-${moveX}px)`;
+
+    document.querySelectorAll('.pdot').forEach((d, index) => {
+      d.classList.toggle('active', index === p);
+    });
+
+    pinfo.textContent = `Page ${p + 1} / ${pages}`;
+  }
+
+  document.getElementById('next').addEventListener('click', () => {
+    if (page < pages - 1) {
+      go(page + 1);
+    }
+  });
+
+  document.getElementById('prev').addEventListener('click', () => {
+    if (page > 0) {
+      go(page - 1);
+    }
+  });
+
+  // Initialize
+  go(0);
+
+  // Recalculate on resize
+  window.addEventListener('resize', () => go(page));
+</script>
+</body>
+</html>

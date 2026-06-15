@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORVANTA | Storytelling Flow DDA Template</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 30px; background: #2D0612; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }
+
+  .deck { width: 1024px; height: 768px; margin: 0 auto; background: #ffffff; position: relative;
+    overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); border-radius: 4px; }
+
+  /* Header */
+  .header-bar { height: 56px; padding: 0 36px; background: #ffffff; border-bottom: 1px solid #EFE0D1;
+    display: flex; justify-content: space-between; align-items: center; }
+  .header-bar img.logo { height: 30px; }
+  .chapter-label { font-size: 11px; color: #8A6F58; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; }
+  .chapter-label strong { color: #4A0D1F; }
+
+  /* Progress strip */
+  .progress-strip { height: 6px; background: #EFE0D1; }
+  .progress-strip .fill { height: 100%; background: linear-gradient(90deg, #C99B3B, #7C1D2F); width: 16%; transition: width 0.4s; }
+
+  /* Slide area */
+  .slide { display: none; height: calc(100% - 56px - 6px - 56px); position: relative; }
+  .slide.active { display: block; animation: fade 0.4s ease; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Full bleed slide */
+  .full-bleed { background: linear-gradient(135deg, #4A0D1F, #7C1D2F); color: #fff; padding: 60px; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+  .full-bleed::before { content: ''; position: absolute; top: -120px; right: -120px; width: 380px; height: 380px;
+    border-radius: 50%; background: rgba(201, 155, 59, 0.20); }
+  .full-bleed::after { content: ''; position: absolute; bottom: -120px; left: -80px; width: 320px; height: 320px;
+    border-radius: 50%; background: rgba(232, 199, 126, 0.16); }
+  .full-bleed .inner { position: relative; max-width: 720px; }
+  .full-bleed .chapter { font-size: 12px; color: #E8C77E; letter-spacing: 2.5px; text-transform: uppercase;
+    font-weight: 700; }
+  .full-bleed h1 { font-size: 46px; font-weight: 800; line-height: 1.18; margin: 12px 0 16px; }
+  .full-bleed p { font-size: 16px; color: #F8E7C9; line-height: 1.55; margin: 0; max-width: 560px; }
+
+  /* Split slide */
+  .split { display: grid; grid-template-columns: 1fr 1fr; height: 100%; }
+  .split .l-col { padding: 50px 40px; background: #FFF8F0; display: flex; flex-direction: column; justify-content: center; }
+  .split .l-col .pretitle { font-size: 11px; color: #C99B3B; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
+  .split .l-col h2 { color: #4A0D1F; font-size: 30px; font-weight: 800; margin: 10px 0 14px; line-height: 1.22; }
+  .split .l-col p { color: #6B5544; font-size: 14px; line-height: 1.7; margin: 0 0 10px; }
+  .split .l-col ul { padding-left: 20px; margin: 10px 0; }
+  .split .l-col ul li { color: #6B5544; font-size: 13.5px; line-height: 1.7; margin-bottom: 6px; }
+  .split .r-col { background: #C99B3B; display: flex; align-items: center; justify-content: center; }
+  .split .r-col img { max-width: 90%; max-height: 90%; border-radius: 12px; display: block; }
+
+  /* Content focused slide */
+  .content-focused { padding: 40px 60px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+  .content-focused h2 { color: #4A0D1F; font-size: 30px; font-weight: 800; margin: 0 0 22px; text-align: center; }
+  .mini-cards-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 14px; }
+  .mini-card { background: #FFF8F0; padding: 22px 18px; border-radius: 12px; text-align: center;
+    border-top: 5px solid #C99B3B; border: 1px solid #EFE0D1; border-top: 5px solid #C99B3B; }
+  .mini-card .ic { width: 44px; height: 44px; line-height: 44px; background: #FFF4E0; color: #4A0D1F;
+    font-weight: 800; border-radius: 12px; margin: 0 auto 12px; font-size: 17px; }
+  .mini-card h3 { color: #4A0D1F; font-size: 14px; margin: 0 0 6px; }
+  .mini-card p { color: #6B5544; font-size: 12.5px; line-height: 1.55; margin: 0; }
+
+  /* Big stat slide */
+  .big-stat { display: flex; align-items: center; justify-content: center; flex-direction: column;
+    height: 100%; background: linear-gradient(135deg, #ffffff, #FFF4E0); text-align: center; padding: 60px; }
+  .big-stat .stat-num { font-size: 110px; font-weight: 800; line-height: 1; background: linear-gradient(135deg, #4A0D1F, #C99B3B);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .big-stat h2 { color: #4A0D1F; font-size: 24px; font-weight: 800; margin: 8px 0 12px; }
+  .big-stat p { color: #6B5544; font-size: 14px; max-width: 560px; line-height: 1.6; margin: 0; }
+
+  /* Insight box slide */
+  .insight-slide { padding: 50px 60px; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .insight-box { background: linear-gradient(135deg, #4A0D1F, #C99B3B); color: #fff; padding: 50px;
+    border-radius: 18px; text-align: center; max-width: 760px; }
+  .insight-box .lab { font-size: 12px; color: #FFF4E0; letter-spacing: 2px; text-transform: uppercase;
+    font-weight: 700; margin-bottom: 14px; }
+  .insight-box h2 { font-size: 26px; font-weight: 800; line-height: 1.35; margin: 0 0 14px; }
+  .insight-box p { font-size: 14px; color: #FFF4E0; line-height: 1.65; margin: 0; }
+
+  /* Chart slide */
+  .chart-slide { padding: 50px 60px; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+  .chart-slide h2 { color: #4A0D1F; font-size: 26px; font-weight: 800; margin: 0 0 18px; text-align: center; }
+  .chart-slide img { width: 100%; max-height: 380px; object-fit: contain; border-radius: 12px; display: block; }
+  .chart-slide .cap { color: #8A6F58; font-size: 11px; text-align: center; font-style: italic; margin-top: 8px; }
+
+  /* Bottom nav */
+  .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 56px; background: #ffffff;
+    border-top: 1px solid #EFE0D1; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+  .bottom-nav .nav-btn { background: #FFF8F0; border: 1px solid #EFE0D1; padding: 8px 18px; border-radius: 6px;
+    cursor: pointer; font-size: 12px; color: #7C1D2F; font-weight: 600; }
+  .bottom-nav .nav-btn:hover { background: #C99B3B; color: #fff; border-color: #C99B3B; }
+  .bottom-nav .progress-text { font-size: 11px; color: #8A6F58; letter-spacing: 1px; }
+  /* ISI Slide */
+.isi-slide {
+  height: 100%;
+  padding: 30px 40px;
+  background: linear-gradient(135deg, #4A0D1F 0%, #7C1D2F 100%);
+  color: #ffffff;
+  overflow-y: auto;
+}
+
+.isi-slide h2 {
+  color: #E8C77E;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.isi-slide .isi-box {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(232,199,126,0.35);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+}
+
+.isi-slide h3 {
+  color: #E8C77E;
+  font-size: 16px;
+  margin: 18px 0 8px;
+}
+
+.isi-slide p,
+.isi-slide li {
+  color: #F8E7C9;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.isi-slide ul {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.isi-slide::-webkit-scrollbar {
+  width: 8px;
+}
+
+.isi-slide::-webkit-scrollbar-thumb {
+  background: #C99B3B;
+  border-radius: 4px;
+}
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- Header bar -->
+  <div class="header-bar">
+    <img src="logo.png" alt="CORVANTA Logo" class="logo">
+    <div class="chapter-label">Chapter <strong id="chTitle">01 &middot; Chapter Title Placeholder</strong></div>
+  </div>
+
+  <!-- Progress strip -->
+  <div class="progress-strip"><div class="fill" id="progress"></div></div>
+
+  <!-- Slides -->
+  <!-- 1: Full bleed cover -->
+  <div class="slide active" data-slide="1">
+    <div class="full-bleed">
+      <div class="inner">
+        <div class="chapter">Chapter 01</div>
+        <h1>Cover Heading Placeholder</h1>
+        <p>Subheading placeholder &mdash; framing sentence for the story arc.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2: Split slide -->
+  <div class="slide" data-slide="2">
+    <div class="split">
+      <div class="l-col">
+        <div class="pretitle">Section Pretitle</div>
+        <h2>Split Heading Placeholder</h2>
+        <p>Body paragraph placeholder &mdash; story-driven description.</p>
+        <ul>
+          <li>Point placeholder 1</li>
+          <li>Point placeholder 2</li>
+          <li>Point placeholder 3</li>
+        </ul>
+      </div>
+      <div class="r-col">
+        <img src="https://dummyimage.com/420x420/ffffff/4A0D1F&text=Visual" alt="Visual placeholder">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3: Big Stat -->
+  <div class="slide" data-slide="3">
+    <div class="big-stat">
+      <div class="stat-num">00%</div>
+      <h2>Stat Heading Placeholder</h2>
+      <p>Stat supporting paragraph placeholder &mdash; brief explanation of the metric.</p>
+    </div>
+  </div>
+
+  <!-- 4: Mini cards row -->
+  <div class="slide" data-slide="4">
+    <div class="content-focused">
+      <h2>Section Heading Placeholder</h2>
+      <div class="mini-cards-row">
+        <div class="mini-card">
+          <div class="ic">A</div>
+          <h3>Card Heading</h3>
+          <p>Card description placeholder.</p>
+        </div>
+        <div class="mini-card">
+          <div class="ic">B</div>
+          <h3>Card Heading</h3>
+          <p>Card description placeholder.</p>
+        </div>
+        <div class="mini-card">
+          <div class="ic">C</div>
+          <h3>Card Heading</h3>
+          <p>Card description placeholder.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5: Insight box -->
+  <div class="slide" data-slide="5">
+    <div class="insight-slide">
+      <div class="insight-box">
+        <div class="lab">Insight</div>
+        <h2>Insight heading placeholder &mdash; central thought of the story</h2>
+        <p>Supporting paragraph placeholder.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6: Chart slide -->
+  <div class="slide" data-slide="6">
+    <div class="chart-slide">
+      <h2>Chart Heading Placeholder</h2>
+      <img src="https://dummyimage.com/820x360/FFF8F0/4A0D1F&text=Chart+Placeholder" alt="Chart placeholder">
+      <div class="cap">Chart caption placeholder</div>
+    </div>
+  </div>
+<!-- 7: ISI Slide -->
+<div class="slide" data-slide="7">
+  <div class="isi-slide">
+
+    <h2>Important Safety Information</h2>
+
+    <div class="isi-box">
+
+      <h3>Indication</h3>
+      <p>
+        [Indication text placeholder. Replace with approved prescribing information.]
+      </p>
+
+      <h3>Contraindications</h3>
+      <ul>
+        <li>[Contraindication placeholder]</li>
+        <li>[Contraindication placeholder]</li>
+      </ul>
+
+      
+
+    </div>
+
+  </div>
+</div>
+  <!-- Bottom nav -->
+  <div class="bottom-nav">
+    <button class="nav-btn" id="prev">&larr; Back</button>
+    <div class="progress-text" id="ptext">01 / 06</div>
+    <button class="nav-btn" id="next">Continue &rarr;</button>
+  </div>
+
+</div>
+
+<script>
+  const chapters = ['01 &middot; Chapter Title Placeholder', '02 &middot; Chapter Title Placeholder',
+                    '03 &middot; Chapter Title Placeholder', '04 &middot; Chapter Title Placeholder',
+                    '05 &middot; Chapter Title Placeholder', '06 &middot; Chapter Title Placeholder'];
+  const slides = document.querySelectorAll('.slide');
+  let cur = 1;
+  function show(n) {
+    if (n < 1 || n > slides.length) return;
+    slides.forEach(s => s.classList.remove('active'));
+    document.querySelector('[data-slide="' + n + '"]').classList.add('active');
+    document.getElementById('progress').style.width = (n / slides.length * 100) + '%';
+    document.getElementById('chTitle').innerHTML = chapters[n - 1];
+    document.getElementById('ptext').textContent = String(n).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    cur = n;
+  }
+  document.getElementById('next').addEventListener('click', () => show(cur + 1));
+  document.getElementById('prev').addEventListener('click', () => show(cur - 1));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') show(cur + 1);
+    if (e.key === 'ArrowLeft') show(cur - 1);
+  });
+</script>
+
+</body>
+</html>

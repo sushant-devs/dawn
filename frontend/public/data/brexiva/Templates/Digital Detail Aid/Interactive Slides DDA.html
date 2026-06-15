@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>BREXIVA | Interactive Slides DDA Template</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 30px;
+    background: #0a1e34;
+    font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .deck {
+    width: 1024px;
+    height: 768px;
+    margin: 0 auto;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 6px 0 #0a2d50, 0 12px 60px rgba(15,40,67,0.45);
+  }
+
+  .accent-bar {
+    height: 5px;
+    background: linear-gradient(90deg, #4a90c4 0%, #a8d0e6 40%, #5ba8d4 70%, #2d7ab0 100%);
+    position: relative;
+    z-index: 10;
+  }
+
+  .top-nav {
+    height: 56px;
+    padding: 0 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    border-bottom: 1px solid #dde8f2;
+    position: relative;
+    z-index: 10;
+  }
+  .top-nav img.logo { height: 30px; }
+  .logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f2843;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .top-nav .nav-right { display: flex; align-items: center; gap: 18px; }
+  .slide-counter {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #5a7a96;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+  }
+  .menu-icon { width: 22px; height: 2px; background: #1a3a5c; position: relative; cursor: pointer; }
+  .menu-icon::before, .menu-icon::after {
+    content: ''; position: absolute; left: 0;
+    width: 100%; height: 2px; background: #1a3a5c;
+  }
+  .menu-icon::before { top: -7px; }
+  .menu-icon::after { top: 7px; }
+
+  .slide { height: calc(100% - 5px - 56px - 48px); display: none; overflow: hidden; }
+  .slide.active { display: block; }
+
+  .cover-slide {
+    background: linear-gradient(135deg, #0a1e34 0%, #0f2843 30%, #1a3a5c 65%, #2d5f8a 100%);
+    display: none;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    height: calc(100% - 5px - 56px - 48px);
+  }
+  .cover-slide.active { display: block; }
+
+  .cover-deco-1 {
+    position: absolute; top: -80px; right: -80px;
+    width: 340px; height: 340px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,144,196,0.24) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .cover-deco-2 {
+    position: absolute; bottom: 60px; left: -60px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(168,208,230,0.14) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .cover-deco-3 {
+    position: absolute; top: 40px; left: 30%;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(74,144,196,0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .cover-inner {
+    position: relative;
+    z-index: 2;
+    padding: 60px 64px 0;
+    max-width: 750px;
+  }
+  .cover-pretitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #a8d0e6;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 16px;
+    opacity: 0.90;
+  }
+  .cover-inner h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.18;
+    margin: 0 0 18px;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    text-shadow: 0 3px 14px rgba(0,0,0,0.35);
+  }
+  .cover-inner p.sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #a8d0e6;
+    line-height: 1.55;
+    margin: 0 0 28px;
+    max-width: 580px;
+    opacity: 0.90;
+  }
+  .cover-inner .meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #a8d0e6;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.80;
+  }
+
+  .cover-wave {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    pointer-events: none;
+    z-index: 3;
+    background-image:
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 1024 80' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0%2C34 C140%2C68 260%2C6 400%2C30 C540%2C56 660%2C10 800%2C28 C880%2C38 950%2C22 1024%2C30 L1024%2C80 L0%2C80 Z' fill='rgba(168%2C208%2C230%2C0.22)'/%3E%3Cpath d='M0%2C48 C110%2C22 240%2C60 380%2C40 C520%2C20 650%2C56 790%2C38 C880%2C26 960%2C46 1024%2C40 L1024%2C80 L0%2C80 Z' fill='rgba(74%2C144%2C196%2C0.28)'/%3E%3Cpath d='M0%2C60 C130%2C36 280%2C70 440%2C52 C600%2C34 760%2C66 920%2C48 C970%2C42 1000%2C52 1024%2C50 L1024%2C80 L0%2C80 Z' fill='%23ffffff'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: bottom left;
+  }
+
+  .slide-inner { padding: 36px 56px; height: 100%; }
+
+  .section-heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #0f2843;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    letter-spacing: -0.2px;
+    position: relative;
+    padding-bottom: 14px;
+  }
+  .section-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, #2d5f8a, #4a90c4);
+    border-radius: 2px;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 0;
+    margin-top: 28px;
+    border: 1px solid #dde8f2;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 5px 5px 0 #b8cfe6, 8px 8px 0 #a4bedc, 0 12px 30px rgba(26,58,92,0.12);
+    background: linear-gradient(180deg, #f8fbfd 0%, #f2f7fb 100%);
+  }
+  .stat-card {
+    flex: 1;
+    text-align: center;
+    padding: 32px 14px;
+    border-right: 1px solid #dde8f2;
+    position: relative;
+  }
+  .stat-card:last-child { border-right: none; }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 40px; height: 3px;
+    background: linear-gradient(90deg, #2d5f8a, #4a90c4);
+    border-radius: 0 0 3px 3px;
+  }
+  .stat-card .number {
+    display: block;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #0f2843;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 6px rgba(15,40,67,0.10);
+  }
+  .stat-card .label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    color: #5a7a96;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    margin-top: 10px;
+  }
+  .stat-card .desc {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    color: #7a96b0;
+    font-size: 11.5px;
+    margin-top: 6px;
+    line-height: 1.45;
+  }
+
+  .key-message-box {
+    background: linear-gradient(135deg, #deeef9 0%, #e8f4ff 60%, #f0f8ff 100%);
+    border-left: 5px solid #1a3a5c;
+    padding: 24px 28px 24px 36px;
+    margin: 24px 0 0;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 5px 5px 0 #b8cfe6, 8px 8px 0 #a4bedc, 0 12px 30px rgba(26,58,92,0.13);
+    position: relative;
+  }
+  .key-message-box::before {
+    content: '\201C';
+    position: absolute;
+    top: 8px; left: 16px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 52px;
+    color: rgba(45,95,138,0.16);
+    line-height: 1;
+  }
+  .key-message-box .km-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #2d5f8a;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .key-message-box p {
+    font-family: 'Inter', sans-serif;
+    color: #0f2843;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.65;
+    letter-spacing: 0.05px;
+  }
+
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+    height: calc(100% - 20px);
+    padding: 36px 56px;
+  }
+  .split-layout .text-col h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #0f2843;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 14px;
+    line-height: 1.28;
+    letter-spacing: -0.2px;
+    position: relative;
+    padding-bottom: 12px;
+  }
+  .split-layout .text-col h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 40px; height: 3px;
+    background: linear-gradient(90deg, #2d5f8a, #4a90c4);
+    border-radius: 2px;
+  }
+  .split-layout .text-col p {
+    font-family: 'Inter', sans-serif;
+    color: #3a4a5c;
+    font-size: 13.5px;
+    line-height: 1.78;
+    margin: 0 0 14px;
+  }
+  .split-layout .text-col ul { padding-left: 18px; margin: 10px 0 0; }
+  .split-layout .text-col ul li {
+    font-family: 'Inter', sans-serif;
+    color: #3a4a5c;
+    font-size: 13px;
+    line-height: 1.7;
+    margin-bottom: 7px;
+  }
+  .split-layout .text-col ul li::marker { color: #4a90c4; }
+  .split-layout .image-col img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    box-shadow: 5px 5px 0 #b8cfe6, 8px 8px 0 #a4bedc, 0 14px 32px rgba(26,58,92,0.14);
+  }
+
+  .highlight-strip {
+    background: linear-gradient(135deg, #deeef9 0%, #e8f4ff 60%, #f0f8ff 100%);
+    padding: 20px 28px;
+    border-top: 1px solid #c8dff0;
+    border-bottom: 1px solid #c8dff0;
+    position: relative;
+    box-shadow: inset 0 2px 8px rgba(45,95,138,0.07);
+    margin-top: 20px;
+    border-radius: 0 10px 10px 0;
+  }
+  .highlight-strip::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+    background: linear-gradient(180deg, #2d5f8a, #4a90c4);
+    border-radius: 0 3px 3px 0;
+  }
+  .highlight-strip p {
+    font-family: 'Inter', sans-serif;
+    color: #0f2843;
+    font-size: 14.5px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.60;
+    letter-spacing: 0.05px;
+  }
+
+  .content-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 22px; }
+  .cg-card {
+    background: linear-gradient(160deg, #f8fbfd 0%, #f2f7fb 100%);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #dde8f2;
+    position: relative;
+    box-shadow: 4px 4px 0 #b8cfe6, 6px 6px 0 #a4bedc, 0 8px 18px rgba(26,58,92,0.08);
+  }
+  .cg-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, #2d5f8a, #4a90c4);
+    border-radius: 10px 10px 0 0;
+  }
+  .cg-card .num {
+    width: 30px; height: 30px; line-height: 30px;
+    background: linear-gradient(135deg, #2d5f8a, #4a90c4);
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    margin: 6px 0 10px;
+    box-shadow: 0 3px 0 #1a3a5c;
+    font-family: 'Inter', sans-serif;
+  }
+  .cg-card h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #0f2843;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .cg-card p {
+    font-family: 'Inter', sans-serif;
+    color: #4a5e72;
+    font-size: 12.5px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .isi-slide-wrap {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 28px;
+    align-items: center;
+    height: calc(100% - 20px);
+    padding: 36px 56px;
+  }
+  .isi-panel {
+    background: linear-gradient(160deg, #f2f7fc 0%, #eaf2f9 100%);
+    border-radius: 12px;
+    border: 1px solid #ccdded;
+    border-top: 4px solid #1a3a5c;
+    box-shadow: 5px 5px 0 #b8cfe6, 8px 8px 0 #a4bedc, 0 12px 28px rgba(26,58,92,0.10);
+    overflow: hidden;
+  }
+  .isi-panel-header {
+    background: linear-gradient(135deg, #0a1e34 0%, #0f2843 35%, #1a3a5c 70%, #2d5f8a 100%);
+    padding: 13px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .isi-panel-header::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle, rgba(74,144,196,0.22) 0%, transparent 65%);
+    border-radius: 50%;
+  }
+  .isi-panel-header p {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    position: relative;
+    z-index: 2;
+  }
+  .isi-panel-body {
+    padding: 18px 22px;
+  }
+  .isi-panel-body p {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #4a5e72;
+    line-height: 1.72;
+    margin: 0 0 10px;
+    font-style: italic;
+  }
+  .isi-panel-body ul {
+    padding-left: 18px;
+    margin: 0;
+  }
+  .isi-panel-body ul li {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #4a5e72;
+    line-height: 1.72;
+    margin-bottom: 6px;
+  }
+  .isi-panel-body ul li::marker { color: #4a90c4; }
+  .isi-image img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+    box-shadow: 5px 5px 0 #b8cfe6, 8px 8px 0 #a4bedc, 0 14px 32px rgba(26,58,92,0.14);
+  }
+
+  .bottom-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 48px;
+    background: linear-gradient(180deg, #f8fbfd 0%, #f2f7fb 100%);
+    border-top: 1px solid #dde8f2;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    justify-content: space-between;
+    z-index: 10;
+  }
+  .nav-dots { display: flex; gap: 6px; align-items: center; }
+  .nav-dots .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #c0d4e8;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-dots .dot.active {
+    background: linear-gradient(90deg, #2d5f8a, #4a90c4);
+    width: 22px;
+    border-radius: 4px;
+  }
+  .brand-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: #7a96b0;
+    letter-spacing: 0.3px;
+  }
+  .nav-controls { display: flex; gap: 10px; }
+  .nav-controls button {
+    background: #ffffff;
+    border: 1px solid #dde8f2;
+    padding: 6px 18px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    color: #2d5f8a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .nav-controls button:hover {
+    background: linear-gradient(135deg, #2d5f8a, #4a90c4);
+    color: #fff;
+    border-color: #2d5f8a;
+  }
+
+  .data-visual-wrap { margin-top: 20px; }
+  .data-visual-wrap img {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #dde8f2;
+    box-shadow: 5px 5px 0 #b8cfe6, 8px 8px 0 #a4bedc, 0 14px 32px rgba(26,58,92,0.12);
+    display: block;
+  }
+  .data-visual-wrap .caption {
+    font-family: 'Inter', sans-serif;
+    color: #7a96b0;
+    font-size: 10.5px;
+    font-weight: 400;
+    margin-top: 8px;
+    font-style: italic;
+    letter-spacing: 0.2px;
+    text-align: center;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(45,95,138,0.20) 20%, rgba(45,95,138,0.42) 50%, rgba(74,144,196,0.18) 80%, transparent);
+    border: none;
+    margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <div class="accent-bar"></div>
+
+  <div class="top-nav">
+    <div>
+      <img src="logo.png" alt="BREXIVA Logo" class="logo"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <span class="logo-text" style="display:none;">BREXIVA</span>
+    </div>
+    <div class="nav-right">
+      <div class="slide-counter" id="counter">01 / 06</div>
+      <div class="menu-icon"></div>
+    </div>
+  </div>
+
+  <div class="cover-slide active" data-slide="1">
+    <div class="cover-deco-1"></div>
+    <div class="cover-deco-2"></div>
+    <div class="cover-deco-3"></div>
+    <div class="cover-inner">
+      <div class="cover-pretitle">[Brand Tagline Placeholder]</div>
+      <h1>[Cover Heading Placeholder]</h1>
+      <p class="sub">[Subtitle placeholder — short framing sentence introducing the presentation topic.]</p>
+    </div>
+    <div class="cover-wave"></div>
+  </div>
+
+  <div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <h2 class="section-heading">[Section Heading Placeholder]</h2>
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="number">[XX%]</span>
+          <span class="label">[Metric Label 1]</span>
+          <span class="desc">[Short supporting line placeholder.]</span>
+        </div>
+        <div class="stat-card">
+          <span class="number">[XX]</span>
+          <span class="label">[Metric Label 2]</span>
+          <span class="desc">[Short supporting line placeholder.]</span>
+        </div>
+        <div class="stat-card">
+          <span class="number">[X.X]</span>
+          <span class="label">[Metric Label 3]</span>
+          <span class="desc">[Short supporting line placeholder.]</span>
+        </div>
+      </div>
+      <div class="highlight-strip" style="margin-top:24px;">
+        <p>[Key Takeaway Message Placeholder]</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="3">
+    <div class="slide-inner">
+      <h2 class="section-heading">[Key Message]</h2>
+      <div class="key-message-box">
+        <div class="km-label">Key Message</div>
+        <p>[Standout placeholder statement — the most important clinical point of the deck.]</p>
+      </div>
+      <hr class="divider">
+      <div style="padding: 0 4px;">
+        <p style="font-family:'Inter',sans-serif; color:#3a4a5c; font-size:13.5px; line-height:1.78; margin:0;">
+          [Supporting paragraph placeholder. Additional context or clinical narrative to reinforce the key message above. Replace with approved medical copy.]
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="4">
+    <div class="split-layout">
+      <div class="text-col">
+        <h2>[Split Heading Placeholder]</h2>
+        <p>[Body paragraph placeholder — describe the supporting topic in clear, concise language appropriate for the HCP audience.]</p>
+        <ul>
+          <li>[Highlight placeholder 1]</li>
+          <li>[Highlight placeholder 2]</li>
+          <li>[Highlight placeholder 3]</li>
+        </ul>
+      </div>
+      <div class="image-col">
+        <img src="https://dummyimage.com/440x300/e8f4fd/1a3a5c&text=Visual+Placeholder" alt="Visual placeholder">
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="5">
+    <div class="slide-inner">
+      <h2 class="section-heading">[Data / Content Grid Heading]</h2>
+      <div class="content-grid">
+        <div class="cg-card">
+          <div class="num">1</div>
+          <h3>[Card Heading Placeholder]</h3>
+          <p>[Card supporting text placeholder.]</p>
+        </div>
+        <div class="cg-card">
+          <div class="num">2</div>
+          <h3>[Card Heading Placeholder]</h3>
+          <p>[Card supporting text placeholder.]</p>
+        </div>
+        <div class="cg-card">
+          <div class="num">3</div>
+          <h3>[Card Heading Placeholder]</h3>
+          <p>[Card supporting text placeholder.]</p>
+        </div>
+        <div class="cg-card">
+          <div class="num">4</div>
+          <h3>[Card Heading Placeholder]</h3>
+          <p>[Card supporting text placeholder.]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-slide="6">
+    <div class="isi-slide-wrap">
+      <div class="isi-panel">
+        <div class="isi-panel-header">
+          <p>Important Safety Information (ISI)</p>
+        </div>
+        <div class="isi-panel-body">
+          <p>[ISI overview paragraph placeholder.]</p>
+          <ul>
+            <li>[ISI finding 1 placeholder]</li>
+            <li>[ISI finding 2 placeholder]</li>
+            <li>[ISI finding 3 placeholder]</li>
+            <li>[ISI finding 4 placeholder]</li>
+          </ul>
+        </div>
+      </div>
+      <div class="isi-image">
+        <img src="https://dummyimage.com/440x320/f2f7fc/1a3a5c&text=Safety+Data+Table" alt="Safety Information">
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="nav-dots" id="dots">
+      <div class="dot active" data-go="1"></div>
+      <div class="dot" data-go="2"></div>
+      <div class="dot" data-go="3"></div>
+      <div class="dot" data-go="4"></div>
+      <div class="dot" data-go="5"></div>
+      <div class="dot" data-go="6"></div>
+    </div>
+    <div class="nav-controls">
+      <button id="prev">&larr; Prev</button>
+      <button id="next">Next &rarr;</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('[data-slide]');
+  const dots = document.querySelectorAll('.nav-dots .dot');
+  const counter = document.getElementById('counter');
+  let current = 1;
+  function show(n) {
+    if (n < 1 || n > slides.length) return;
+    slides.forEach(s => s.classList.remove('active'));
+    dots.forEach(d => d.classList.remove('active'));
+    document.querySelector('[data-slide="' + n + '"]').classList.add('active');
+    document.querySelector('.dot[data-go="' + n + '"]').classList.add('active');
+    counter.textContent = String(n).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+    current = n;
+  }
+  document.getElementById('next').addEventListener('click', () => show(current + 1));
+  document.getElementById('prev').addEventListener('click', () => show(current - 1));
+  dots.forEach(d => d.addEventListener('click', () => show(parseInt(d.dataset.go))));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') show(current + 1);
+    if (e.key === 'ArrowLeft') show(current - 1);
+  });
+</script>
+
+</body>
+</html>

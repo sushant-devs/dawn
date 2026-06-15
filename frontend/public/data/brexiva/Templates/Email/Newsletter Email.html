@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BREXIVA - HCP Email Template</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  body {
+    margin: 0; padding: 0;
+    background-color: #e8edf4;
+    font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+  }
+  .email-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    box-shadow: 0 12px 60px rgba(15,40,67,0.18);
+  }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    height: 5px;
+    background: linear-gradient(90deg, #0f2843 0%, #2d5f8a 50%, #4a90c4 100%);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 24px 44px;
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-bottom: 1px solid #e8edf4;
+  }
+  .header .logo-cell { display: table-cell; vertical-align: middle; }
+  .header .logo-cell img { height: 36px; }
+  .header .issue-cell {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+  }
+  .header .issue-cell span {
+    color: #7a96b0;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  /* ── NAV BAR ── */
+  .nav-bar {
+    background: linear-gradient(180deg, #f4f8fc 0%, #eef4fa 100%);
+    padding: 13px 44px;
+    border-top: 1px solid #dde8f2;
+    border-bottom: 1px solid #dde8f2;
+    text-align: center;
+  }
+  .nav-bar a {
+    color: #1a3a5c;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    margin: 0 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+
+  /* ── FEATURED ARTICLE ── */
+  .featured-article {
+    position: relative;
+    padding: 36px 44px 32px;
+    background: #ffffff;
+  }
+  .featured-article .label {
+    color: #2d5f8a;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin-bottom: 14px;
+    display: inline-block;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, #deeef9, #e8f4ff);
+    border-radius: 3px;
+    border-left: 3px solid #2d5f8a;
+  }
+  .featured-article h1 {
+    color: #0f2843;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 18px;
+    line-height: 1.28;
+    letter-spacing: -0.3px;
+  }
+
+  /* IMAGE PLACEHOLDER 1 — Featured Hero Image */
+  .featured-article .img-placeholder {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #deeef9 0%, #c8dff0 100%);
+    border-radius: 12px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 5px 5px 0px #b8cfe6, 8px 8px 0px #a4bedc, 0 14px 32px rgba(26,58,92,0.12);
+    box-sizing: border-box;
+  }
+  .featured-article .img-placeholder span {
+    color: #2d5f8a;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .featured-article p {
+    color: #3a4a5c;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.80;
+    margin: 0 0 16px;
+    letter-spacing: 0.05px;
+  }
+  .featured-article .read-more {
+    color: #1a3a5c;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #4a90c4;
+    padding-bottom: 2px;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(45,95,138,0.20) 20%, rgba(45,95,138,0.42) 50%, rgba(74,144,196,0.18) 80%, transparent);
+    margin: 0 44px;
+    border: none;
+  }
+
+  /* ── ARTICLES LIST ── */
+  .articles-list { padding: 32px 44px; }
+  .articles-list h3 {
+    color: #0f2843;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 22px;
+    line-height: 1.3;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #dde8f2;
+    position: relative;
+  }
+  .articles-list h3::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 40px; height: 2px;
+    background: linear-gradient(90deg, #2d5f8a, #4a90c4);
+  }
+
+  /* Article with thumbnail — IMAGE PLACEHOLDER 2 */
+  .article-card {
+    display: table;
+    width: 100%;
+    margin-bottom: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #eef2f7;
+    box-sizing: border-box;
+  }
+  .article-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .article-card .thumb { display: table-cell; width: 100px; vertical-align: top; }
+  .article-card .thumb .img-placeholder-sm {
+    width: 88px;
+    height: 88px;
+    background: linear-gradient(135deg, #deeef9 0%, #c8dff0 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px 0px #b8cfe6, 5px 5px 0px #a4bedc, 0 8px 18px rgba(26,58,92,0.10);
+    box-sizing: border-box;
+  }
+  .article-card .thumb .img-placeholder-sm span {
+    color: #2d5f8a;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-align: center;
+    opacity: 0.7;
+    padding: 4px;
+  }
+
+  .article-card .text { display: table-cell; vertical-align: top; padding-left: 18px; }
+  .article-card .text h4 {
+    color: #0f2843;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 7px;
+    line-height: 1.30;
+    letter-spacing: -0.1px;
+  }
+  .article-card .text p {
+    color: #5a6e84;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12.5px;
+    font-weight: 400;
+    line-height: 1.65;
+    margin: 0 0 10px;
+    letter-spacing: 0.05px;
+  }
+  .article-card .text a {
+    color: #1a3a5c;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #4a90c4;
+    padding-bottom: 1px;
+  }
+
+  /* Text-only articles (no image) */
+  .article-text-only {
+    margin-bottom: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #eef2f7;
+  }
+  .article-text-only:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .article-text-only h4 {
+    color: #0f2843;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 7px;
+    line-height: 1.30;
+  }
+  .article-text-only p {
+    color: #5a6e84;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 12.5px;
+    line-height: 1.65;
+    margin: 0 0 10px;
+  }
+  .article-text-only a {
+    color: #1a3a5c;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #4a90c4;
+    padding-bottom: 1px;
+  }
+
+  /* ── ISI ── */
+  .isi-outer { padding: 16px 40px 20px; }
+  .isi-box {
+    background: linear-gradient(160deg, #f2f7fc 0%, #eaf2f9 100%);
+    border-radius: 12px;
+    border: 1px solid #ccdded;
+    border-top: 4px solid #1a3a5c;
+    box-shadow: 5px 5px 0px #b8cfe6, 8px 8px 0px #a4bedc, 0 12px 28px rgba(26,58,92,0.10);
+  }
+  .isi-box td { padding: 20px 24px; }
+  .isi-box .isi-title {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #0f2843;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(26,58,92,0.16);
+  }
+  .isi-box .isi-body {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #4a5e72;
+    margin: 0;
+    line-height: 1.70;
+    letter-spacing: 0.05px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    position: relative;
+    background: linear-gradient(140deg, #0a1e34 0%, #0f2843 35%, #1a3a5c 70%, #1e4d7a 100%);
+    padding: 66px 44px 32px;
+    overflow: hidden;
+    text-align: center;
+  }
+  .footer::before {
+    content: '';
+    position: absolute;
+    bottom: -50px; left: -50px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(74,144,196,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .footer-wave {
+    position: absolute;
+    top: -2px; left: 0;
+    width: 100%; line-height: 0;
+    pointer-events: none; z-index: 3;
+  }
+  .footer-wave svg { display: block; width: 100%; height: 62px; }
+  .footer-accent-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2d7ab0 0%, #a8d0e6 40%, #4a90c4 70%, #2d5f8a 100%);
+  }
+  .footer .branding { position: relative; z-index: 2; margin-bottom: 14px; }
+  .footer .branding img {
+    height: 28px;
+    display: inline-block;
+    opacity: 0.88;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+  }
+  .footer p {
+    color: #6e96b4;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.65;
+    margin: 0 0 8px;
+    position: relative; z-index: 2;
+    letter-spacing: 0.2px;
+  }
+  .footer .legal {
+    color: #4e7a9a;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10px;
+    border-top: 1px solid rgba(255,255,255,0.09);
+    padding-top: 14px;
+    margin-top: 14px;
+    position: relative; z-index: 2;
+    line-height: 1.65;
+  }
+
+  /* ── UNSUBSCRIBE ── */
+  .unsubscribe {
+    text-align: center;
+    padding: 14px 16px;
+    background: #eef2f6;
+    position: relative; z-index: 2;
+    border-top: 1px solid #dde4ec;
+  }
+  .unsubscribe a {
+    color: #5a7a96;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10.5px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid rgba(90,122,150,0.35);
+    padding-bottom: 1px;
+  }
+  
+  /* ── IMAGE SECTION ── */
+  .image-section { padding: 0 44px 32px; text-align: center; }
+  .image-section img {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #dde8f2;
+    display: block;
+    box-shadow: 5px 5px 0px #b8cfe6, 8px 8px 0px #a4bedc, 0 14px 32px rgba(26,58,92,0.12);
+  }
+  .image-section .caption {
+    color: #7a96b0;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10.5px;
+    font-weight: 400;
+    margin-top: 10px;
+    font-style: italic;
+    letter-spacing: 0.2px;
+  }
+</style>
+</head>
+<body>
+<div class="email-wrapper">
+
+  <div class="top-bar"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo-cell"><img src="logo.png" alt="BREXIVA Logo"></div>
+    
+  </div>
+
+  <!-- FEATURED ARTICLE -->
+  <div class="featured-article">
+    <div class="label">[Featured Label]</div>
+    <h1>[Featured Article Headline Placeholder]</h1>
+
+    <!-- IMAGE PLACEHOLDER 1: Featured Hero Image (520×200) -->
+ <div class="image-section">
+    <img src="https://dummyimage.com/520x220/f0f7ff/1a3a5c&text=Feature+Image+Placeholder" alt="Feature Image Placeholder">
+  </div>
+
+    <p>[Featured article excerpt placeholder. Brief summary of the article content, designed to engage the HCP reader.]</p>
+   
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ARTICLES LIST -->
+  <div class="articles-list">
+    <h3>[Section Heading Placeholder]</h3>
+
+    <!-- Article 2: text only -->
+    <div class="article-text-only">
+      <h4>[Article Title Placeholder 1]</h4>
+      <p>[Brief description placeholder for article content.]</p>
+     
+    </div>
+
+    <!-- Article 3: text only -->
+    <div class="article-text-only">
+      <h4>[Article Title Placeholder 2]</h4>
+      <p>[Brief description placeholder for article content.]</p>
+     
+    </div>
+
+  </div>
+
+  <!-- ISI BLOCK -->
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td class="isi-outer" style="padding: 16px 40px 20px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="isi-box">
+          <tr>
+            <td>
+              <p class="isi-title">Important Safety Information (ISI)</p>
+              <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here]</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-wave">
+      <svg viewBox="0 0 600 62" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,18 C70,38 140,2 240,22 C340,40 400,8 480,24 C530,34 565,18 600,26 L600,0 L0,0 Z" fill="#ffffff"/>
+        <path d="M0,30 C60,50 140,12 220,32 C300,52 380,16 460,34 C520,46 560,28 600,32 L600,0 L0,0 Z" fill="rgba(74,144,196,0.26)"/>
+        <path d="M0,44 C80,22 180,56 280,40 C380,24 460,54 560,40 C580,36 592,38 600,42 L600,0 L0,0 Z" fill="rgba(168,208,230,0.16)"/>
+      </svg>
+    </div>
+    <div class="branding">
+      <img src="logo.png" alt="BREXIVA">
+    </div>
+
+  </div>
+
+  <!-- UNSUBSCRIBE -->
+  <div class="unsubscribe">
+    <a href="#">[Unsubscribe / Manage Preferences]</a>
+  </div>
+
+</div>
+</body>
+</html>

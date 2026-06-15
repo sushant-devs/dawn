@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Guided Journey — Single-Page A4</title></head><body><!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Guided Journey — Single-Page A4</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #ffffff; width: 794px; margin: 0 auto; }
+.leaflet { width: 794px; min-height: 1123px; position: relative; overflow: hidden; background: #ffffff; }
+.accent-bar { height: 6px; background: linear-gradient(to right, #0D6B6E, #4ECDC4, #C17B3A); }
+.header { padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E8F4F2; }
+.header .tagline { font-size: 13px; color: #0D6B6E; font-weight: 500; }
+.hero { background: linear-gradient(135deg, #0F2027 0%, #0D6B6E 100%); padding: 36px 40px; text-align: center; }
+.hero h1 { color: #ffffff; font-size: 28px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+.hero p { color: #b8e0de; font-size: 15px; }
+.intro-section { padding: 28px 40px; }
+.intro-section p { font-size: 14px; color: #3a4f5c; line-height: 1.7; }
+.icon-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; padding: 0 40px 28px; }
+.icon-card { background: #f7fafa; border: 1px solid #d0e6e4; border-radius: 10px; padding: 20px 16px; text-align: center; }
+.icon-card .icon { width: 52px; height: 52px; background: #E8F4F2; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #0D6B6E; }
+.icon-card h4 { font-size: 13px; color: #0F2027; font-weight: 700; margin-bottom: 6px; }
+.icon-card p { font-size: 11px; color: #5d6f82; line-height: 1.4; }
+.key-message { margin: 0 40px 28px; background: linear-gradient(135deg, #0D6B6E, #0F2027); border-radius: 10px; padding: 20px 24px; text-align: center; }
+.key-message p { color: #ffffff; font-size: 15px; font-weight: 500; line-height: 1.5; }
+.steps-section { padding: 0 40px 28px; }
+.steps-section h2 { font-size: 18px; color: #0F2027; font-weight: 700; margin-bottom: 16px; }
+.steps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.step-item { display: flex; gap: 12px; align-items: flex-start; }
+.step-number { width: 32px; height: 32px; background: #0D6B6E; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+.step-text h5 { font-size: 13px; color: #0F2027; font-weight: 600; margin-bottom: 3px; }
+.step-text p { font-size: 11px; color: #5d6f82; line-height: 1.4; }
+.faq-section { padding: 0 40px 28px; }
+.faq-section h2 { font-size: 18px; color: #0F2027; font-weight: 700; margin-bottom: 16px; }
+.faq-card { background: #f7fafa; border: 1px solid #d0e6e4; border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; }
+.faq-card h5 { font-size: 13px; color: #0D6B6E; font-weight: 600; margin-bottom: 4px; }
+.faq-card p { font-size: 12px; color: #3a4f5c; line-height: 1.5; }
+.cta-section { margin: 0 40px 28px; background: #C17B3A; border-radius: 10px; padding: 24px; text-align: center; }
+.cta-section h3 { color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.cta-section p { color: rgba(255,255,255,0.9); font-size: 13px; margin-bottom: 14px; }
+.cta-button { display: inline-block; background: #ffffff; color: #C17B3A; padding: 10px 28px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; }
+.footer { background: #0F2027; padding: 20px 40px; }
+.footer-content { display: flex; align-items: center; justify-content: space-between; }
+.footer p { font-size: 10px; color: #5d6f82; line-height: 1.5; }
+.footer .disclaimer { max-width: 60%; }
+</style>
+</head>
+<body>
+<div class="leaflet">
+<!-- Accent Bar -->
+<div class="accent-bar"></div>
+<!-- Header -->
+<div class="header">
+<img alt="ONCORYVA" src="data:image/png;base64,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" style="height:32px;"/>
+<span class="tagline">Your Treatment Guide</span>
+</div>
+<!-- Hero -->
+<div class="hero">
+<h1>Oncoryva® Treatment Guide for HR+/HER2- Metastatic Breast Cancer</h1>
+<p>Subheading — Supporting text for patients starting their treatment journey</p>
+</div>
+<!-- Intro -->
+<div class="intro-section">
+<p>Dear Patient, this guide provides a warm introduction to Oncoryva®. We're here to support you throughout your treatment journey.</p>
+</div>
+<!-- Icon Cards -->
+<div class="icon-cards">
+<div class="icon-card">
+<div class="icon">♥</div>
+<h4>Understanding Oncoryva®</h4>
+<p>Oncoryva® is a treatment designed for adults with HR+/HER2- metastatic breast cancer who have already tried at least one other treatment. This medication aims to help improve your health and manage symptoms effectively.</p>
+</div>
+<div class="icon-card">
+<div class="icon">★</div>
+<h4>Patient Insights</h4>
+<p>In a study of patients treated with Oncoryva®, the median age was 62 years. Most of these patients had already received at least two prior systemic treatments for their cancer. Many patients reported moderate symptom burden, with fatigue and pain being the most common issues they faced.</p>
+</div>
+<div class="icon-card">
+<div class="icon">✓</div>
+<h4>Clinical Outcomes</h4>
+<p>Oncoryva® offers a clinically validated treatment pathway for patients with HR HER2− metastatic breast cancer. In the treated population, 61.9% had visceral disease, highlighting the importance of effective treatment options for those facing advanced stages of the disease.</p>
+</div>
+</div>
+<!-- Key Message -->
+<div class="key-message">
+<p>Key Message: Patient-reported outcomes indicate significant improvements in symptom burden for patients treated with Oncoryva®. The mean baseline global health status was 61.4, showing that patients had a moderate level of health before starting treatment.</p>
+</div>
+<!-- FAQ -->
+<div class="faq-section">
+<h2>Common Questions</h2>
+<div class="faq-card">
+<h5>What should I know about safety while using Oncoryva®?</h5>
+<p>Safety is a top priority when using Oncoryva®. Healthcare providers will monitor you closely for any potential side effects, including checking for hypersensitivity reactions, liver function, and complete blood counts during treatment.</p>
+</div>
+<div class="faq-card">
+<h5>What if I am pregnant or planning to become pregnant?</h5>
+<p>If you are pregnant or planning to become pregnant, it’s essential to discuss this with your healthcare provider, as Oncoryva® may cause harm to a developing fetus. Effective contraception is recommended during treatment.</p>
+</div>
+</div>
+<!-- CTA Section -->
+<div class="cta-section">
+<h3 style="margin:0 0 8px; font-size:12px; font-weight:700; color:#0D6B6E; text-transform:uppercase; letter-spacing:0.5px;">
+      Important Safety Information (ISI)
+    </h3>
+<p style="margin:0; font-size:11px; color:#3a4f5c; line-height:1.6;">
+      BOXED WARNING: Risk: Thrombotic microangiopathy (TMA) and thromboembolic events when used with aPCC ≥100 U/kg/24h. Trigger / Setting: Concomitant aPCC dosing for breakthrough bleed management. Action for HCP: Discontinue aPCC and assess for TMA / thromboembolism. Monitoring: Signs/symptoms of TMA, thrombosis, or DIC.
+    </p>
+</div>
+</div>
+</body>
+</html></body></html>

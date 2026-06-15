@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORVANTA | Tabbed Sidebar DDA Template</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 30px;
+    background: #2D0612;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  }
+
+  .deck {
+    width: 1024px;
+    height: 768px;
+    margin: 0 auto;
+    background: #ffffff;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    border-radius: 6px;
+    border: 1px solid #e8c49a;
+  }
+
+  /* ═══════════════════════════
+     SIDEBAR
+  ═══════════════════════════ */
+  .sidebar {
+    background: linear-gradient(180deg, #2a0510 0%, #4A0D1F 45%, #7C1D2F 100%);
+    padding: 0;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* decorative circles like ONCORYVA header */
+  .sidebar::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    pointer-events: none;
+  }
+  .sidebar::after {
+    content: '';
+    position: absolute;
+    bottom: 60px; left: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(201,155,59,0.10);
+    pointer-events: none;
+  }
+
+  .sidebar-inner {
+    padding: 26px 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sidebar-logo-wrap { margin-bottom: 6px; }
+  .sidebar-logo-wrap img { height: 30px; width: auto; }
+  .logo-text-sidebar {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.30);
+  }
+
+  /* thin amber accent rule under logo */
+  .sidebar-rule {
+    height: 2px;
+    background: linear-gradient(to right, #C99B3B, rgba(201,155,59,0.10));
+    border-radius: 1px;
+    margin: 14px 0 20px;
+  }
+
+  .sidebar h4 {
+    font-size: 9px;
+    color: #C99B3B;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin: 0 0 10px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .sidebar .tab {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    color: rgba(248,231,201,0.75);
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.18s, color 0.18s;
+  }
+  .sidebar .tab:hover { background: rgba(255,255,255,0.07); color: #fff; }
+  .sidebar .tab.active {
+    background: rgba(201,155,59,0.20);
+    color: #ffffff;
+    box-shadow: inset 3px 0 0 #C99B3B;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .sidebar .tab .ic {
+    width: 28px; height: 28px;
+    line-height: 28px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 7px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: rgba(248,231,201,0.80);
+    transition: background 0.18s, color 0.18s;
+  }
+  .sidebar .tab.active .ic {
+    background: #C99B3B;
+    color: #ffffff;
+    box-shadow: 0 3px 8px rgba(201,155,59,0.40);
+  }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+    position: relative;
+    z-index: 2;
+  }
+  .sidebar-footer img { height: 22px; opacity: 0.60; }
+  .footer-logo-text-small {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+  .sidebar-footer p {
+    margin: 6px 0 0;
+    font-size: 9.5px;
+    color: rgba(201,155,59,0.65);
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ═══════════════════════════
+     MAIN AREA
+  ═══════════════════════════ */
+  .main {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* wave-style top accent — ONCORYVA treatment */
+  .top-accent {
+    height: 5px;
+    background: linear-gradient(90deg, #2a0510 0%, #4A0D1F 25%, #7C1D2F 55%, #C99B3B 80%, #e8c060 100%);
+    flex-shrink: 0;
+  }
+
+  .breadcrumb {
+    padding: 12px 28px;
+    border-bottom: 1px solid #EFE0D1;
+    font-size: 10px;
+    color: #b09080;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    flex-shrink: 0;
+    background: #fffaf7;
+  }
+  .breadcrumb strong { color: #4A0D1F; }
+
+  /* ═══════════════════════════
+     PANELS
+  ═══════════════════════════ */
+  .panel {
+    display: none;
+    padding: 26px 28px 0;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .panel.active {
+    display: block;
+    animation: fadeUp 0.28s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* panel heading — Playfair like ONCORYVA */
+  .panel h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #2a0510;
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 0 4px;
+    line-height: 1.25;
+  }
+
+  /* gradient text subheading — ONCORYVA treatment */
+  .panel-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #4A0D1F 0%, #7C1D2F 50%, #C99B3B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 14px;
+    display: block;
+  }
+
+  /* thin accent rule before heading — ONCORYVA */
+  .panel-rule {
+    width: 40px;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(to right, #4A0D1F, #C99B3B);
+    margin-bottom: 12px;
+  }
+
+  .panel p {
+    color: #5A4030;
+    font-size: 13px;
+    line-height: 1.75;
+    margin: 0 0 12px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Stat row — ONCORYVA raised card treatment ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 12px 0 16px;
+  }
+
+  /* primary stat card — burgundy tint */
+  .stat-card-p {
+    background: linear-gradient(145deg, #fde8d8 0%, #f8d4bc 100%);
+    border: 1.5px solid #e8b490;
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 5px 0 #d49060, 0 7px 16px rgba(74,13,31,0.12);
+  }
+  .stat-card-p .v {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #2a0510;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .stat-card-p .l {
+    font-size: 9px;
+    color: #7C1D2F;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 6px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* secondary stat card — amber tint */
+  .stat-card-s {
+    background: linear-gradient(145deg, #fef8ee 0%, #faebd0 100%);
+    border: 1.5px solid #e8c49a;
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 5px 0 #d4a864, 0 7px 16px rgba(201,155,59,0.18);
+  }
+  .stat-card-s .v {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #5a2a08;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .stat-card-s .l {
+    font-size: 9px;
+    color: #a05e20;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 6px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Message / callout box — ONCORYVA left-border treatment ── */
+  .message-box {
+    background: #fdf0e2;
+    border-left: 5px solid #4A0D1F;
+    border-top: 1px solid #e8c49a;
+    border-right: 1px solid #e8c49a;
+    border-bottom: 1px solid #e8c49a;
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 4px 5px 0 #d4a870, 5px 7px 14px rgba(74,13,31,0.10);
+    margin: 14px 0;
+  }
+  .message-box .lab {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: #4A0D1F;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: rgba(74,13,31,0.10);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .message-box h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: #2a0510;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* ── Chart area ── */
+  .chart-area {
+    background: #fff8f0;
+    border: 1px solid #e8c49a;
+    border-radius: 10px;
+    padding: 14px;
+    margin: 14px 0;
+    box-shadow: 0 4px 0 #d4a870, 0 6px 14px rgba(74,13,31,0.08);
+  }
+  .chart-area img { width: 100%; border-radius: 7px; display: block; }
+  .chart-area .cap {
+    font-size: 10.5px;
+    color: #8A6F58;
+    margin-top: 8px;
+    text-align: center;
+    font-style: italic;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Two-col cards ── */
+  .two-col-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .two-col-cards .c {
+    background: linear-gradient(145deg, #fef8ee, #faebd0);
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid #e8c49a;
+    box-shadow: 0 4px 0 #d4a870, 0 5px 12px rgba(74,13,31,0.08);
+  }
+  .two-col-cards .c h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #2a0510;
+    font-size: 13px;
+    font-weight: 800;
+    margin: 0 0 6px;
+  }
+  .two-col-cards .c p {
+    font-size: 12px;
+    color: #6B5544;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* section label above cards — ONCORYVA */
+  .section-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: #b07840;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    text-align: center;
+    margin: 0 0 12px;
+  }
+
+  /* ═══════════════════════════
+     ISI PANEL
+  ═══════════════════════════ */
+  .isi-wrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 20px;
+    margin-top: 14px;
+    align-items: start;
+  }
+
+  /* ISI card — ONCORYVA ISI box treatment */
+  .isi-card {
+    background: #fff8f0;
+    border: 1.5px solid #e8c49a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 0 #d4a870, 0 8px 18px rgba(74,13,31,0.10);
+  }
+  .isi-card-header {
+    background: linear-gradient(90deg, #2a0510 0%, #4A0D1F 60%, #7C1D2F 100%);
+    padding: 10px 18px;
+  }
+  .isi-card-header p {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+  }
+  .isi-card-body { padding: 16px 18px; }
+  .isi-card-body h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #2a0510;
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0 0 10px;
+  }
+  .isi-card-body p {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #5A4030;
+    line-height: 1.7;
+    margin: 0 0 10px;
+    font-style: italic;
+  }
+  .isi-card-body ul {
+    padding-left: 16px;
+    margin: 0;
+  }
+  .isi-card-body ul li {
+    font-family: 'Inter', sans-serif;
+    color: #5A4030;
+    line-height: 1.75;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  .isi-visual img {
+    width: 100%;
+    border-radius: 10px;
+    display: block;
+    box-shadow: 0 6px 0 #d4a870, 0 8px 20px rgba(74,13,31,0.14);
+    border: 1px solid #e8c49a;
+  }
+
+  /* ═══════════════════════════
+     BOTTOM CTA BAR
+  ═══════════════════════════ */
+  .cta-area {
+    padding: 14px 28px;
+    background: #fffaf7;
+    border-top: 1px solid #EFE0D1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .cta-area .left {
+    font-size: 12px;
+    color: #7C1D2F;
+    font-family: 'Inter', sans-serif;
+  }
+  .cta-area .left strong {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #2a0510;
+    display: block;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .cta-area .cta-btn {
+    background: linear-gradient(135deg, #4A0D1F, #7C1D2F);
+    color: #fff;
+    padding: 9px 22px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(201,155,59,0.40);
+    box-shadow: 0 4px 0 #2a0510, 0 6px 12px rgba(74,13,31,0.20);
+    display: inline-block;
+  }
+  .cta-area .cta-btn:hover { opacity: 0.90; }
+
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ══ SIDEBAR ══ -->
+  <div class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="sidebar-logo-wrap">
+        <img src="logo.png" alt="CORVANTA Logo"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <span class="logo-text-sidebar" style="display:none;">CORVANTA</span>
+      </div>
+
+      <div class="sidebar-rule"></div>
+
+      <h4>Sections</h4>
+
+      <div class="tab active" data-tab="1"><div class="ic">1</div>Section One</div>
+      <div class="tab" data-tab="2"><div class="ic">2</div>Section Two</div>
+      <div class="tab" data-tab="3"><div class="ic">3</div>Section Three</div>
+      <div class="tab" data-tab="4"><div class="ic">4</div>Section Four</div>
+      <div class="tab" data-tab="5"><div class="ic">5</div>Section Five</div>
+      <div class="tab" data-tab="6"><div class="ic">6</div>ISI Profile</div>
+
+      <div class="sidebar-footer">
+        <img src="logo.png" alt="CORVANTA"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <span class="footer-logo-text-small" style="display:none;">CORVANTA</span>
+        
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main">
+    <div class="top-accent"></div>
+    <div class="breadcrumb">Home &middot; <strong id="crumb">Section One</strong></div>
+
+    <!-- Panel 1 -->
+    <div class="panel active" data-panel="1">
+      <div class="panel-rule"></div>
+      <h2>Heading Placeholder One</h2>
+      <span class="panel-sub">Subheading describing section one topic area</span>
+      <p>Body paragraph placeholder — opening narrative for this section. Replace with audience-appropriate copy.</p>
+      <p class="section-label">Clinical Trial Results</p>
+      <div class="stat-row">
+        <div class="stat-card-p"><div class="v">00</div><div class="l">Metric 1</div></div>
+        <div class="stat-card-s"><div class="v">00%</div><div class="l">Metric 2</div></div>
+        <div class="stat-card-p"><div class="v">0.0x</div><div class="l">Metric 3</div></div>
+      </div>
+      <div class="message-box">
+        <span class="lab">Key Message</span>
+        <h3>Standout placeholder statement for this section.</h3>
+      </div>
+    </div>
+
+    <!-- Panel 2 -->
+    <div class="panel" data-panel="2">
+      <div class="panel-rule"></div>
+      <h2>Heading Placeholder Two</h2>
+      <span class="panel-sub">Subheading for section two data theme</span>
+      <p>Body paragraph placeholder.</p>
+      <div class="chart-area">
+        <img src="https://dummyimage.com/650x260/FFF8F0/4A0D1F&text=Chart+Placeholder" alt="Chart placeholder">
+        <div class="cap">Chart caption placeholder</div>
+      </div>
+    </div>
+
+    <!-- Panel 3 -->
+    <div class="panel" data-panel="3">
+      <div class="panel-rule"></div>
+      <h2>Heading Placeholder Three</h2>
+      <span class="panel-sub">Subheading for section three topic area</span>
+      <p>Body paragraph placeholder.</p>
+      <div class="two-col-cards">
+        <div class="c"><h4>Card Heading</h4><p>Card body placeholder.</p></div>
+        <div class="c"><h4>Card Heading</h4><p>Card body placeholder.</p></div>
+        <div class="c"><h4>Card Heading</h4><p>Card body placeholder.</p></div>
+        <div class="c"><h4>Card Heading</h4><p>Card body placeholder.</p></div>
+      </div>
+    </div>
+
+    <!-- Panel 4 -->
+    <div class="panel" data-panel="4">
+      <div class="panel-rule"></div>
+      <h2>Heading Placeholder Four</h2>
+      <span class="panel-sub">Subheading for section four topic area</span>
+      <p>Body paragraph placeholder.</p>
+      <img src="https://dummyimage.com/650x280/fde8d8/4A0D1F&text=Visual+Placeholder"
+           alt="Visual placeholder"
+           style="width:100%;border-radius:10px;display:block;margin-top:12px;
+                  box-shadow:0 6px 0 #d4a870,0 8px 20px rgba(74,13,31,0.14);
+                  border:1px solid #e8c49a;">
+    </div>
+
+    <!-- Panel 5 -->
+    <div class="panel" data-panel="5">
+      <div class="panel-rule"></div>
+      <h2>Heading Placeholder Five</h2>
+      <span class="panel-sub">Subheading for section five topic area</span>
+      <p>Body paragraph placeholder.</p>
+      <div class="message-box">
+        <span class="lab">Summary</span>
+        <h3>Summary statement placeholder — concluding line.</h3>
+      </div>
+    </div>
+
+    <!-- Panel 6: ISI -->
+    <div class="panel" data-panel="6">
+      <div class="panel-rule"></div>
+      <h2>Important Safety Information</h2>
+      <span class="panel-sub">Full prescribing and safety profile</span>
+      <div class="isi-wrapper">
+        <div class="isi-card">
+          <div class="isi-card-header">
+            <p>Important Safety Information (ISI)</p>
+          </div>
+          <div class="isi-card-body">
+            <h3>[ISI Section Heading Placeholder]</h3>
+            <p>[ISI overview paragraph placeholder.]</p>
+            <ul>
+              <li>[ISI finding 1 placeholder]</li>
+              <li>[ISI finding 2 placeholder]</li>
+              <li>[ISI finding 3 placeholder]</li>
+              <li>[ISI finding 4 placeholder]</li>
+            </ul>
+          </div>
+        </div>
+        <div class="isi-visual">
+          <img src="https://dummyimage.com/380x280/FFF8F0/4A0D1F&text=Safety+Data+Table"
+               alt="Safety Information">
+        </div>
+      </div>
+    </div>
+
+
+  </div><!-- /.main -->
+
+</div><!-- /.deck -->
+
+<script>
+  const tabs   = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  const crumb  = document.getElementById('crumb');
+  tabs.forEach(t => {
+    t.addEventListener('click', () => {
+      tabs.forEach(x => x.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      t.classList.add('active');
+      document.querySelector('[data-panel="' + t.dataset.tab + '"]').classList.add('active');
+      crumb.textContent = t.textContent.trim();
+    });
+  });
+</script>
+
+</body>
+</html>

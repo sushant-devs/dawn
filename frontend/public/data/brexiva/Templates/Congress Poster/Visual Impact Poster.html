@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BREXIVA - Congress Poster Template 02</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #dde5ee;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Poster Shell ── */
+.poster-frame {
+  width: 1080px;
+  min-height: 1536px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #b8cfe0;
+  box-shadow: 0 8px 0 #7aaac8, 0 16px 48px rgba(26,58,92,0.18);
+  position: relative;
+}
+
+/* ── Side Accent ── */
+.side-accent {
+  position: absolute;
+  top: 0; left: 0;
+  width: 7px; height: 100%;
+  background: linear-gradient(180deg, #1a3a5c, #2d5f8a, #4a90c4, #2d5f8a, #1a3a5c);
+  z-index: 10;
+}
+
+/* ═══════════════════════════════
+   HEADER — flat bottom, no wave
+═══════════════════════════════ */
+.poster-header {
+  background: linear-gradient(135deg, #0d2240 0%, #1a3a5c 40%, #2d6fa0 75%, #4a90c4 100%);
+  padding: 36px 56px 32px 72px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* decorative circles */
+.poster-header::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  pointer-events: none;
+}
+.poster-header::after {
+  content: '';
+  position: absolute; top: 20px; right: 120px;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: rgba(74,144,196,0.18);
+  pointer-events: none;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+.poster-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.3;
+  max-width: 680px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.header-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.40);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  padding: 6px 16px;
+  border-radius: 20px;
+}
+
+.logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+/* ═══════════════════════════════
+   CONTENT AREA
+═══════════════════════════════ */
+.content-area {
+  flex: 1;
+  padding: 20px 48px 16px 58px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 80px 20px;
+  background: #f0f6fc;
+  align-content: start;
+}
+
+.content-card {
+  background: #ffffff;
+  border: 1.5px solid #b8d4e8;
+  border-radius: 14px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 0 #8ab4d0, 0 8px 20px rgba(26,58,92,0.10);
+}
+
+/* top accent bar on cards */
+.content-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1a3a5c, #4a90c4);
+}
+
+.content-card h3 {
+  font-size: 10px;
+  font-weight: 700;
+  color: #1a3a5c;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #2d5f8a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.content-card h3::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: linear-gradient(135deg, #1a3a5c, #4a90c4);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.content-card p {
+  font-size: 11.5px;
+  color: #2e4a60;
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.content-card ul {
+  font-size: 11.5px;
+  color: #2e4a60;
+  line-height: 1.8;
+  padding-left: 14px;
+}
+
+.content-card .card-figure { margin: 10px 0; }
+.content-card .card-figure img {
+  width: 100%; height: 130px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 0 #8ab4d0, 0 6px 12px rgba(26,58,92,0.12);
+}
+.content-card .card-figure .caption {
+  color: #718096;
+  font-size: 10px;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.content-card.span-2 { grid-column: span 2; }
+
+/* ═══════════════════════════════
+   KEY FINDING BANNER — inside content-area as span-3
+═══════════════════════════════ */
+.key-finding-banner {
+  grid-column: span 3;
+  background: linear-gradient(145deg, #e0eef8, #cce0f4);
+  border: 1.5px solid #9ec4e0;
+  border-radius: 14px;
+  padding: 108px 132px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  box-shadow: 0 6px 0 #8ab4d0, 0 8px 18px rgba(26,58,92,0.10);
+}
+
+.key-finding-banner .icon {
+  width: 100px; height: 110px;
+  background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 30px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 0 #0d2240, 0 6px 12px rgba(13,34,64,0.22);
+}
+
+.key-finding-banner .text h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: #1a3a5c;
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+.key-finding-banner .text p {
+  font-size: 12px;
+  color: #2e4a60;
+  line-height: 1.55;
+}
+
+/* ═══════════════════════════════
+   ISI BOX — inside content-area as span-3
+═══════════════════════════════ */
+.isi-wrap {
+  grid-column: span 3;
+  background: #f0f8ff;
+  border: 1.5px solid #9ec4e0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 0 #8ab4d0, 0 8px 16px rgba(26,58,92,0.10);
+}
+.isi-header {
+  background: linear-gradient(90deg, #0d2240, #1a3a5c 60%, #2d6fa0);
+  padding: 20px 28px;
+}
+.isi-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+}
+.isi-inner { padding: 50px 38px; }
+.isi-body {
+  font-size: 11px;
+  color: #3a5060;
+  line-height: 1.75;
+  font-style: italic;
+}
+
+/* ═══════════════════════════════
+   FOOTER — flat top, no wave
+═══════════════════════════════ */
+.footer {
+  background: linear-gradient(160deg, #0a1e30, #0d2240 50%, #0a1e30);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 1080 62' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,18 C100,40 220,2 360,22 C480,40 580,8 700,24 C820,40 940,12 1080,26 L1080,0 L0,0 Z' fill='%23ffffff'/%3E%3Cpath d='M0,30 C80,52 180,12 300,32 C420,52 520,16 660,34 C780,50 900,18 1020,34 C1050,38 1065,36 1080,32 L1080,0 L0,0 Z' fill='rgba(74%2C144%2C196%2C0.28)'/%3E%3Cpath d='M0,44 C120,20 220,58 340,40 C460,22 560,56 680,40 C800,24 920,54 1080,42 L1080,0 L0,0 Z' fill='rgba(168%2C208%2C230%2C0.18)'/%3E%3C/svg%3E"),
+    linear-gradient(160deg, #0a1e30, #0d2240 50%, #0a1e30);
+  background-repeat: no-repeat, no-repeat;
+  background-size: 100% 62px, 100% 100%;
+  background-position: top left, top left;
+}
+
+.footer-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 56px 20px;
+}
+
+.footer-logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  opacity: 0.92;
+  text-shadow: 20px 2px 12px rgba(74,144,196,0.30);
+  text-align: center;
+}
+
+.footer-accent-strip {
+  height: 3px;
+  background: linear-gradient(to right, #1a3a5c, #4a90c4, #2d5f8a, #7ab8d8);
+  border-radius: 2px;
+  width: 100px;
+  margin: 10px auto 0;
+}
+</style>
+</head>
+<body>
+<div class="poster-frame">
+
+  <!-- Side Accent -->
+  <div class="side-accent"></div>
+
+  <!-- ═══ HEADER — flat bottom, no wave ═══ -->
+  <div class="poster-header">
+    <div class="header-row">
+      <h1 class="poster-title">[Poster Title Placeholder — Visual Impact Design]</h1>
+
+      
+      <div class="header-right">
+        <img src="logo.png" alt="BREXIVA" style="height:44px; opacity:0.90;">
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CONTENT GRID ═══ -->
+  <div class="content-area">
+
+    <div class="content-card">
+      <h3>[Introduction]</h3>
+      <p>[Introduction text placeholder with research context.]</p>
+      <ul>
+        <li>[Point 1 placeholder]</li>
+        <li>[Point 2 placeholder]</li>
+      </ul>
+    </div>
+
+    <div class="content-card">
+      <h3>[Methods]</h3>
+      <p>[Study design and methods description placeholder.]</p>
+      <div class="card-figure">
+        <img src="https://dummyimage.com/300x130/ddeef8/2d5f8a&text=Methods+Diagram" alt="Methods">
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h3>[Key Results]</h3>
+      <p>[Primary results summary placeholder.]</p>
+      <div class="card-figure">
+        <img src="https://dummyimage.com/300x130/e8f4fd/1a3a5c&text=Results+Graph" alt="Results">
+      </div>
+    </div>
+
+    <div class="content-card span-2">
+      <h3>[Additional Results / Subgroup Analysis]</h3>
+      <p>[Extended results text placeholder. Subgroup analyses or secondary endpoints.]</p>
+      <div class="card-figure">
+        <img src="https://dummyimage.com/580x130/f0f6fc/2d5f8a&text=Extended+Results+Table+Placeholder" alt="Extended Results">
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h3>[Conclusions]</h3>
+      <p>[Conclusions text placeholder.]</p>
+      <ul>
+        <li>[Conclusion 1 placeholder]</li>
+        <li>[Conclusion 2 placeholder]</li>
+        <li>[Conclusion 3 placeholder]</li>
+      </ul>
+    </div>
+
+    <!-- ═══ KEY TAKEAWAY BANNER — spans full 3 cols ═══ -->
+    <div class="key-finding-banner">
+      <div class="text">
+        <h3>[Key Takeaway]</h3>
+        <p>[key finding statement-1 placeholder for easy audience recall.]</p>
+        <p>[key finding statement-2 placeholder for easy audience recall.]</p>
+        <p>[key finding statement-3 placeholder for easy audience recall.]</p>
+      </div>
+    </div>
+
+    <!-- ═══ ISI — spans full 3 cols ═══ -->
+    <div class="isi-wrap">
+      <div class="isi-header">
+        <p class="isi-title">Important Safety Information (ISI)</p>
+      </div>
+      <div class="isi-inner">
+        <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here]</p>
+      </div>
+    </div>
+
+  </div><!-- /content-area -->
+
+  <!-- ═══ FOOTER — flat top, no wave ═══ -->
+  <div class="footer">
+    <div class="footer-inner">
+      <div>
+        <img src="logo.png" alt="BREXIVA" style="height:44px; opacity:0.90;">
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

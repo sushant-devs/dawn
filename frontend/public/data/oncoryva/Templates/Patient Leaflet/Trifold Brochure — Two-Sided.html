@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Trifold Brochure — Two-Sided</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #ffffff; width: 794px; margin: 0 auto; }
+.leaflet { width: 794px; min-height: 1123px; position: relative; overflow: hidden; background: #ffffff; }
+/* Side 1 */
+.side-1 { display: grid; grid-template-columns: 1fr 1fr 1fr; min-height: 560px; }
+.cover-panel { background: linear-gradient(180deg, #0F2027 0%, #0D6B6E 100%); padding: 40px 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.cover-panel img { height: 36px; margin-bottom: 24px; }
+.cover-panel h1 { color: #ffffff; font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+.cover-panel p { color: #b8e0de; font-size: 12px; line-height: 1.5; }
+.info-panel { padding: 28px 20px; background: #ffffff; border-right: 1px solid #E8F4F2; }
+.info-panel h3 { font-size: 14px; color: #0D6B6E; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+.info-panel p { font-size: 11px; color: #3a4f5c; line-height: 1.6; margin-bottom: 12px; }
+.highlight-box { background: #E8F4F2; border-left: 3px solid #0D6B6E; padding: 12px; border-radius: 0 6px 6px 0; margin: 12px 0; }
+.highlight-box p { font-size: 11px; color: #0F2027; font-weight: 500; margin: 0; }
+.image-placeholder { width: 100%; height: 80px; background: #E8F4F2; border: 1px dashed #0D6B6E; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #0D6B6E; font-size: 10px; font-weight: 600; margin: 10px 0; }
+.qr-section { text-align: center; margin-top: 16px; }
+.qr-box { width: 60px; height: 60px; background: #f7fafa; border: 1px solid #d0e6e4; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; color: #5d6f82; }
+/* Image Strip */
+.image-strip { width: 100%; height: 8px; background: linear-gradient(to right, #0D6B6E, #4ECDC4, #C17B3A); }
+/* Side 2 */
+.side-2 { display: grid; grid-template-columns: 1fr 1fr 1fr; min-height: 540px; }
+.panel-journey { padding: 24px 20px; background: #f7fafa; }
+.panel-journey h3 { font-size: 14px; color: #0D6B6E; font-weight: 700; margin-bottom: 14px; }
+.journey-step { display: flex; gap: 10px; margin-bottom: 14px; }
+.journey-dot { width: 24px; height: 24px; background: #0D6B6E; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.journey-text { font-size: 11px; color: #3a4f5c; line-height: 1.4; }
+.journey-text strong { color: #0F2027; }
+.panel-checklist { padding: 24px 20px; background: #ffffff; border-right: 1px solid #E8F4F2; }
+.panel-checklist h3 { font-size: 14px; color: #0D6B6E; font-weight: 700; margin-bottom: 14px; }
+.checklist-item { display: flex; gap: 8px; margin-bottom: 10px; align-items: flex-start; }
+.checkbox { width: 18px; height: 18px; border: 2px solid #0D6B6E; border-radius: 3px; flex-shrink: 0; margin-top: 1px; }
+.checklist-item p { font-size: 11px; color: #3a4f5c; line-height: 1.4; }
+.panel-faq { padding: 24px 20px; background: #ffffff; }
+.panel-faq h3 { font-size: 14px; color: #0D6B6E; font-weight: 700; margin-bottom: 14px; }
+.faq-item { margin-bottom: 14px; }
+.faq-item h5 { font-size: 12px; color: #0F2027; font-weight: 600; margin-bottom: 4px; }
+.faq-item p { font-size: 11px; color: #3a4f5c; line-height: 1.4; }
+.resources-box { background: #E8F4F2; border-radius: 6px; padding: 12px; margin-top: 12px; }
+.resources-box h5 { font-size: 11px; color: #0D6B6E; font-weight: 700; margin-bottom: 6px; }
+.resources-box p { font-size: 10px; color: #3a4f5c; line-height: 1.5; }
+/* Legal Bar */
+.legal-bar { background: #0F2027; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; }
+.legal-bar p { font-size: 9px; color: #5d6f82; line-height: 1.4; max-width: 70%; }
+.legal-bar img { height: 20px; }
+</style>
+</head>
+<body>
+<div class="leaflet">
+<!-- Side 1: Cover + Info Panels -->
+<div class="side-1">
+<!-- Cover Panel -->
+<div class="cover-panel">
+<img src="logo.png" alt="ONCORYVA">
+<h1>Placeholder Patient Brochure Title</h1>
+<p>Your guide to understanding your treatment options</p>
+<div style="margin-top:20px;">
+<img src="https://dummyimage.com/180x100/0F2027/4ECDC4&text=Cover+Image" alt="Cover" style="width:100%; border-radius:6px;">
+</div>
+</div>
+<!-- Info Panel 1 -->
+<div class="info-panel">
+<h3>Understanding Your Condition</h3>
+<p>Placeholder text explaining the condition in patient-friendly language.</p>
+
+<div class="highlight-box">
+<p>Key Point: Placeholder important information for patients to know about their condition.</p>
+</div>
+<h3 style="margin-top:16px;">How It Works</h3>
+<p>Placeholder text explaining the mechanism of action in simple terms patients can understand.</p>
+
+</div>
+<!-- Info Panel 2 -->
+<div class="info-panel" style="border-right:none;">
+<h3>What to Expect</h3>
+<p>Placeholder text about treatment expectations, schedule, and general process overview.</p>
+<div class="highlight-box">
+<p>Remember: Placeholder encouraging message about treatment support.</p>
+</div>
+<p>Placeholder text about potential effects and when to contact your doctor.</p>
+<img src="https://dummyimage.com/220x100/E8F4F2/0D6B6E&text=Support+Image" alt="Support" style="width:100%; border-radius:6px; margin-top:10px;">
+<div class="qr-section">
+</div>
+</div>
+</div>
+<!-- Image Strip -->
+<div class="image-strip"></div>
+<!-- Side 2: Journey + Checklist + FAQ -->
+<div class="side-2">
+<!-- Journey Panel -->
+<div class="panel-journey">
+<h3>Your Treatment Journey</h3>
+<div class="journey-step">
+<div class="journey-dot">1</div>
+<div class="journey-text"> Placeholder description of the first step in the journey.</div>
+</div>
+<div class="journey-step">
+<div class="journey-dot">2</div>
+<div class="journey-text"> Placeholder description of the second step.</div>
+</div>
+<div class="journey-step">
+<div class="journey-dot">3</div>
+<div class="journey-text"> Placeholder description of the third step.</div>
+</div>
+<div class="journey-step">
+<div class="journey-dot">4</div>
+<div class="journey-text"> Placeholder description of the fourth step.</div>
+</div>
+<div class="journey-step">
+<div class="journey-dot">5</div>
+<div class="journey-text"> Placeholder description of the fifth step.</div>
+</div>
+<img src="https://dummyimage.com/220x80/0D6B6E/ffffff&text=Journey+Visual" alt="Journey" style="width:100%; border-radius:6px; margin-top:12px;">
+</div>
+<!-- Checklist Panel -->
+<div class="panel-checklist">
+<h3>During Treatment</h3>
+<div class="checklist-item">
+<div class="checkbox"></div>
+<p>Placeholder checklist item one for patients to follow.</p>
+</div>
+<div class="checklist-item">
+<div class="checkbox"></div>
+<p>Placeholder checklist item two for monitoring.</p>
+</div>
+<div class="checklist-item">
+<div class="checkbox"></div>
+<p>Placeholder checklist item three for lifestyle guidance.</p>
+</div>
+<div class="checklist-item">
+<div class="checkbox"></div>
+<p>Placeholder checklist item four for appointments.</p>
+</div>
+<div class="checklist-item">
+<div class="checkbox"></div>
+<p>Placeholder checklist item five for questions to ask.</p>
+</div>
+<div class="checklist-item">
+<div class="checkbox"></div>
+<p>Placeholder checklist item six for support resources.</p>
+</div>
+<div class="highlight-box" style="margin-top:16px;">
+<p>Tip: Placeholder helpful tip for patients during their treatment.</p>
+</div>
+</div>
+<!-- FAQ & Resources Panel -->
+<div class="panel-faq">
+<h3>Common Questions</h3>
+<div class="faq-item">
+<h5>Placeholder Question One?</h5>
+<p>Placeholder answer to common patient question.</p>
+</div>
+<div class="faq-item">
+<h5>Placeholder Question Two?</h5>
+<p>Placeholder answer to common patient question.</p>
+</div>
+<div class="faq-item">
+<h5>Placeholder Question Three?</h5>
+<p>Placeholder answer to common patient question.</p>
+</div>
+<div class="resources-box">
+</div>
+</div>
+</div>
+
+<!-- ISI + Box Warning -->
+<div style="grid-column: 1 / -1; padding: 16px 32px; background:#ffffff;">
+  <div style="background:#f7fafa; border:1px solid #d0e6e4; border-radius:8px; padding:16px 20px;">
+    <h3 style="margin:0 0 8px; font-size:12px; font-weight:700; color:#0D6B6E; text-transform:uppercase; letter-spacing:0.5px;">
+      Important Safety Information (ISI)
+    </h3>
+    <p style="margin:0; font-size:11px; color:#3a4f5c; line-height:1.6;">
+      [ISI Placeholder: Insert full prescribing safety information here]
+    </p>
+  </div>
+</div>
+<!-- Legal Bar -->
+<div class="legal-bar">
+<img src="logo.png" alt="ONCORYVA">
+</div>
+</div>
+</body>
+</html>

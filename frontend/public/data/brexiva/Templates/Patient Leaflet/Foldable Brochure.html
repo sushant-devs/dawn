@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>BREXIVA - Patient Leaflet Template 03</title>
+<style>
+
+  /* ── Reset ── */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: linear-gradient(145deg, #d6e4f0 0%, #e8f0f8 50%, #d0dcea 100%);
+    font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+    padding: 32px 20px 48px;
+    min-height: 100vh;
+  }
+
+  /* ── Leaflet frame ── */
+  .leaflet-frame {
+    width: 794px;
+    min-height: 1123px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #b8cfe0;
+    box-shadow: 0 8px 0 #8aaec8, 0 14px 40px rgba(26,58,92,0.16);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* ══════════════════════════════
+     COVER PANEL
+  ══════════════════════════════ */
+  .cover-panel {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #0e2340 0%, #1a3a5c 38%, #1e5a8a 70%, #4a90c4 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* decorative circles */
+  .cover-panel::before {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    pointer-events: none;
+  }
+  .cover-panel::after {
+    content: '';
+    position: absolute;
+    top: -50px; left: 40%;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(168,208,230,0.09);
+    pointer-events: none;
+  }
+
+  .cover-inner {
+    padding: 48px 48px 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cover-panel .logo { margin-bottom: 28px; }
+  .cover-panel .logo img { height: 44px; }
+  .cover-logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.20);
+  }
+
+  .cover-panel h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #ffffff;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.3;
+    margin-bottom: 14px;
+    max-width: 460px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.18);
+    letter-spacing: -0.3px;
+  }
+
+  .cover-panel > .cover-inner > p {
+    font-family: 'Inter', sans-serif;
+    color: #a8d0e6;
+    font-size: 14px;
+    line-height: 1.65;
+    max-width: 460px;
+    font-style: italic;
+  }
+
+  .cover-panel .cover-image {
+    position: absolute;
+    bottom: 60px; right: 40px;
+    z-index: 3;
+  }
+  .cover-panel .cover-image img {
+    width: 220px; height: 170px;
+    border-radius: 12px;
+    object-fit: cover;
+    opacity: 0.92;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    border: 2px solid rgba(255,255,255,0.18);
+  }
+
+  /* cover wave at bottom */
+  .cover-wave {
+    display: block;
+    width: 100%;
+    margin-top: 0;
+    line-height: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-wave svg { display: block; width: 100%; }
+
+  /* ══════════════════════════════
+     SECTION PANELS (shared)
+  ══════════════════════════════ */
+  .panel { padding: 28px 28px 24px; }
+  .panel-full { grid-column: 1 / -1; }
+
+  .section-panel {
+    border-bottom: 1px solid #dce8f2;
+    background: #f8fbfd;
+  }
+  .section-panel:nth-child(even) {
+    border-left: 1px solid #dce8f2;
+  }
+
+  .section-panel .section-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, #eaf4fb, #daeef8);
+    border: 1.5px solid #c0d8ec;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 3px 6px rgba(26,58,92,0.10);
+  }
+
+  .section-panel h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #0e2340;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #d0e4f2;
+    letter-spacing: -0.2px;
+  }
+
+  .section-panel p {
+    font-family: 'Inter', sans-serif;
+    color: #3a6080;
+    font-size: 12px;
+    line-height: 1.70;
+    margin-bottom: 10px;
+  }
+
+  .section-panel ul {
+    font-family: 'Inter', sans-serif;
+    color: #3a6080;
+    font-size: 12px;
+    line-height: 1.85;
+    padding-left: 0;
+    list-style: none;
+  }
+  .section-panel ul li {
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .section-panel ul li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a3a5c, #4a90c4);
+  }
+
+  .section-panel .panel-image { margin: 12px 0 4px; }
+  .section-panel .panel-image img {
+    width: 100%; height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1.5px solid #c4d8ec;
+    box-shadow: 0 3px 8px rgba(26,58,92,0.09);
+  }
+  .section-panel .panel-image .caption {
+    font-family: 'Inter', sans-serif;
+    color: #7090aa;
+    font-size: 10px;
+    margin-top: 5px;
+    font-style: italic;
+  }
+
+  /* ── Highlight Panel ── */
+  .highlight-panel {
+    background: linear-gradient(160deg, #eaf4fb 0%, #daeef8 100%);
+    border: none;
+    border-bottom: 1px solid #c4d8ec !important;
+    border-left: 1px solid #c4d8ec !important;
+  }
+  .highlight-panel h2 {
+    color: #1a3a5c;
+    border-bottom-color: #b0ccde;
+  }
+  .highlight-panel p { color: #2a5070; }
+  .highlight-panel ul { color: #2a5070; }
+  .highlight-panel ul li::before {
+    background: linear-gradient(135deg, #2d5f8a, #4a90c4);
+  }
+  .highlight-panel .section-icon {
+    background: linear-gradient(135deg, #c8e4f4, #b8d8ee);
+    border-color: #a0c4dc;
+  }
+
+  /* ── Warning Panel ── */
+  .warning-panel {
+    background: #f8fbfd;
+    border-bottom: 1px solid #dce8f2 !important;
+  }
+  .warning-panel h2 {
+    color: #0e2340;
+    border-bottom: 2px solid #d0e4f2;
+  }
+  .warning-panel p { color: #3a6080; }
+  .warning-panel ul { color: #3a6080; }
+  .warning-panel ul li::before {
+    background: linear-gradient(135deg, #1a3a5c, #4a90c4);
+  }
+  .warning-panel .section-icon {
+    background: linear-gradient(135deg, #eaf4fb, #daeef8);
+    border-color: #c0d8ec;
+  }
+
+  /* ══════════════════════════════
+     ISI PANEL
+  ══════════════════════════════ */
+  .isi-panel {
+    grid-column: 1 / -1;
+    padding: 12px 48px 20px;
+    background: #f4f9ff;
+  }
+
+  .isi-box {
+    background: linear-gradient(160deg, #e8f4fb 0%, #f0f9ff 100%);
+    border: 1.5px solid #2d5f8a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 0 #9ab8cc, 0 8px 18px rgba(26,58,92,0.10);
+  }
+
+  .isi-header {
+    background: linear-gradient(90deg, #0e2340 0%, #1a3a5c 55%, #2d5f8a 100%);
+    padding: 11px 22px;
+  }
+
+  .isi-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin: 0;
+  }
+
+  .isi-inner { padding: 16px 22px; }
+
+  .isi-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #3a5878;
+    line-height: 1.75;
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* ══════════════════════════════
+     FOOTER PANEL
+  ══════════════════════════════ */
+  .footer-panel {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #0e2340 0%, #1a3a5c 45%, #2d5f8a 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer-accent-strip {
+    height: 3px;
+    background: linear-gradient(to right, #1a3a5c, #4a90c4, #a8d0e6, #4a90c4, #1a3a5c);
+  }
+
+  .footer-wave {
+    display: block;
+    width: 100%;
+    line-height: 0;
+  }
+  .footer-wave svg { display: block; width: 100%; }
+
+  .footer-deco {
+    position: absolute;
+    bottom: -30px; left: -30px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(45,95,138,0.18);
+    pointer-events: none;
+  }
+  .footer-deco2 {
+    position: absolute;
+    bottom: 8px; right: 24px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(168,208,230,0.10);
+    pointer-events: none;
+  }
+
+  .footer-inner {
+    padding: 10px 48px 30px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .logo-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+  }
+
+  .logo-row img { height: 26px; opacity: 0.88; }
+
+  .footer-logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.90;
+    text-shadow: 0 2px 8px rgba(45,95,138,0.30);
+  }
+
+  .logo-row span {
+    font-family: 'Inter', sans-serif;
+    color: #4a6a80;
+    font-size: 10px;
+  }
+
+</style>
+</head>
+<body>
+<div class="leaflet-frame">
+
+  
+  <div class="cover-panel">
+    <div class="cover-inner">
+      <div class="logo">
+        <img src="logo.png" alt="BREXIVA Logo"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <span class="cover-logo-text" style="display:none;">BREXIVA</span>
+      </div>
+      <h1>[Brochure Title Placeholder for Patients]</h1>
+      <p>[Welcoming subtitle placeholder explaining the purpose of this patient information brochure.]</p>
+    </div>
+    <div class="cover-image">
+      <img src="https://dummyimage.com/240x180/4a90c4/ffffff&text=Cover+Image" alt="Cover Image">
+    </div>
+    
+    <div class="cover-wave">
+      <svg viewBox="0 0 794 52" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,18 C90,48 180,0 280,26 C380,52 480,8 580,28 C660,42 720,30 794,24 L794,52 L0,52 Z" fill="#f8fbfd"/>
+        <path d="M0,30 C110,54 230,10 350,34 C470,58 590,14 794,36 L794,52 L0,52 Z" fill="rgba(248,251,253,0.32)"/>
+      </svg>
+    </div>
+  </div>
+
+  
+  <div class="panel section-panel">
+    <div class="section-icon">&#128218;</div>
+    <h2>[About This Treatment]</h2>
+    <p>[Introductory paragraph placeholder about the treatment in patient-friendly language.]</p>
+    <div class="panel-image">
+      <img src="https://dummyimage.com/340x120/e8f4fd/2d5f8a&text=About+Image" alt="About">
+    </div>
+  </div>
+
+  
+  <div class="panel section-panel">
+    <div class="section-icon">&#9881;</div>
+    <h2>[How It Works]</h2>
+    <p>[Explanation placeholder in simple terms how the treatment works.]</p>
+    <ul>
+      <li>[Point 1 placeholder]</li>
+      <li>[Point 2 placeholder]</li>
+      <li>[Point 3 placeholder]</li>
+    </ul>
+  </div>
+
+  
+  <div class="panel section-panel highlight-panel">
+    <div class="section-icon">&#128197;</div>
+    <h2>[What to Expect]</h2>
+    <p>[Description placeholder of what patients can expect during treatment.]</p>
+    <ul>
+      <li>[Expectation 1 placeholder]</li>
+      <li>[Expectation 2 placeholder]</li>
+      <li>[Expectation 3 placeholder]</li>
+      <li>[Expectation 4 placeholder]</li>
+    </ul>
+  </div>
+
+  
+  <div class="panel section-panel warning-panel">
+    <div class="section-icon">&#9888;</div>
+    <h2>[Important Information]</h2>
+    <p>[Important safety or procedural information placeholder for patients.]</p>
+    <ul>
+      <li>[Important point 1]</li>
+      <li>[Important point 2]</li>
+      <li>[Important point 3]</li>
+    </ul>
+  </div>
+
+  
+  <div class="panel section-panel">
+    <div class="section-icon">&#10067;</div>
+    <h2>[Your Questions Answered]</h2>
+    <p>[FAQ-style content placeholder addressing common patient concerns.]</p>
+    <div class="panel-image">
+      <img src="https://dummyimage.com/340x120/f0f7ff/1a3a5c&text=FAQ+Visual" alt="FAQ">
+    </div>
+  </div>
+
+  
+  <div class="panel section-panel">
+    <div class="section-icon">&#129309;</div>
+    <h2>[Support &amp; Resources]</h2>
+    <p>[Support resources available to patients placeholder.]</p>
+    <ul>
+      <li>[Resource 1 placeholder]</li>
+      <li>[Resource 2 placeholder]</li>
+      <li>[Resource 3 placeholder]</li>
+    </ul>
+  </div>
+
+  
+  <div class="isi-panel">
+    <div class="isi-box">
+      <div class="isi-header">
+        <p class="isi-title">Important Safety Information (ISI)</p>
+      </div>
+      <div class="isi-inner">
+        <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here]</p>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="footer-panel">
+    <div class="footer-accent-strip"></div>
+    <div class="footer-wave">
+      <svg viewBox="0 0 794 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,22 C100,0 200,40 320,18 C440,-4 560,36 680,14 C730,6 760,10 794,8 L794,0 L0,0 Z" fill="#f4f9ff"/>
+        <path d="M0,14 C120,34 260,2 400,22 C540,42 680,8 794,20 L794,0 L0,0 Z" fill="rgba(244,249,255,0.28)"/>
+      </svg>
+    </div>
+    <div class="footer-deco"></div>
+    <div class="footer-deco2"></div>
+    <div class="footer-inner">
+
+      <div class="logo-row">
+        <img src="logo.png" alt="BREXIVA"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <span class="footer-logo-text" style="display:none;">BREXIVA</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

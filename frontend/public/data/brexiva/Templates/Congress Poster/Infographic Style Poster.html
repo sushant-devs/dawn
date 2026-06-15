@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>BREXIVA - Congress Poster Template 03</title>
+<style>
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: linear-gradient(145deg, #d6e4f0 0%, #e8f0f8 50%, #d0dcea 100%);
+    font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+    padding: 32px 20px 48px;
+    min-height: 100vh;
+  }
+
+  .poster-frame {
+    width: 1080px;
+    min-height: 1536px;
+    margin: 0 auto;
+    background: #ffffff;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid #b8cfe0;
+    box-shadow: 0 8px 0 #8aaec8, 0 14px 48px rgba(26,58,92,0.18);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .poster-header {
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 56' preserveAspectRatio='none'%3E%3Cpath d='M0%2C34 C150%2C60 300%2C14 460%2C36 C620%2C58 780%2C18 1080%2C38 L1080%2C56 L0%2C56 Z' fill='rgba(248%2C251%2C253%2C0.35)'/%3E%3C/svg%3E") left bottom / 100% 56px no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 56' preserveAspectRatio='none'%3E%3Cpath d='M0%2C20 C120%2C52 240%2C0 380%2C28 C520%2C56 640%2C8 780%2C30 C900%2C48 980%2C22 1080%2C28 L1080%2C56 L0%2C56 Z' fill='%23f8fbfd'/%3E%3C/svg%3E") left bottom / 100% 56px no-repeat,
+      linear-gradient(135deg, #0e2340 0%, #1a3a5c 40%, #1e5a8a 72%, #2d5f8a 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+    padding-bottom: 56px;
+    flex-shrink: 0;
+  }
+
+  .poster-header::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    pointer-events: none;
+  }
+  .poster-header::after {
+    content: '';
+    position: absolute;
+    top: 30px; right: 110px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(168,208,230,0.12);
+    pointer-events: none;
+  }
+
+  .header-inner {
+    padding: 44px 56px 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+
+  .header-row img.logo { height: 44px; }
+
+  .logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.20);
+  }
+
+  .header-row .congress-info {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #c4dff2;
+    font-size: 11px;
+    text-align: right;
+    line-height: 1.6;
+    padding: 8px 16px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .poster-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.35;
+    margin-bottom: 16px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    letter-spacing: -0.3px;
+    text-align: center;
+  }
+
+  .poster-authors {
+    color: #a8d0e6;
+    font-size: 12px;
+    line-height: 1.6;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.2px;
+  }
+
+  .stat-strip {
+    display: flex;
+    gap: 0;
+    margin: 20px 56px 0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 6px 0 #a8c4d8, 0 10px 28px rgba(26,58,92,0.14);
+    position: relative;
+    z-index: 3;
+    border: 1.5px solid #c8dcea;
+    flex-shrink: 0;
+  }
+
+  .stat-item {
+    flex: 1;
+    background: linear-gradient(160deg, #eaf4fb 0%, #daeef8 100%);
+    padding: 28px 20px;
+    text-align: center;
+    border-right: 1px solid #c0d8e8;
+  }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-item .number {
+    display: block;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #1a3a5c;
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .stat-item .unit {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    color: #2d5f8a;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 5px;
+    letter-spacing: 0.3px;
+  }
+  .stat-item .label {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    color: #5a80a0;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-top: 8px;
+    font-weight: 600;
+  }
+
+  .infographic-body {
+    padding: 40px 56px 28px;
+    background-color: #f8fbfd;
+    flex: 1;
+  }
+
+  .flow-section {
+    display: flex;
+    gap: 0;
+    margin-bottom: 32px;
+    margin-top:20px;
+    background: linear-gradient(135deg, #eaf4fb 0%, #f0f8ff 100%);
+    border: 1.5px solid #c8dcea;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 5px 0 #b0ccde, 0 8px 18px rgba(26,58,92,0.10);
+  }
+
+  .flow-step {
+    flex: 1;
+    position: relative;
+    padding: 24px 22px;
+    border-right: 1px solid #d0e4f0;
+  }
+  .flow-step:last-child { border-right: none; }
+
+  .flow-step .step-number {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    box-shadow: 0 3px 8px rgba(26,58,92,0.25);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .flow-step h3 {
+    font-family: 'Inter', sans-serif;
+    color: #1a3a5c;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 0.2px;
+  }
+
+  .flow-step p {
+    font-family: 'Inter', sans-serif;
+    color: #4a6880;
+    font-size: 11px;
+    line-height: 1.65;
+  }
+
+  .flow-step::after {
+    position: absolute;
+    top: 26px;
+    right: -14px;
+    color: #2d5f8a;
+    font-size: 18px;
+    font-weight: 700;
+    z-index: 2;
+  }
+  .flow-step:last-child::after { display: none; }
+
+  .visual-row {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 20px;
+    margin-top: 60px;
+  }
+
+  .visual-panel {
+    flex: 1;
+    background: linear-gradient(160deg, #f4f9ff 0%, #eaf3fb 100%);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1.5px solid #c4d8ec;
+    box-shadow: 0 5px 0 #aac4d8, 0 8px 16px rgba(26,58,92,0.09);
+  }
+
+  .visual-panel h3 {
+    font-family: 'Inter', sans-serif;
+    color: #1a3a5c;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #c0d8ec;
+  }
+
+  .visual-panel h3::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  .visual-panel img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    box-shadow: 0 3px 8px rgba(26,58,92,0.10);
+  }
+
+  .visual-panel .caption {
+    font-family: 'Inter', sans-serif;
+    color: #7090aa;
+    font-size: 10px;
+    text-align: center;
+    font-style: italic;
+  }
+
+  .visual-panel p {
+    font-family: 'Inter', sans-serif;
+    color: #3a5878;
+    font-size: 12px;
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .conclusion-banner {
+    background: linear-gradient(135deg, #daeef8 0%, #eaf4fb 50%, #f0f8ff 100%);
+    margin: 20px 56px 20px;
+    border-radius: 14px;
+    padding: 60px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    border: 1.5px solid #b8d4e8;
+    box-shadow: 0 6px 0 #a0c0d4, 0 10px 20px rgba(26,58,92,0.12);
+    flex-shrink: 0;
+  }
+
+  .conclusion-banner .icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 24px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(26,58,92,0.25);
+  }
+
+  .conclusion-banner .text { flex: 1; }
+
+  .conclusion-banner .text h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #1a3a5c;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+
+  .conclusion-banner .text p {
+    font-family: 'Inter', sans-serif;
+    color: #3a6080;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+
+  .isi-wrapper {
+    padding: 0 56px 32px;
+    background-color: #f8fbfd;
+    margin-top: 0;
+    flex-shrink: 0;
+  }
+
+  .isi-box {
+    background: linear-gradient(160deg, #e8f4fb 0%, #f0f9ff 100%);
+    border: 1.5px solid #2d5f8a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 0 #9ab8cc, 0 8px 18px rgba(26,58,92,0.12);
+  }
+
+  .isi-header {
+    background: linear-gradient(90deg, #0e2340 0%, #1a3a5c 55%, #2d5f8a 100%);
+    padding: 44px 44px;
+  }
+
+  .isi-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin: 0;
+  }
+
+  .isi-inner { padding: 36px 44px; }
+
+  .isi-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #3a5878;
+    line-height: 1.75;
+    font-style: italic;
+    margin: 0;
+  }
+
+  .poster-footer {
+    background:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 48' preserveAspectRatio='none'%3E%3Cpath d='M0%2C16 C160%2C38 340%2C4 520%2C26 C700%2C46 880%2C10 1080%2C24 L1080%2C0 L0%2C0 Z' fill='rgba(248%2C251%2C253%2C0.30)'/%3E%3C/svg%3E") left top / 100% 48px no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 48' preserveAspectRatio='none'%3E%3Cpath d='M0%2C24 C140%2C0 280%2C44 440%2C20 C600%2C-4 740%2C40 900%2C18 C980%2C8 1030%2C14 1080%2C10 L1080%2C0 L0%2C0 Z' fill='%23f8fbfd'/%3E%3C/svg%3E") left top / 100% 48px no-repeat,
+      linear-gradient(135deg, #0e2340 0%, #1a3a5c 45%, #1e5a8a 80%, #2d5f8a 100%);
+    position: relative;
+    overflow: hidden;
+    padding-top: 48px;
+    flex-shrink: 0;
+  }
+
+  .footer-deco {
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(45,95,138,0.20);
+    pointer-events: none;
+  }
+  .footer-deco2 {
+    position: absolute;
+    bottom: 10px; right: 30px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(168,208,230,0.10);
+    pointer-events: none;
+  }
+
+  .footer-inner {
+    padding: 12px 56px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-logo img { height: 36px; opacity: 0.92; }
+  .footer-logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.92;
+    text-shadow: 0 2px 10px rgba(45,95,138,0.30);
+  }
+
+  .footer-accent-strip {
+    height: 3px;
+    background: linear-gradient(to right, #1a3a5c, #4a90c4, #a8d0e6, #4a90c4, #1a3a5c);
+    border-radius: 2px;
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .footer-left {
+    color: #7a9ab8;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    line-height: 1.6;
+    max-width: 45%;
+  }
+
+  .footer-center {
+    text-align: center;
+  }
+  .footer-center img { width: 48px; height: 48px; }
+  .footer-center p {
+    font-family: 'Inter', sans-serif;
+    color: #7a9ab8;
+    font-size: 9px;
+    margin-top: 5px;
+  }
+
+  .footer-right {
+    text-align: right;
+    font-family: 'Inter', sans-serif;
+    color: #7a9ab8;
+    font-size: 9px;
+    line-height: 1.6;
+  }
+
+</style>
+</head>
+<body>
+<div class="poster-frame">
+
+  <div class="poster-header">
+    <div class="header-inner">
+      <div class="header-row">
+        <img src="logo.png" alt="BREXIVA" style="height:44px; opacity:0.90;">
+      </div>
+      <h1 class="poster-title">[Poster Title Placeholder — Infographic Style]</h1>
+    </div>
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat-item">
+      <span class="number">[XXX]</span>
+      <span class="unit">[unit]</span>
+      <span class="label">[Metric 1 Label]</span>
+    </div>
+    <div class="stat-item">
+      <span class="number">[XX%]</span>
+      <span class="unit">[unit]</span>
+      <span class="label">[Metric 2 Label]</span>
+    </div>
+    <div class="stat-item">
+      <span class="number">[X.XX]</span>
+      <span class="unit">[unit]</span>
+      <span class="label">[Metric 3 Label]</span>
+    </div>
+    <div class="stat-item">
+      <span class="number">[X.XX]</span>
+      <span class="unit">[unit]</span>
+      <span class="label">[Metric 4 Label]</span>
+    </div>
+  </div>
+
+  <div class="infographic-body">
+
+    <div class="flow-section">
+      <div class="flow-step">
+        <div class="step-number">1</div>
+        <h3>[Heading 1 ]</h3>
+        <p>[Brief description of study phase 1 placeholder.]</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-number">2</div>
+        <h3>[Heading 2]</h3>
+        <p>[Brief description of study phase 2 placeholder.]</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-number">3</div>
+        <h3>[Heading 3]</h3>
+        <p>[Brief description of study phase 3 placeholder.]</p>
+      </div>
+    </div>
+
+    <div class="visual-row">
+      <div class="visual-panel">
+        <h3>[Results Panel 1]</h3>
+        <img src="https://dummyimage.com/400x160/e8f4fd/1a3a5c&text=Chart+1+Placeholder" alt="Chart 1">
+        <p>[Brief description of Results Panel 1 placeholder]</p>
+      </div>
+      <div class="visual-panel">
+        <h3>[Results Panel 2]</h3>
+        <img src="https://dummyimage.com/400x160/f0f7ff/2d5f8a&text=Chart+2+Placeholder" alt="Chart 2">
+        <p>[Brief description of Results Panel 2 placeholder]</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="conclusion-banner">
+    <div class="icon">&#10003;</div>
+    <div class="text">
+      <h3>[Conclusions Heading Placeholder]</h3>
+      <p>[Key conclusions summary statement placeholder. Brief take-home message for congress attendees.]</p>
+    </div>
+  </div>
+
+  <div class="isi-wrapper">
+    <div class="isi-box" style="position:relative;">
+      <div class="isi-header">
+        <p class="isi-title">Important Safety Information (ISI)</p>
+      </div>
+      <div class="isi-inner">
+        <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here]</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="poster-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="logo.png" alt="BREXIVA" style="height:44px; opacity:0.90;">
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

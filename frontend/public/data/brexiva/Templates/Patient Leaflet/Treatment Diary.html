@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>BREXIVA - Patient Leaflet Template 05</title>
+<style>
+
+  /* ── Reset ── */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: linear-gradient(145deg, #d6e4f0 0%, #e8f0f8 50%, #d0dcea 100%);
+    font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+    padding: 32px 20px 48px;
+    min-height: 100vh;
+  }
+
+  /* ── Leaflet frame ── */
+  .leaflet-frame {
+    width: 794px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #b8cfe0;
+    box-shadow: 0 8px 0 #8aaec8, 0 14px 40px rgba(26,58,92,0.16);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ══════════════════════════════
+     HEADER
+  ══════════════════════════════ */
+  .leaflet-header {
+    background: linear-gradient(135deg, #0e2340 0%, #1a3a5c 42%, #1e5a8a 75%, #2d5f8a 100%);
+    position: relative;
+    overflow: hidden;
+    /*
+      Wave rendered via ::after pseudo-element using an inline SVG data URI.
+      The SVG encodes two overlapping wave paths:
+        - Primary wave: fills the full wave shape in the header background dark colour (#0e2340).
+        - Shadow wave: a second, offset wave at 50% opacity for depth.
+      The pseudo-element is placed at the bottom of the header, sized to
+      794×52 px (the original viewBox dimensions), and uses background-size: cover
+      so it stretches cleanly to any container width.
+    */
+  }
+
+  .leaflet-header::before {
+    content: '';
+    position: absolute;
+    top: -45px; right: -45px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    pointer-events: none;
+  }
+
+  .leaflet-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 52px;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 794 52' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Cpath d='M0%2C18 C90%2C48 180%2C0 280%2C26 C380%2C52 480%2C8 580%2C28 C660%2C42 720%2C30 794%2C24 L794%2C52 L0%2C52 Z' fill='%230e2340'/%3E%3Cpath d='M0%2C30 C110%2C54 230%2C10 350%2C34 C470%2C58 590%2C14 794%2C36 L794%2C52 L0%2C52 Z' fill='rgba(14%2C35%2C64%2C0.50)'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  .header-inner {
+    padding: 28px 48px 72px; /* extra bottom padding = wave height (52px) + original 20px gap */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-inner img.logo { height: 36px; }
+
+  .logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.20);
+  }
+
+  .patient-label {
+    background: rgba(255,255,255,0.13);
+    border: 1px solid rgba(255,255,255,0.28);
+    color: #c4dff2;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    border-radius: 20px;
+  }
+
+  /* ══════════════════════════════
+     TITLE SECTION
+  ══════════════════════════════ */
+  .title-section {
+    padding: 34px 48px 30px;
+    background: linear-gradient(135deg, #0e2340 0%, #1a3a5c 45%, #1e5a8a 80%, #2d5f8a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .title-section::before {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    pointer-events: none;
+  }
+
+  .title-section h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    max-width: 480px;
+    line-height: 1.32;
+    letter-spacing: -0.3px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    position: relative;
+    z-index: 1;
+  }
+
+  .title-section p {
+    font-family: 'Inter', sans-serif;
+    color: #a8d0e6;
+    font-size: 13px;
+    line-height: 1.65;
+    max-width: 480px;
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+  }
+
+  .title-section .title-image {
+    position: absolute;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+
+  .title-section .title-image img {
+    width: 160px; height: 120px;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+    border: 2px solid rgba(255,255,255,0.18);
+  }
+
+  /* ══════════════════════════════
+     INSTRUCTIONS SECTION
+  ══════════════════════════════ */
+  .instructions-section {
+    padding: 32px 48px 28px;
+    background: #f8fbfd;
+  }
+
+  .instructions-section h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: #0e2340;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #d0e4f0;
+    letter-spacing: -0.2px;
+  }
+
+  .instructions-section > p {
+    font-family: 'Inter', sans-serif;
+    color: #3a6080;
+    font-size: 13px;
+    line-height: 1.75;
+    margin-bottom: 18px;
+  }
+
+  .instruction-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 4px 0;
+  }
+
+  .instruction-card {
+    background: linear-gradient(160deg, #f4f9ff 0%, #eaf3fb 100%);
+    border-radius: 12px;
+    padding: 16px 18px;
+    border: 1.5px solid #c4d8ec;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    box-shadow: 0 4px 0 #aac4d8, 0 6px 14px rgba(26,58,92,0.08);
+  }
+
+  .instruction-card .num {
+    width: 30px; height: 30px;
+    background: linear-gradient(135deg, #1a3a5c, #2d5f8a);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    box-shadow: 0 3px 8px rgba(26,58,92,0.22);
+  }
+
+  .instruction-card .text { flex: 1; }
+
+  .instruction-card .text h4 {
+    font-family: 'Inter', sans-serif;
+    color: #0e2340;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: 0.1px;
+  }
+
+  .instruction-card .text p {
+    font-family: 'Inter', sans-serif;
+    color: #4a7090;
+    font-size: 11px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ══════════════════════════════
+     ISI BOX
+  ══════════════════════════════ */
+  .isi-wrapper {
+    padding: 16px 48px 20px;
+    background: #f4f9ff;
+    border-top: 1px solid #d0e4f0;
+  }
+
+  .isi-box {
+    background: linear-gradient(160deg, #e8f4fb 0%, #f0f9ff 100%);
+    border: 1.5px solid #2d5f8a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 0 #9ab8cc, 0 8px 18px rgba(26,58,92,0.10);
+  }
+
+  .isi-header {
+    background: linear-gradient(90deg, #0e2340 0%, #1a3a5c 55%, #2d5f8a 100%);
+    padding: 11px 22px;
+  }
+
+  .isi-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    margin: 0;
+  }
+
+  .isi-inner { padding: 16px 22px; }
+
+  .isi-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #3a5878;
+    line-height: 1.75;
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* ══════════════════════════════
+     FOOTER
+  ══════════════════════════════ */
+  .footer {
+    background: linear-gradient(135deg, #0e2340 0%, #1a3a5c 45%, #2d5f8a 100%);
+    position: relative;
+    overflow: hidden;
+    /*
+      Wave rendered via ::before pseudo-element using an inline SVG data URI.
+      The SVG encodes two wave paths that create a layered ripple at the top
+      of the footer, matching the original footer-wave SVG:
+        - Primary wave: fills #f4f9ff (the section colour above the footer).
+        - Overlay wave: a second wave at 28% opacity for depth.
+      The pseudo-element sits at the very top of .footer, is 44 px tall
+      (original viewBox height), and stretches to full width.
+    */
+  }
+
+  .footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 44px;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 794 44' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Cpath d='M0%2C22 C100%2C0 200%2C40 320%2C18 C440%2C-4 560%2C36 680%2C14 C730%2C6 760%2C10 794%2C8 L794%2C0 L0%2C0 Z' fill='%23f4f9ff'/%3E%3Cpath d='M0%2C14 C120%2C34 260%2C2 400%2C22 C540%2C42 680%2C8 794%2C20 L794%2C0 L0%2C0 Z' fill='rgba(244%2C249%2C255%2C0.28)'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+  }
+
+  .footer-accent-strip {
+    height: 3px;
+    background: linear-gradient(to right, #1a3a5c, #4a90c4, #a8d0e6, #4a90c4, #1a3a5c);
+  }
+
+  .footer-deco {
+    position: absolute;
+    bottom: -30px; left: -30px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(45,95,138,0.18);
+    pointer-events: none;
+  }
+
+  .footer-deco2 {
+    position: absolute;
+    bottom: 8px; right: 24px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(168,208,230,0.10);
+    pointer-events: none;
+  }
+
+  .footer-inner {
+    padding: 52px 48px 28px; /* top padding = wave height (44px) + original 8px */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-inner img { height: 26px; opacity: 0.90; }
+
+  .footer-logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.92;
+    text-shadow: 0 2px 8px rgba(45,95,138,0.30);
+  }
+
+</style>
+</head>
+<body>
+<div class="leaflet-frame">
+
+  <!-- HEADER -->
+  <div class="leaflet-header">
+    <div class="header-inner">
+      <img src="logo.png" alt="BREXIVA" style="height:44px; opacity:0.90;">
+      <span class="patient-label">Patient Diary</span>
+    </div>
+    <!-- wave is now rendered via .leaflet-header::after in CSS -->
+  </div>
+
+  <!-- TITLE SECTION -->
+  <div class="title-section">
+    <h1>Treatment Diary</h1>
+    <p>[Subtitle placeholder encouraging patients to track their treatment journey.]</p>
+    <div class="title-image">
+      <img src="https://dummyimage.com/160x120/4a90c4/ffffff&text=Diary+Image" alt="Diary">
+    </div>
+  </div>
+
+  <!-- INSTRUCTIONS -->
+  <div class="instructions-section">
+    <h2>[How to Use This Diary]</h2>
+    <p>[Instructions placeholder explaining how patients should use this treatment diary.]</p>
+    <div class="instruction-grid">
+      <div class="instruction-card">
+        <div class="num">1</div>
+        <div class="text">
+          <h4>[Instruction 1]</h4>
+          <p>[Brief instruction placeholder]</p>
+        </div>
+      </div>
+      <div class="instruction-card">
+        <div class="num">2</div>
+        <div class="text">
+          <h4>[Instruction 2]</h4>
+          <p>[Brief instruction placeholder]</p>
+        </div>
+      </div>
+      <div class="instruction-card">
+        <div class="num">3</div>
+        <div class="text">
+          <h4>[Instruction 3]</h4>
+          <p>[Brief instruction placeholder]</p>
+        </div>
+      </div>
+      <div class="instruction-card">
+        <div class="num">4</div>
+        <div class="text">
+          <h4>[Instruction 4]</h4>
+          <p>[Brief instruction placeholder]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ISI BOX -->
+  <div class="isi-wrapper">
+    <div class="isi-box">
+      <div class="isi-header">
+        <p class="isi-title">Important Safety Information (ISI)</p>
+      </div>
+      <div class="isi-inner">
+        <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information and warning box here]</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-inner">
+      <img src="logo.png" alt="BREXIVA" style="height:44px; opacity:0.90;">
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

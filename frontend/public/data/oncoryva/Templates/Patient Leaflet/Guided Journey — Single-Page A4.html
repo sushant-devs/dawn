@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Guided Journey — Single-Page A4</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+@page { size: A4; margin: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #ffffff; width: 794px; margin: 0 auto; }
+.leaflet { width: 794px; min-height: 1123px; position: relative; overflow: hidden; background: #ffffff; }
+.accent-bar { height: 6px; background: linear-gradient(to right, #0D6B6E, #4ECDC4, #C17B3A); }
+.header { padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E8F4F2; }
+.header .tagline { font-size: 13px; color: #0D6B6E; font-weight: 500; }
+.hero { background: linear-gradient(135deg, #0F2027 0%, #0D6B6E 100%); padding: 36px 40px; text-align: center; }
+.hero h1 { color: #ffffff; font-size: 28px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; }
+.hero p { color: #b8e0de; font-size: 15px; }
+.intro-section { padding: 28px 40px; }
+.intro-section p { font-size: 14px; color: #3a4f5c; line-height: 1.7; }
+.icon-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; padding: 0 40px 28px; }
+.icon-card { background: #f7fafa; border: 1px solid #d0e6e4; border-radius: 10px; padding: 20px 16px; text-align: center; }
+.icon-card .icon { width: 52px; height: 52px; background: #E8F4F2; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #0D6B6E; }
+.icon-card h4 { font-size: 13px; color: #0F2027; font-weight: 700; margin-bottom: 6px; }
+.icon-card p { font-size: 11px; color: #5d6f82; line-height: 1.4; }
+.key-message { margin: 0 40px 28px; background: linear-gradient(135deg, #0D6B6E, #0F2027); border-radius: 10px; padding: 20px 24px; text-align: center; }
+.key-message p { color: #ffffff; font-size: 15px; font-weight: 500; line-height: 1.5; }
+.steps-section { padding: 0 40px 28px; }
+.steps-section h2 { font-size: 18px; color: #0F2027; font-weight: 700; margin-bottom: 16px; }
+.steps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.step-item { display: flex; gap: 12px; align-items: flex-start; }
+.step-number { width: 32px; height: 32px; background: #0D6B6E; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+.step-text h5 { font-size: 13px; color: #0F2027; font-weight: 600; margin-bottom: 3px; }
+.step-text p { font-size: 11px; color: #5d6f82; line-height: 1.4; }
+.faq-section { padding: 0 40px 28px; }
+.faq-section h2 { font-size: 18px; color: #0F2027; font-weight: 700; margin-bottom: 16px; }
+.faq-card { background: #f7fafa; border: 1px solid #d0e6e4; border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; }
+.faq-card h5 { font-size: 13px; color: #0D6B6E; font-weight: 600; margin-bottom: 4px; }
+.faq-card p { font-size: 12px; color: #3a4f5c; line-height: 1.5; }
+.cta-section { margin: 0 40px 28px; background: #C17B3A; border-radius: 10px; padding: 24px; text-align: center; }
+.cta-section h3 { color: #ffffff; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.cta-section p { color: rgba(255,255,255,0.9); font-size: 13px; margin-bottom: 14px; }
+.cta-button { display: inline-block; background: #ffffff; color: #C17B3A; padding: 10px 28px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; }
+.footer { background: #0F2027; padding: 20px 40px; }
+.footer-content { display: flex; align-items: center; justify-content: space-between; }
+.footer p { font-size: 10px; color: #5d6f82; line-height: 1.5; }
+.footer .disclaimer { max-width: 60%; }
+</style>
+</head>
+<body>
+<div class="leaflet">
+<!-- Accent Bar -->
+<div class="accent-bar"></div>
+<!-- Header -->
+<div class="header">
+<img src="logo.png" alt="ONCORYVA" style="height:32px;">
+<span class="tagline">Your Treatment Guide</span>
+</div>
+<!-- Hero -->
+<div class="hero">
+<h1>Placeholder Patient Guide Headline</h1>
+<p>Subheading — Supporting text for patients starting their treatment journey</p>
+</div>
+<!-- Intro -->
+<div class="intro-section">
+<p>Dear Patient, this placeholder text provides a warm introduction to the guide. We're here to support you throughout your treatment journey.</p>
+</div>
+<!-- Icon Cards -->
+<div class="icon-cards">
+<div class="icon-card">
+<div class="icon">&#9829;</div>
+<h4>Topic One</h4>
+<p>Placeholder text about the first important topic for patients.</p>
+</div>
+<div class="icon-card">
+<div class="icon">&#9733;</div>
+<h4>Topic Two</h4>
+<p>Placeholder text about the second important topic for patients.</p>
+</div>
+<div class="icon-card">
+<div class="icon">&#10003;</div>
+<h4>Topic Three</h4>
+<p>Placeholder text about the third important topic for patients.</p>
+</div>
+</div>
+<!-- Key Message -->
+<div class="key-message">
+<p>Key Message: Placeholder text with an important takeaway for patients to remember about their treatment.</p>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+<h2>Common Questions</h2>
+<div class="faq-card">
+<h5>Placeholder Question One?</h5>
+<p>Placeholder answer providing helpful information for patients.</p>
+</div>
+<div class="faq-card">
+<h5>Placeholder Question Two?</h5>
+<p>Placeholder answer providing helpful information for patients.</p>
+</div>
+</div>
+<!-- CTA Section -->
+<div class="cta-section">
+<h3 style="margin:0 0 8px; font-size:12px; font-weight:700; color:#0D6B6E; text-transform:uppercase; letter-spacing:0.5px;">
+      Important Safety Information (ISI)
+    </h3>
+    <p style="margin:0; font-size:11px; color:#3a4f5c; line-height:1.6;">
+      [ISI Placeholder: Insert full prescribing safety information here]
+    </p>
+</div>
+
+
+<!-- Footer -->
+<div class="footer">
+<div class="footer-content">
+<img src="logo.png" alt="ONCORYVA" style="height:24px;">
+</div>
+</div>
+</div>
+</body>
+</html>

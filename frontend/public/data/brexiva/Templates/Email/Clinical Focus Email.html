@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BREXIVA - HCP Email Template 01</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  body {
+    margin: 0; padding: 0;
+    background-color: #e8edf4;
+    font-family: 'Inter', 'Segoe UI', Arial, Helvetica, sans-serif;
+  }
+  .email-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    box-shadow: 0 12px 60px rgba(15,40,67,0.18);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: relative;
+    background: linear-gradient(135deg, #0a1e34 0%, #0f2843 30%, #1a3a5c 65%, #2d5f8a 100%);
+    padding: 36px 44px 78px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -70px; right: -70px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(74,144,196,0.24) 0%, transparent 65%);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 40px; left: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(168,208,230,0.14) 0%, transparent 65%);
+    border-radius: 50%;
+  }
+  .header-accent-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #4a90c4 0%, #a8d0e6 40%, #5ba8d4 70%, #2d7ab0 100%);
+  }
+  .header img.logo {
+    height: 44px; margin-bottom: 14px;
+    position: relative; z-index: 2;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.30));
+  }
+  .header .tagline {
+    color: #a8d0e6;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    position: relative; z-index: 2;
+    opacity: 0.90;
+  }
+  .header-wave {
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 100%; line-height: 0;
+    pointer-events: none; z-index: 3;
+  }
+  .header-wave svg { display: block; width: 100%; height: 70px; }
+
+  /* ── HERO ── */
+  .hero-section { position: relative; }
+  .hero-section img { width: 100%; height: 240px; object-fit: cover; display: block; }
+  .hero-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(transparent 0%, rgba(10,30,52,0.70) 50%, rgba(10,30,52,0.92) 100%);
+    padding: 48px 44px 28px;
+  }
+  .hero-overlay h1 {
+    color: #ffffff;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.28;
+    letter-spacing: -0.3px;
+    text-shadow: 0 3px 14px rgba(0,0,0,0.40);
+  }
+
+  /* ── CONTENT ── */
+  .content-block { padding: 40px 44px 28px; }
+
+  .content-block h2 {
+    color: #0f2843;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 14px;
+    line-height: 1.30;
+    letter-spacing: -0.2px;
+    position: relative;
+    padding-bottom: 14px;
+  }
+  .content-block h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, #2d5f8a, #4a90c4);
+    border-radius: 2px;
+  }
+
+  .content-block p {
+    color: #3a4a5c;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 14.5px;
+    font-weight: 400;
+    line-height: 1.80;
+    margin: 0 0 20px;
+    letter-spacing: 0.05px;
+  }
+
+  /* ── KEY MESSAGE ── */
+  .key-message-box {
+    background: linear-gradient(135deg, #deeef9 0%, #e8f4ff 60%, #f0f8ff 100%);
+    border-left: 5px solid #1a3a5c;
+    padding: 22px 26px;
+    margin: 28px 0;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 5px 5px 0px #b8cfe6, 8px 8px 0px #a4bedc, 0 12px 30px rgba(26,58,92,0.13);
+    position: relative;
+  }
+  .key-message-box::before {
+    content: '\201C';
+    position: absolute;
+    top: 8px; left: 18px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 52px;
+    color: rgba(45,95,138,0.16);
+    line-height: 1;
+  }
+  .key-message-box p {
+    color: #0f2843;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.65;
+    letter-spacing: 0.05px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(45,95,138,0.20) 20%, rgba(45,95,138,0.42) 50%, rgba(74,144,196,0.18) 80%, transparent);
+    margin: 0 44px;
+    border: none;
+  }
+
+  /* ── SUPPORTING IMAGE ── */
+  .supporting-img-wrap { padding: 0 44px 28px; }
+  .supporting-img-wrap img {
+    width: 100%; border-radius: 12px; display: block;
+    box-shadow: 5px 5px 0px #b8cfe6, 8px 8px 0px #a4bedc, 0 14px 32px rgba(26,58,92,0.12);
+  }
+
+  /* ── ISI ── */
+  .isi-outer { padding: 0 40px 20px; }
+  .isi-box {
+    background: linear-gradient(160deg, #f2f7fc 0%, #eaf2f9 100%);
+    border-radius: 12px;
+    border: 1px solid #ccdded;
+    border-top: 4px solid #1a3a5c;
+    box-shadow: 5px 5px 0px #b8cfe6, 8px 8px 0px #a4bedc, 0 12px 28px rgba(26,58,92,0.10);
+  }
+  .isi-box td { padding: 20px 24px; }
+  .isi-box .isi-title {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: #0f2843;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(26,58,92,0.16);
+  }
+  .isi-box .isi-body {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: #4a5e72;
+    margin: 0;
+    line-height: 1.70;
+    letter-spacing: 0.05px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    position: relative;
+    background: linear-gradient(140deg, #0a1e34 0%, #0f2843 35%, #1a3a5c 70%, #1e4d7a 100%);
+    padding: 64px 44px 32px;
+    overflow: hidden;
+    text-align: center;
+  }
+  .footer::before {
+    content: '';
+    position: absolute;
+    bottom: -50px; left: -50px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(74,144,196,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .footer-wave {
+    position: absolute;
+    top: -2px; left: 0;
+    width: 100%; line-height: 0;
+    pointer-events: none; z-index: 3;
+  }
+  .footer-wave svg { display: block; width: 100%; height: 62px; }
+  .footer-accent-bar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #2d7ab0 0%, #a8d0e6 40%, #4a90c4 70%, #2d5f8a 100%);
+  }
+  .footer .branding { position: relative; z-index: 2; margin-bottom: 16px; }
+  .footer .branding img { height: 28px; display: inline-block; opacity: 0.88; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25)); }
+  .footer p {
+    color: #6e96b4;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.65;
+    margin: 0 0 8px;
+    position: relative; z-index: 2;
+    letter-spacing: 0.2px;
+  }
+
+  /* ── UNSUBSCRIBE ── */
+  .unsubscribe {
+    text-align: center;
+    padding: 14px 16px;
+    background: #eef2f6;
+    position: relative; z-index: 2;
+    border-top: 1px solid #dde4ec;
+  }
+  .unsubscribe a {
+    color: #5a7a96;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 10.5px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid rgba(90,122,150,0.35);
+    padding-bottom: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="email-wrapper">
+
+  <div class="header">
+    <div class="header-accent-bar"></div>
+    <img src="logo.png" alt="BREXIVA Logo" class="logo">
+    <div class="tagline">[Brand Tagline Placeholder]</div>
+    <div class="header-wave">
+      <svg viewBox="0 0 600 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,30 C80,62 140,5 220,28 C300,52 360,8 440,26 C500,40 550,18 600,30 L600,70 L0,70 Z" fill="rgba(168,208,230,0.22)"/>
+        <path d="M0,42 C60,18 130,56 210,38 C290,20 360,54 440,36 C510,20 560,44 600,36 L600,70 L0,70 Z" fill="rgba(74,144,196,0.28)"/>
+        <path d="M0,52 C70,32 160,66 260,48 C360,30 440,62 520,46 C560,38 580,50 600,46 L600,70 L0,70 Z" fill="#ffffff"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="hero-section">
+    <img src="https://dummyimage.com/600x240/e8f4fd/1a3a5c&text=Hero+Image+Placeholder" alt="Hero Image">
+    <div class="hero-overlay">
+      <h1>[Primary Headline Goes Here]</h1>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h2>[Subheading Placeholder]</h2>
+    <p>[Opening paragraph text placeholder. This section introduces the key clinical topic and sets context for the healthcare professional reader. Replace with approved copy.]</p>
+
+    <div class="key-message-box">
+      <p>[Key Message Placeholder — Insert primary clinical message or value proposition here.]</p>
+    </div>
+
+    <p>[Supporting paragraph text placeholder. Additional context, data summary placeholder, or clinical narrative continuation. Replace with approved copy.]</p>
+  </div>
+
+  <div class="supporting-img-wrap">
+    <img src="https://dummyimage.com/520x180/f0f7ff/2d5f8a&text=Supporting+Visual+Placeholder" alt="Supporting Visual">
+    <p style="color:#718096; font-size:11px; margin:8px 0 0; text-align:center;"></p>
+  </div>
+
+  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td class="isi-outer" style="padding: 0 40px 20px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" class="isi-box">
+          <tr>
+            <td>
+              <p class="isi-title">Important Safety Information (ISI)</p>
+              <p class="isi-body">[ISI Placeholder: Insert full prescribing safety information here]</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <div class="divider"></div>
+
+  <div class="footer">
+    <div class="footer-wave">
+      <svg viewBox="0 0 600 62" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,18 C70,38 140,2 240,22 C340,40 400,8 480,24 C530,34 565,18 600,26 L600,0 L0,0 Z" fill="#ffffff"/>
+        <path d="M0,30 C60,50 140,12 220,32 C300,52 380,16 460,34 C520,46 560,28 600,32 L600,0 L0,0 Z" fill="rgba(74,144,196,0.26)"/>
+        <path d="M0,44 C80,22 180,56 280,40 C380,24 460,54 560,40 C580,36 592,38 600,42 L600,0 L0,0 Z" fill="rgba(168,208,230,0.16)"/>
+      </svg>
+    </div>
+    <div class="branding">
+      <img src="logo.png" alt="BREXIVA">
+    </div>
+    <div class="unsubscribe">
+      <a href="#">[Unsubscribe / Email Preferences]</a>
+    </div>
+    <div class="footer-accent-bar"></div>
+  </div>
+
+</div>
+</body>
+</html>
