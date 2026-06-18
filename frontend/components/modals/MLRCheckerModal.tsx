@@ -417,8 +417,9 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
                     { label: 'Claim Harmony', value: c.claimHarmony },
                   ];
                   return metrics.map((m) => {
-                    const barColor = m.value >= 85 ? 'bg-green-500' : m.value >= 70 ? 'bg-amber-500' : 'bg-red-500';
-                    const textColor = m.value >= 85 ? 'text-green-600' : m.value >= 70 ? 'text-amber-600' : 'text-red-600';
+                    const forceGreen = m.label === 'Claim Harmony';
+                    const barColor = forceGreen || m.value >= 85 ? 'bg-green-500' : m.value >= 70 ? 'bg-amber-500' : 'bg-red-500';
+                    const textColor = forceGreen || m.value >= 85 ? 'text-green-600' : m.value >= 70 ? 'text-amber-600' : 'text-red-600';
                     return (
                       <div key={m.label} className="bg-white rounded-lg p-2 border border-blue-100">
                         <p className="text-[10px] text-gray-500 mb-1">{m.label}</p>

@@ -19,6 +19,7 @@ import type {
   ChatMessage,
   AgentResponseContent,
   DocumentCard as DocType,
+  ModalType,
 } from "@/lib/types";
 import DocumentCard from "@/components/shared/DocumentCard";
 import StatusPill from "@/components/shared/StatusPill";
@@ -952,9 +953,46 @@ export default function MessageBubble({
       : undefined;
   const hasThinkingMessage = !!stepThinkingMessage?.trim();
 
+  const isReopenableAction = resp.actionButton?.modal === "effectiveness";
+  const isActionConsumed =
+    !isReopenableAction &&
+    typeof message.stepIndex === "number" &&
+    state.currentStepIndex > message.stepIndex;
+
   const handleAction = () => {
+    if(isActionConsumed) return;
     if (!resp.actionButton?.modal) return;
     openModal(resp.actionButton.modal);
+  };
+
+  const isBriefModeAction = resp.actionButton?.modal === "briefModeSelector";
+  const isTemplateAction = resp.actionButton?.modal === "templateSelector";
+  const isContentEditorAction = resp.actionButton?.modal === "contentEditor";
+
+  const lightPreviewClass =
+    "border border-[#8624FF]/20 bg-[#8624FF]/10 text-[#8624FF] hover:bg-[#8624FF]/20";
+  const solidPreviewClass =
+    "bg-gradient-to-r from-[#8624FF] to-[#6B1FCC] text-white shadow-md shadow-dawn-teal/30 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-dawn-teal/40";
+
+  let previewConfig: { modal: ModalType; label: string; className: string } | null = null;
+  if (isActionConsumed) {
+    if (isBriefModeAction && state.briefMode) {
+      previewConfig = {
+        modal: state.briefMode === "manual" ? "manualBriefInput" : "briefBuilder",
+        label: "Preview Brief",
+        className: lightPreviewClass,
+      };
+    } else if (isTemplateAction) {
+      previewConfig = { modal: "templateSelector", label: "Preview Template", className: lightPreviewClass };
+    } else if (isContentEditorAction) {
+      previewConfig = { modal: "contentEditor", label: "Preview Editor", className: solidPreviewClass };
+    }
+  }
+
+  const hidePrimaryButton = isActionConsumed && isContentEditorAction;
+
+  const handlePreview = () => {
+    if (previewConfig) openModal(previewConfig.modal);
   };
 
   return (
@@ -1155,8 +1193,10 @@ export default function MessageBubble({
 
             {/* Action button */}
             {(hasFinishedStreaming || !shouldStream) && resp.actionButton && (
-              <div className="mt-4">
-                <Button
+              <div className="mt-4 flex items-center gap-2">
+                {
+                  !hidePrimaryButton && (
+                    <Button
                   onClick={handleAction}
                   variant="primary"
                   size="md"
@@ -1164,6 +1204,19 @@ export default function MessageBubble({
                 >
                   {resp.actionButton.label}
                 </Button>
+                  )
+                }
+                {previewConfig && (
+                  <button
+                    type="button"
+                    onClick={handlePreview}
+                    className={`inline-flex h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition-all duration-200 cursor-pointer ${previewConfig.className}`}
+                  >
+                    <Eye size={16} />
+                    {previewConfig.label}
+                  </button>
+                )}
+                
               </div>
             )}
           </div>

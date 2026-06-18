@@ -9,6 +9,7 @@ import Button from '@/components/ui/Button';
 interface ManualBriefInputModalProps {
   onConfirm: () => void;
   onClose: () => void;
+  readOnly?: boolean;
 }
 
 interface BriefItem {
@@ -42,7 +43,7 @@ const PROMPT_AUTOFILL: Record<string, Record<string, string>> = {
   },
 };
 
-export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBriefInputModalProps) {
+export default function ManualBriefInputModal({ onConfirm, onClose, readOnly = false }: ManualBriefInputModalProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('form');
   const [briefs, setBriefs] = useState<BriefItem[]>([
     { id: '1', title: 'Multi-Deliverable Campaign', content: 'Create a global multi-deliverable campaign for Brexiva in HR+/HER2− metastatic breast cancer, targeting oncologists and breast cancer specialists through congress posters, HCP emails, patient education leaflets, digital banners, and clinic discussion guides.' },
@@ -500,7 +501,8 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-dawn-border bg-white rounded-b-2xl">
+        {!readOnly && (
+           <div className="px-6 py-4 border-t border-dawn-border bg-white rounded-b-2xl">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-gray-500">
               {briefs.filter((b) => b.title.trim() && b.content.trim()).length} of {briefs.length} briefs completed
@@ -521,6 +523,7 @@ export default function ManualBriefInputModal({ onConfirm, onClose }: ManualBrie
             </Button>
           </div>
         </div>
+        )}
       </div>
     </div>
   );

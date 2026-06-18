@@ -10,6 +10,7 @@ import Button from '@/components/ui/Button';
 interface TemplateSelectorModalProps {
   onConfirm: () => void;
   onClose: () => void;
+  readOnly?: boolean;
 }
 
 // Small palette used to give templates of the same type slight visual variation.
@@ -276,7 +277,7 @@ function formatAssetType(assetType: string): string {
   return assetType.replace(/^HCP\s+/i, '');
 }
 
-export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSelectorModalProps) {
+export default function TemplateSelectorModal({ onConfirm, onClose, readOnly = false }: TemplateSelectorModalProps) {
   // Templates come from the active campaign's bundle (no API call). Each
   // template's HTML lives as a static file under /data/<brand>/Templates/.
   const { templates: templateData } = useCampaignData();
@@ -456,7 +457,8 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
 
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-dawn-border bg-white">
+        {!readOnly && (
+           <div className="px-6 py-4 border-t border-dawn-border bg-white">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs text-gray-500">
               {Object.keys(selectedTemplates).length} templates selected
@@ -489,7 +491,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose }: TemplateSe
             </Button>
           </div>
         </div>
-
+        )}
       </div>
 
       {/* Full-page HTML preview overlay (renders above the template selector). */}

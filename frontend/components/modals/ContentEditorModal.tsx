@@ -9,6 +9,7 @@ import { PdfViewerModal } from '@/components/shared/DocumentPreviewModal';
 interface ContentEditorModalProps {
   onConfirm: () => void;
   onClose: () => void;
+  readOnly?: boolean;
 }
 
 const TONE_OPTIONS = ['Default', 'Professional', 'Empathetic', 'Concise', 'Authoritative', 'Patient-friendly'];
@@ -104,7 +105,7 @@ function TemplatePreviewCanvas({ src, title, templateKey }: TemplatePreviewCanva
   );
 }
 
-export default function ContentEditorModal({ onConfirm, onClose }: ContentEditorModalProps) {
+export default function ContentEditorModal({ onConfirm, onClose, readOnly = false }: ContentEditorModalProps) {
   const { generatedAssets, visualTemplates } = useCampaignData();
   const [viewMode, setViewMode] = useState<'content' | 'images'>('content');
   const [activeTab, setActiveTab] = useState(0);
@@ -329,6 +330,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
                 <textarea
                   value={currentContent}
                   onChange={(e) => updateContent(e.target.value)}
+                  readOnly={readOnly}
                   className="w-full h-full min-h-[400px] text-sm text-gray-700 leading-relaxed resize-none outline-none font-sans bg-transparent"
                   spellCheck={false}
                   placeholder="Edit your content here..."
@@ -338,11 +340,12 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
           </div>
 
           {/* Right Sidebar - Text Edit Panel (Collapsible) */}
-          <div
-            className={`bg-white border-l border-dawn-border flex flex-col transition-all duration-300 ${
-              contentPropertiesCollapsed ? 'w-16' : 'w-80'
-            }`}
-          >
+          {!readOnly && (
+            <div
+              className={`bg-white border-l border-dawn-border flex flex-col transition-all duration-300 ${
+                contentPropertiesCollapsed ? 'w-16' : 'w-80'
+              }`}
+            >
             <div className="px-4 py-3 border-b border-dawn-border flex items-center justify-between gap-2">
               {!contentPropertiesCollapsed && (
                 <div>
@@ -422,6 +425,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
               </div>
             )}
           </div>
+          )}
         </div>
         ) : (
           /* Visual Template Editor */
@@ -556,7 +560,8 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
             </div>
 
             {/* Right Sidebar - Personalize Panel (Collapsible) */}
-            <div
+            {!readOnly && (
+              <div
               className={`bg-white border-l border-dawn-border flex flex-col transition-all duration-300 ${
                 templatePropertiesCollapsed ? 'w-16' : 'w-80'
               }`}
@@ -680,6 +685,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
                 </div>
               )}
             </div>
+            )}
           </div>
         )}
 
@@ -688,7 +694,8 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
           <p className="text-xs text-gray-500">
             {viewMode === 'content' ? `${generatedAssets.length} content assets` : `Visual: ${visualTemplates.find(v => v.id === selectedImage)?.title ?? '—'}`}
           </p>
-          <div className="flex gap-3">
+          {!readOnly && (
+            <div className="flex gap-3">
             <Button onClick={onClose} variant="secondary" size="md" rounded="lg">
               Cancel
             </Button>
@@ -696,6 +703,7 @@ export default function ContentEditorModal({ onConfirm, onClose }: ContentEditor
               Confirm & Continue →
             </Button>
           </div>
+          )} 
         </div>
       </div>
     </div>

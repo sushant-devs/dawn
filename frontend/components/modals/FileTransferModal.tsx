@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Monitor, Database, Share2, Check, FileText } from 'lucide-react';
 import { useCampaignData } from '@/context/DAWNContext';
 
@@ -34,29 +34,42 @@ export default function FileTransferModal({ onComplete }: FileTransferModalProps
   const [completedFiles, setCompletedFiles] = useState<number[]>([]);
   const [transferComplete, setTransferComplete] = useState(false);
 
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
+
+  const fileCount = TRANSFER_FILES.length;
+
   useEffect(() => {
+    if (fileCount === 0) return;
+
+    const timers: ReturnType<typeof setTimeout>[] = [];
     let fileIdx = 0;
+    const progressPerFile = 100 / fileCount;
+
     const startNextFile = () => {
-      if (fileIdx >= TRANSFER_FILES.length) {
+      if (fileIdx >= fileCount) {
         setTransferComplete(true);
-        setTimeout(() => onComplete(), 1500);
+        timers.push(setTimeout(() => onCompleteRef.current(), 1500));
         return;
       }
       setActiveFileIndex(fileIdx);
       const duration = 800 + Math.random() * 400;
-      const progressPerFile = 100 / TRANSFER_FILES.length;
-
-      setTimeout(() => {
-        setCompletedFiles((prev) => [...prev, fileIdx]);
-        setTransferProgress((fileIdx + 1) * progressPerFile);
-        fileIdx++;
-        setTimeout(startNextFile, 200);
-      }, duration);
+      timers.push(
+        setTimeout(() => {
+          const completedIdx = fileIdx;
+          setCompletedFiles((prev) =>
+            prev.includes(completedIdx) ? prev : [...prev, completedIdx],
+          );
+          setTransferProgress((completedIdx + 1) * progressPerFile);
+          fileIdx++;
+          timers.push(setTimeout(startNextFile, 200));
+        }, duration),
+      );
     };
 
-    const initialDelay = setTimeout(startNextFile, 600);
-    return () => clearTimeout(initialDelay);
-  }, [onComplete]);
+    timers.push(setTimeout(startNextFile, 600));
+    return () => timers.forEach(clearTimeout);
+  }, [fileCount]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

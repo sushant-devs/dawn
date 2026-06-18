@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 interface BriefBuilderModalProps {
   onConfirm: () => void;
   onClose: () => void;
+  readOnly?: boolean;
 }
 
 function SummaryRow({ label, value }: { label: string; value: string }) {
@@ -18,7 +19,7 @@ function SummaryRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderModalProps) {
+export default function BriefBuilderModal({ onConfirm, onClose, readOnly = false }: BriefBuilderModalProps) {
   const { brief } = useCampaignData();
 
   const audience = brief.primaryAudience.join(', ');
@@ -119,14 +120,16 @@ export default function BriefBuilderModal({ onConfirm, onClose }: BriefBuilderMo
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 border-t border-dawn-border bg-white px-6 py-4">
-          <Button onClick={onClose} variant="secondary" size="md" rounded="lg">
-            Cancel
-          </Button>
-          <Button onClick={onConfirm} variant="primary" size="md" rounded="lg">
-            Continue with Auto Mode →
-          </Button>
-        </div>
+        {!readOnly && (
+          <div className="flex justify-end gap-3 border-t border-dawn-border bg-white px-6 py-4">
+            <Button onClick={onClose} variant="secondary" size="md" rounded="lg">
+              Cancel
+            </Button>
+            <Button onClick={onConfirm} variant="primary" size="md" rounded="lg">
+              Continue with Auto Mode →
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 interface EffectivenessModalProps {
   onConfirm: () => void;
   onClose: () => void;
+  readOnly?: boolean;
 }
 
 const KPI_DATA = [
@@ -22,7 +23,7 @@ const STATUS_CELL = {
   below: 'bg-dawn-red/10 text-dawn-red',
 };
 
-export default function EffectivenessModal({ onConfirm, onClose }: EffectivenessModalProps) {
+export default function EffectivenessModal({ onConfirm, onClose, readOnly = false }: EffectivenessModalProps) {
   const { marketMetrics, personaEngagement, optimizationRecs } = useCampaignData();
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -162,7 +163,8 @@ export default function EffectivenessModal({ onConfirm, onClose }: Effectiveness
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-dawn-border bg-white flex justify-end gap-3">
+        {!readOnly && (
+             <div className="px-6 py-4 border-t border-dawn-border bg-white flex justify-end gap-3">
           <Button onClick={onClose} variant="secondary" size="md" rounded="lg">
             Cancel
           </Button>
@@ -170,6 +172,7 @@ export default function EffectivenessModal({ onConfirm, onClose }: Effectiveness
             Confirm & Continue →
           </Button>
         </div>
+          )}
       </div>
     </div>
   );

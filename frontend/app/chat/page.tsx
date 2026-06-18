@@ -21,7 +21,7 @@ import type { AgentResponseContent, ChatMessage } from '@/lib/types';
 import type { UserProfile } from '@/lib/authApi';
 import type { InputMode } from '@/components/chat/ChatInput';
 import { CHAT_QUESTIONS } from '@/lib/chatQuestions';
-import { CAMPAIGN_LIST, type CampaignId } from '@/lib/campaigns';
+import { CAMPAIGN_LIST, getCampaign, type CampaignId } from '@/lib/campaigns';
 
 const CHAT_STORAGE_KEY = 'dawn_chat_sessions';
 
@@ -51,6 +51,33 @@ function ChatPage() {
   const [userName, setUserName] = useState('');
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
   const prevChatIdRef = useRef<string | undefined>(undefined);
+
+  const isEffectivenessReopen = useMemo(() => {
+    const storyline = getCampaign(state.campaignId).storyline;
+    const effStepIndex = storyline.findIndex((s) => s.triggersModal === 'effectiveness');
+    return effStepIndex !== -1 && state.currentStepIndex > effStepIndex;
+  }, [state.campaignId, state.currentStepIndex]);
+
+  const isBriefReopen = useMemo(() => {
+    if (state.activeModal !== 'briefBuilder' && state.activeModal !== 'manualBriefInput') {
+      return false;
+    }
+    const storyline = getCampaign(state.campaignId).storyline;
+    const stepIndex = storyline.findIndex((s) => s.triggersModal === state.activeModal);
+    return stepIndex !== -1 && state.currentStepIndex > stepIndex;
+  }, [state.campaignId, state.currentStepIndex, state.activeModal]);
+
+  const isTemplateReopen = useMemo(() => {
+    const storyline = getCampaign(state.campaignId).storyline;
+    const stepIndex = storyline.findIndex((s) => s.triggersModal === 'templateSelector');
+    return stepIndex !== -1 && state.currentStepIndex > stepIndex;
+  }, [state.campaignId, state.currentStepIndex]);
+
+  const isContentEditorReopen = useMemo(() => {
+    const storyline = getCampaign(state.campaignId).storyline;
+    const stepIndex = storyline.findIndex((s) => s.triggersModal === 'contentEditor');
+    return stepIndex !== -1 && state.currentStepIndex > stepIndex;
+  }, [state.campaignId, state.currentStepIndex]);
 
   useEffect(() => {
     const stored = localStorage.getItem('dawn_user');
@@ -359,16 +386,16 @@ function ChatPage() {
         />
       )}
       {state.activeModal === 'manualBriefInput' && (
-        <ManualBriefInputModal onConfirm={confirmModal} onClose={closeModal} />
+        <ManualBriefInputModal onConfirm={confirmModal} onClose={closeModal} readOnly={isBriefReopen} />
       )}
       {state.activeModal === 'briefBuilder' && (
-        <BriefBuilderModal onConfirm={confirmModal} onClose={closeModal} />
+        <BriefBuilderModal onConfirm={confirmModal} onClose={closeModal} readOnly={isBriefReopen} />
       )}
       {state.activeModal === 'templateSelector' && (
-        <TemplateSelectorModal onConfirm={confirmModal} onClose={closeModal} />
+        <TemplateSelectorModal onConfirm={confirmModal} onClose={closeModal} readOnly={isTemplateReopen} />
       )}
       {state.activeModal === 'contentEditor' && (
-        <ContentEditorModal onConfirm={confirmModal} onClose={closeModal} />
+        <ContentEditorModal onConfirm={confirmModal} onClose={closeModal} readOnly={isContentEditorReopen} />
       )}
       {state.activeModal === 'imageGen' && (
         <ImageGenModal onConfirm={confirmModal} onClose={closeModal} />
@@ -383,7 +410,7 @@ function ChatPage() {
         <FileTransferModal onComplete={() => { setShowFileTransfer(false); confirmModal(); }} />
       )}
       {state.activeModal === 'effectiveness' && (
-        <EffectivenessModal onConfirm={confirmModal} onClose={closeModal} />
+        <EffectivenessModal onConfirm={confirmModal} onClose={closeModal} readOnly={isEffectivenessReopen} />
       )}
 
       {/* Notification and PLS modals are intentionally hidden on /chat route */}
