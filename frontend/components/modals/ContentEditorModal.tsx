@@ -15,7 +15,7 @@ interface ContentEditorModalProps {
 const TONE_OPTIONS = ['Default', 'Professional', 'Empathetic', 'Concise', 'Authoritative', 'Patient-friendly'];
 const STRUCTURE_OPTIONS = ['Default', 'Bullet points', 'Paragraph', 'Q&A', 'Step-by-step'];
 
-const COLOR_SCHEMES = ['Default', 'Brexiva Brand', 'High Contrast', 'Soft Pastel', 'Monochrome'];
+const COLOR_SCHEMES = ['Default', 'Blue', 'Green', 'Red', 'Purple', 'Orange', 'Monochrome'];
 const FONT_STYLES = ['Default', 'Serif Classic', 'Modern Sans', 'Editorial', 'Compact'];
 const BORDER_STYLES = ['Default', 'None', 'Subtle', 'Bold', 'Rounded'];
 const SPACING_OPTIONS = ['Default', 'Compact', 'Comfortable', 'Spacious'];
@@ -390,7 +390,7 @@ export default function ContentEditorModal({ onConfirm, onClose, readOnly = fals
                       className="w-full appearance-none rounded-lg border border-dawn-border bg-white px-3 py-2 text-xs font-body text-dawn-navy outline-none transition-colors hover:border-dawn-teal/40 focus:border-dawn-teal focus:ring-2 focus:ring-dawn-teal/20 cursor-pointer"
                     >
                       {STRUCTURE_OPTIONS.map((s) => (
-                        <option key={s} value={s}>{s}</option>
+                        <option key={s} value={s} style={{ color: '#1E1B3D', backgroundColor: '#ffffff' }}>{s}</option>
                       ))}
                     </select>
                     <ChevronRight size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rotate-90 text-gray-400" />
@@ -593,7 +593,7 @@ export default function ContentEditorModal({ onConfirm, onClose, readOnly = fals
                         className="w-full appearance-none rounded-lg border border-dawn-border bg-white px-3 py-2 text-xs font-body text-dawn-navy outline-none transition-colors hover:border-dawn-teal/40 focus:border-dawn-teal focus:ring-2 focus:ring-dawn-teal/20 cursor-pointer"
                       >
                         {COLOR_SCHEMES.map((s) => (
-                          <option key={s} value={s}>{s}</option>
+                          <option key={s} value={s} style={{ color: '#1E1B3D', backgroundColor: '#ffffff' }}>{s}</option>
                         ))}
                       </select>
                       <ChevronRight size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rotate-90 text-gray-400" />
@@ -610,7 +610,7 @@ export default function ContentEditorModal({ onConfirm, onClose, readOnly = fals
                         className="w-full appearance-none rounded-lg border border-dawn-border bg-white px-3 py-2 text-xs font-body text-dawn-navy outline-none transition-colors hover:border-dawn-teal/40 focus:border-dawn-teal focus:ring-2 focus:ring-dawn-teal/20 cursor-pointer"
                       >
                         {FONT_STYLES.map((s) => (
-                          <option key={s} value={s}>{s}</option>
+                          <option key={s} value={s} style={{ color: '#1E1B3D', backgroundColor: '#ffffff' }}>{s}</option>
                         ))}
                       </select>
                       <ChevronRight size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rotate-90 text-gray-400" />
@@ -627,7 +627,7 @@ export default function ContentEditorModal({ onConfirm, onClose, readOnly = fals
                         className="w-full appearance-none rounded-lg border border-dawn-border bg-white px-3 py-2 text-xs font-body text-dawn-navy outline-none transition-colors hover:border-dawn-teal/40 focus:border-dawn-teal focus:ring-2 focus:ring-dawn-teal/20 cursor-pointer"
                       >
                         {BORDER_STYLES.map((s) => (
-                          <option key={s} value={s}>{s}</option>
+                          <option key={s} value={s} style={{ color: '#1E1B3D', backgroundColor: '#ffffff' }}>{s}</option>
                         ))}
                       </select>
                       <ChevronRight size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rotate-90 text-gray-400" />
@@ -644,7 +644,7 @@ export default function ContentEditorModal({ onConfirm, onClose, readOnly = fals
                         className="w-full appearance-none rounded-lg border border-dawn-border bg-white px-3 py-2 text-xs font-body text-dawn-navy outline-none transition-colors hover:border-dawn-teal/40 focus:border-dawn-teal focus:ring-2 focus:ring-dawn-teal/20 cursor-pointer"
                       >
                         {SPACING_OPTIONS.map((s) => (
-                          <option key={s} value={s}>{s}</option>
+                          <option key={s} value={s} style={{ color: '#1E1B3D', backgroundColor: '#ffffff' }}>{s}</option>
                         ))}
                       </select>
                       <ChevronRight size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rotate-90 text-gray-400" />
