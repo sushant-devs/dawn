@@ -1201,6 +1201,7 @@ export default function MessageBubble({
                   variant="primary"
                   size="md"
                   rounded="xl"
+                  disabled={isActionConsumed}
                 >
                   {resp.actionButton.label}
                 </Button>
