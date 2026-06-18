@@ -978,7 +978,7 @@ export default function MessageBubble({
   if (isActionConsumed) {
     if (isBriefModeAction && state.briefMode) {
       previewConfig = {
-        modal: state.briefMode === "manual" ? "manualBriefInput" : "briefBuilder",
+        modal: state.briefMode === "manual" ? "manualBriefPreview" : "briefBuilder",
         label: "Preview Brief",
         className: lightPreviewClass,
       };

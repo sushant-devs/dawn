@@ -297,9 +297,9 @@ Design pipeline complete — asset is ready for the compliance review.`,
       text: 'Internal MLR screen completed. It identifies flagged claims, explains tier risk, and shows what needs revision. You will receive a notification once the assets are approved.',
       mlrTable: [
         { asset: 'Congress Poster', tier: 'Tier 1', aiPreScreen: '0 flags', status: 'Passed' },
-        { asset: 'Digital Detail Aid', tier: 'Tier 2', aiPreScreen: '1 flag', status: 'Flagged' },
+        { asset: 'Digital Detail Aid', tier: 'Tier 2', aiPreScreen: '1 flag', status: 'Pending' },
         { asset: 'Email', tier: 'Tier 1', aiPreScreen: '0 flags', status: 'Passed' },
-        { asset: 'Patient Leaflet', tier: 'Tier 2', aiPreScreen: '1 flag', status: 'Flagged' },
+        { asset: 'Patient Leaflet', tier: 'Tier 2', aiPreScreen: '1 flag', status: 'Pending' },
       ],
       actionButton: {
         label: 'Open MLR Pre-Screen →',

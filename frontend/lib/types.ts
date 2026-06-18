@@ -20,6 +20,7 @@ export type Stage =
 export type ModalType =
   | 'briefModeSelector'
   | 'manualBriefInput'
+  | 'manualBriefPreview'
   | 'briefBuilder'
   | 'templateSelector'
   | 'contentEditor'
@@ -214,6 +215,11 @@ export interface BriefData {
   deliverables: string[];
   /** Required regulatory/safety inclusions shown in the brief review. */
   mandatoryInclusions: string[];
+  /** Exact title + content the user submitted in manual mode, shown in the read-only manual brief preview. */
+  manualBrief?: {
+    title: string;
+    content: string;
+  };
 }
 
 // ─── Distribution Types ───────────────────────────────────────────────────────

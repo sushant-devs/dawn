@@ -8,6 +8,7 @@ import ChatInput from '@/components/chat/ChatInput';
 import WorkspaceSidebar, { type ChatSession } from '@/components/chat/Sidebar';
 import BriefModeSelectorModal from '@/components/modals/BriefModeSelectorModal';
 import ManualBriefInputModal from '@/components/modals/ManualBriefInputModal';
+import ManualBriefPreviewModal from '@/components/modals/ManualBriefPreviewModal';
 import BriefBuilderModal from '@/components/modals/BriefBuilderModal';
 import TemplateSelectorModal from '@/components/modals/TemplateSelectorModal';
 import ContentEditorModal from '@/components/modals/ContentEditorModal';
@@ -387,6 +388,9 @@ function ChatPage() {
       )}
       {state.activeModal === 'manualBriefInput' && (
         <ManualBriefInputModal onConfirm={confirmModal} onClose={closeModal} readOnly={isBriefReopen} />
+      )}
+      {state.activeModal === 'manualBriefPreview' && (
+        <ManualBriefPreviewModal onClose={closeModal} />
       )}
       {state.activeModal === 'briefBuilder' && (
         <BriefBuilderModal onConfirm={confirmModal} onClose={closeModal} readOnly={isBriefReopen} />

@@ -198,6 +198,11 @@ export const MOCK_BRIEF: BriefData = {
     'Complete blood count assessment should be considered before treatment initiation and periodically during therapy.',
     'Patients with significant baseline cytopenias or prior intensive anticancer therapy should be monitored closely.',
   ],
+  manualBrief: {
+    title: 'Multi-Deliverable Campaign-Content Brief',
+    content:
+      'Create a multi-deliverable campaign-content brief for Brexiva Global Oncology Engagement Campaign for Brexiva (Brenova) in Oncology, targeting Global. The primary audience is Oncologists and Breast Cancer Specialists and the secondary audience is Oncology nurses, oncology pharmacists, medical affairs teams, and patient advocacy stakeholders. The campaign objective is Build a global specialist-facing campaign that supports evidence-led education, disease-state awareness, safety understanding, and patient-centered communication for HR+/HER2− metastatic breast cancer.. Develop the brief around the key message theme: Advancing evidence-informed and patient-centered conversations in HR+/HER2− metastatic breast cancer.. Include the following deliverables: Email, Digital Detail Aid, Congress Poster, Patient Leaflet. Adapt the brief for these channels: HCP email, digital detailing platform, congress booth, congress poster session, patient advocacy support setting, and downloadable PDF resource.. Include these mandatory inclusions: Brand and drug context, indication, global market scope, target audience, clinical evidence framing, safety and monitoring language, fair-balance language, and MLR review readiness.. Use a Scientific, balanced, specialist-facing tone.',
+  },
 };
 
 // ─── Generated Assets ─────────────────────────────────────────────────────────
