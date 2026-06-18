@@ -193,8 +193,8 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
               <h3 className="font-semibold text-dawn-navy text-sm">{selectedAsset.name}</h3>
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1 text-[10px]">
-                  <span className="w-2 h-2 rounded-full bg-dawn-amber inline-block" /> Fair Balance
-                  <span className="w-2 h-2 rounded-full bg-dawn-red inline-block ml-2" /> Puffery
+                  <span className="w-2 h-2 rounded-full bg-blue-400 inline-block" /> Fair Balance
+                  <span className="w-2 h-2 rounded-full bg-amber-400 inline-block ml-2" /> Puffery
                 </div>
               </div>
             </div>
@@ -322,7 +322,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
                   <p className="text-[10px] text-gray-400 mb-1">Fair Balance Score</p>
                   <div className="flex items-center gap-2">
                     <div className="flex-1 bg-gray-200 rounded-full h-1.5">
-                      <div className={`h-1.5 rounded-full ${selectedAsset.fairBalanceScore >= 85 ? 'bg-dawn-green' : selectedAsset.fairBalanceScore >= 75 ? 'bg-dawn-amber' : 'bg-dawn-red'}`}
+                      <div className="h-1.5 rounded-full bg-amber-400"
                         style={{ width: `${selectedAsset.fairBalanceScore}%` }} />
                     </div>
                     <span className={`text-xs font-semibold ${selectedAsset.fairBalanceScore >= 85 ? 'text-dawn-green' : 'text-dawn-amber'}`}>
