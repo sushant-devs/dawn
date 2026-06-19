@@ -30,6 +30,7 @@ import {
 } from "@/components/shared/DocumentPreviewModal";
 import Button from "@/components/ui/Button";
 import QAChart from "@/components/chat/QAChart";
+import ThinkingTrace, { THINKING_HEADERS } from "@/components/chat/ThinkingTrace";
 import { useDAWN } from "@/context/DAWNContext";
 import { getCampaign } from "@/lib/campaigns";
 
@@ -166,13 +167,13 @@ function TableBlock({
         </div>
       )}
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-slate-600">
+        <table className="w-full text-left text-xs text-slate-600">
           <thead className="bg-slate-50 text-slate-700">
             <tr>
               {table.headers.map((header, idx) => (
                 <th
                   key={idx}
-                  className="px-4 py-3 font-medium border-b border-slate-200 whitespace-nowrap"
+                  className="px-3 py-2 font-medium border-b border-slate-200 whitespace-nowrap"
                 >
                   {header}
                 </th>
@@ -192,7 +193,7 @@ function TableBlock({
                 {row.map((cell, cellIndex) => (
                   <td
                     key={cellIndex}
-                    className={`px-4 py-3 ${
+                    className={`px-3 py-2 whitespace-nowrap ${
                       cellIndex === 0 ? "font-medium text-slate-700" : ""
                     }`}
                   >
@@ -950,8 +951,17 @@ export default function MessageBubble({
   const stepThinkingMessage =
     typeof message.stepIndex === "number"
       ? getCampaign(state.campaignId).storyline[message.stepIndex]?.thinkingMessage
-      : undefined;
+      : message.thinking;
   const hasThinkingMessage = !!stepThinkingMessage?.trim();
+
+  const thinkingLines = (stepThinkingMessage ?? "")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
+  const thinkingStepCount = thinkingLines.filter((l) =>
+    THINKING_HEADERS.has(l),
+  ).length;
+  const thinkingSeconds = Math.max(8, thinkingLines.length * 3);
 
   const isReopenableAction = resp.actionButton?.modal === "effectiveness";
   const isActionConsumed =
@@ -1028,6 +1038,11 @@ export default function MessageBubble({
                 <span className="text-[13px] font-medium text-gray-600 tracking-[0.3px]">
                   DAWN&apos;s thinking
                 </span>
+                {thinkingStepCount > 0 && (
+                  <span className="text-[12px] font-normal text-gray-400">
+                    {thinkingStepCount} step{thinkingStepCount === 1 ? "" : "s"} · {thinkingSeconds}s
+                  </span>
+                )}
                 <ChevronDown
                   size={14}
                   className="ml-auto text-gray-400 transition-transform duration-200"
@@ -1047,10 +1062,8 @@ export default function MessageBubble({
                   opacity: showThinkingMessage ? 1 : 0,
                 }}
               >
-                <div className="px-3 pb-2 ">
-                  <pre className="text-[12px] leading-[1.6] text-gray-600 whitespace-pre-wrap break-words m-0 font-[family-name:var(--font-poppins)] ">
-                    {stepThinkingMessage || ""}
-                  </pre>
+                <div className="px-3 pb-2">
+                  <ThinkingTrace text={stepThinkingMessage || ""} />
                 </div>
               </div>
             </div>

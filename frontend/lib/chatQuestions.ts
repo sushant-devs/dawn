@@ -2,130 +2,298 @@ import { ChartData, TableData } from './types';
 
 export interface ChatQA {
   id: string;
+  chipLabel?: string;
   question: string;
+  thinking?: string;
   answer: string;
   chart?: ChartData;
   table?: TableData;
-  recommendation?: string;
 }
 
 export const CHAT_QUESTIONS: ChatQA[] = [
-  // ── Q1 ──────────────────────────────────────────────────────────────────────
   {
-    id: 'chat-1',
-    question: "Which audience segments should be targeted for BREXIVA (Brenova)?",
+    id: 'chat-eu-monthly-revenue',
+    chipLabel: 'BREXIVA EU monthly revenue',
+    question:
+      "Show BREXIVA monthly net_revenue_eur for all 5 EU markets from Jan 2023 to Dec 2024 as a bar chart comparison.",
+    thinking:
+      "Analyzing Query\n" +
+      "Loading conversation context — retrieving the last 5 turns to resolve any follow-up references.\n" +
+      "Routing to commercial analytics database.\n" +
+      "Parsing request\n" +
+      "Brand: Brexiva\n" +
+      "Market: all markets\n" +
+      "Period: 2023\n" +
+      "Querying Commercial Database\n" +
+      "Building SQL query against sales_data — filtering by brand, country, and period.\n" +
+      "Applying period filter: 2023.\n" +
+      "Executing query and retrieving result set.\n" +
+      "Preparing Response\n" +
+      "Composing insight headline — 1 sentence, no markdown, all figures in the visualisation block.\n" +
+      "Executing Tool\n" +
+      "Calling query_commercial_database — Commercial Database lookup.",
     answer:
-      "Here's the audience segment analysis for BREXIVA based on engagement and prescription growth performance.\nMedical Oncologists generated the highest engagement (48%) and contributed the strongest prescription growth (+22%) for BREXIVA — clearly the highest-value segment.",
-    table: {
-      title: 'DAWN Analysis — Audience Segment Performance',
-      headers: ['Audience Segment', 'Engagement Rate', 'Prescription Growth'],
-      rows: [
-        ['Medical Oncologists', '48%', '+22%'],
-        ['Hemato-Oncologists', '44%', '+18%'],
-        ['Oncology KOLs', '41%', '+16%'],
-        ['General Physicians', '19%', '+4%'],
-      ],
-      highlightRowIndex: 0,
-    },
-    recommendation:
-      "Focus future campaigns on Medical Oncologists and Oncology KOLs. Allocate approximately 65% of campaign resources to these high-value segments to maximize engagement and conversion.",
-  },
-
-  // ── Q2 ──────────────────────────────────────────────────────────────────────
-  {
-    id: 'chat-2',
-    question: "Which content formats generate the highest engagement for BREXIVA?",
-    answer:
-      "Here's the content format performance analysis for BREXIVA across all active channels.\nPersonalized Emails generated 72% more engagement than Congress Posters and consistently delivered the highest physician interaction rates.",
-    chart: {
-      type: 'donut',
-      title: 'Engagement Share by Content Format',
-      valueUnit: '%',
-      data: [
-        { name: 'Personalized Email', value: 43, color: '#00a896' },
-        { name: 'Digital Detail Aid', value: 40, color: '#0891b2' },
-        { name: 'Leaflet', value: 25, color: '#6366f1' },
-        { name: 'Congress Poster', value: 17, color: '#f59e0b' },
-      ],
-    },
-  },
-
-  // ── Q3 ──────────────────────────────────────────────────────────────────────
-  {
-    id: 'chat-3',
-    question: "Which promotional channels deliver the best ROI for BREXIVA?",
-    answer:
-      "Here's the channel-level ROI analysis for BREXIVA based on last-cycle promotional spend and downstream prescription value.\nEmail Campaigns delivered the highest ROI while reaching 32% more target physicians compared to field-force-only activities.",
-    table: {
-      title: 'DAWN Analysis — Promotional Channel ROI',
-      headers: ['Channel', 'ROI'],
-      rows: [
-        ['Email Campaigns', '5.2x'],
-        ['Digital Detailing Platforms', '4.8x'],
-        ['Medical Congress Activities', '4.1x'],
-        ['Representative Visits', '3.6x'],
-      ],
-      highlightRowIndex: 0,
-    },
-    recommendation:
-      "Increase investment in Email Campaigns and Digital Detailing Platforms by 25% in upcoming campaign cycles to maximize return on marketing spend.",
-  },
-
-  // ── Q4 ──────────────────────────────────────────────────────────────────────
-  {
-    id: 'chat-4',
-    question: "How do marketing activities influence sales performance for BREXIVA?",
-    answer:
-      "Analysis of campaign and prescription data indicates a strong relationship between marketing engagement and sales growth for BREXIVA.\n**Key Findings:**\n• Physicians exposed to at least three marketing touchpoints showed a 24% increase in prescription volume.\n• Email-engaged physicians generated 18% higher brand adoption compared to non-engaged physicians.\n• Multi-channel campaigns achieved 31% higher sales uplift than single-channel initiatives.",
-    table: {
-      title: 'DAWN Analysis — Marketing Exposure vs Prescription Growth',
-      headers: ['Marketing Exposure', 'Average Prescription Growth'],
-      rows: [
-        ['Single Touchpoint', '+5%'],
-        ['Two Touchpoints', '+11%'],
-        ['Three or More Touchpoints', '+24%'],
-      ],
-      highlightRowIndex: 2,
-    },
-  },
-
-  // ── Q5 ──────────────────────────────────────────────────────────────────────
-  {
-    id: 'chat-5',
-    question: "How does BREXIVA's performance compare with competitors?",
-    answer:
-      "Here's the head-to-head benchmarking of BREXIVA against the competitor average across the four most commercially relevant KPIs.\nBREXIVA is outperforming competitor brands across all major engagement and conversion metrics.",
+      "Brexiva's monthly net revenue in the five EU markets from January 2023 to December 2024 shows significant variations across countries. The data indicates that Germany consistently leads in revenue figures, followed by France, Italy, and Spain.",
     chart: {
       type: 'bar',
-      title: 'BREXIVA vs Competitor Average (%)',
+      title: 'BREXIVA Monthly Net Revenue in EU Markets (Jan 2023 - Dec 2024)',
+      valueUnit: 'M',
+      hideTotal: true,
       data: [
-        { name: 'Engagement', value: 43, benchmark: 34, color: '#00a896' },
-        { name: 'Open Rate', value: 49, benchmark: 37, color: '#0891b2' },
-        { name: 'Conversion', value: 18, benchmark: 13, color: '#6366f1' },
-        { name: 'Mkt Share Δ', value: 9, benchmark: 5, color: '#f59e0b' },
+        { name: '2023-01', value: 495, color: '#a855f7' },
+        { name: '2023-02', value: 445, color: '#a855f7' },
+        { name: '2023-03', value: 405, color: '#a855f7' },
+        { name: '2023-04', value: 410, color: '#a855f7' },
+        { name: '2023-05', value: 500, color: '#a855f7' },
+        { name: '2023-06', value: 215, color: '#a855f7' },
+        { name: '2023-07', value: 555, color: '#a855f7' },
+        { name: '2023-08', value: 510, color: '#a855f7' },
+        { name: '2023-09', value: 510, color: '#a855f7' },
+        { name: '2023-10', value: 505, color: '#a855f7' },
+        { name: '2023-11', value: 610, color: '#a855f7' },
+        { name: '2023-12', value: 495, color: '#a855f7' },
+        { name: '2024-01', value: 630, color: '#a855f7' },
+        { name: '2024-02', value: 270, color: '#a855f7' },
+        { name: '2024-03', value: 210, color: '#a855f7' },
+        { name: '2024-04', value: 360, color: '#a855f7' },
+        { name: '2024-05', value: 280, color: '#a855f7' },
+        { name: '2024-06', value: 360, color: '#a855f7' },
+        { name: '2024-07', value: 285, color: '#a855f7' },
+        { name: '2024-08', value: 335, color: '#a855f7' },
+        { name: '2024-09', value: 350, color: '#a855f7' },
+        { name: '2024-10', value: 275, color: '#a855f7' },
+        { name: '2024-11', value: 220, color: '#a855f7' },
+        { name: '2024-12', value: 360, color: '#a855f7' },
       ],
     },
   },
 
-  // ── Q6 ──────────────────────────────────────────────────────────────────────
   {
-    id: 'chat-6',
-    question: "What type of content should be created for future BREXIVA campaigns?",
+    id: 'chat-persona-breakdown',
+    question:
+      "What is the breakdown percentage of BREXIVA targeted healthcare professionals by hcp_persona across our master database?",
+    thinking:
+      "Analyzing Query\n" +
+      "Routing to HCP segmentation and targeting database.\n" +
+      "Output format resolved — will render result as a pie chart.\n" +
+      "Parsing request\n" +
+      "Brand: Brexiva\n" +
+      "Market: all markets\n" +
+      "Period: the requested period\n" +
+      "Segmenting HCP Audience\n" +
+      "Querying hcp_master — applying tier, persona, decile, and specialty filters.\n" +
+      "Joining hcp_calls_activity and email_activity to enrich profiles with engagement metrics.\n" +
+      "Computing call coverage, email open rates, and Rx intent signals per segment.\n" +
+      "Preparing Response\n" +
+      "Structuring data into pie chart format for the frontend renderer.\n" +
+      "Composing insight headline — 1 sentence, no markdown, all figures in the visualisation block.\n" +
+      "Executing Tool\n" +
+      "Calling query_hcp_analytics — Hcp Analytics lookup.\n" +
+      "Executing Tool\n" +
+      "Calling query_hcp_analytics — Hcp Analytics lookup.",
     answer:
-      "Based on historical performance, physician engagement patterns, and campaign outcomes, here is DAWN's predictive recommendation for the next campaign cycle.\n**Expected Impact:**\n• +18% increase in physician engagement\n• +12% increase in campaign conversions\n• +9% increase in prescription growth\nThe data indicates that Personalized Emails and Digital Detail Aids consistently deliver the highest engagement, conversion, and ROI. A campaign strategy centred around these formats is projected to generate the strongest commercial outcomes for BREXIVA in upcoming campaign cycles.",
-    table: {
-      title: 'DAWN Predictive Recommendation — Predicted Engagement by Content Type',
-      headers: ['Content Type', 'Predicted Engagement'],
-      rows: [
-        ['Personalized Email', '46%'],
-        ['Digital Detail Aid', '42%'],
-        ['Leaflet', '30%'],
-        ['Congress Poster', '21%'],
+      "The breakdown percentage of BREXIVA targeted healthcare professionals by HCP persona shows that the Peer-Influenced persona has the highest representation at 20.25%. The other personas follow closely behind, with Skeptic at 20.17%, Early Adopter at 20.14%, Pragmatist at 19.91%, and Relationship Oriented at 19.53%.",
+    chart: {
+      type: 'donut',
+      title: 'BREXIVA Targeted HCP Persona Breakdown',
+      valueUnit: '%',
+      hideTotal: true,
+      data: [
+        { name: 'Peer-Influenced', value: 20.25, color: '#a855f7' },
+        { name: 'Skeptic', value: 20.17, color: '#7c3aed' },
+        { name: 'Early Adopter', value: 20.14, color: '#f59e0b' },
+        { name: 'Pragmatist', value: 19.91, color: '#6d28d9' },
+        { name: 'Relationship Oriented', value: 19.53, color: '#ec4899' },
       ],
-      highlightRowIndex: 0,
-      caption: 'Forecast based on prior-cycle engagement, channel-mix data, and DAWN ML model v2.4',
     },
-    recommendation:
-      "Future BREXIVA campaigns should prioritize Personalized Emails and Digital Detail Aids as primary content assets. Leaflets and Congress Posters should be used as supporting materials to reinforce brand messaging and increase visibility during congress and field-force activities.",
+  },
+
+  {
+    id: 'chat-eu-total-revenue',
+    question:
+      "Show BREXIVA's total net_revenue_eur across all 5 EU markets (Germany, France, UK, Spain, Italy) for 2024 as a bar chart comparison.",
+    thinking:
+      "Analyzing Query\n" +
+      "Loading conversation context — retrieving the last 5 turns to resolve any follow-up references.\n" +
+      "Routing to commercial analytics database.\n" +
+      "Output format resolved — will render result as a stat card.\n" +
+      "Parsing request\n" +
+      "Brand: Brexiva\n" +
+      "Market: Germany, France, Uk, Spain, Italy\n" +
+      "Period: 2024\n" +
+      "Querying Commercial Database\n" +
+      "Building SQL query against sales_data — filtering by brand, country, and period.\n" +
+      "Applying country filter: Germany, France, Uk, Spain, Italy.\n" +
+      "Applying period filter: 2024.\n" +
+      "Executing query and retrieving result set.\n" +
+      "Preparing Response\n" +
+      "Structuring data into stat card format for the frontend renderer.\n" +
+      "Composing insight headline — 1 sentence, no markdown, all figures in the visualisation block.\n" +
+      "Executing Tool\n" +
+      "Calling query_commercial_database — Commercial Database lookup.\n" +
+      "Executing Tool\n" +
+      "Calling query_commercial_database — Commercial Database lookup.\n" +
+      "Executing Tool\n" +
+      "Calling query_commercial_database — Commercial Database lookup.\n" +
+      "Executing Tool\n" +
+      "Calling query_commercial_database — Commercial Database lookup.\n" +
+      "Executing Tool\n" +
+      "Calling query_commercial_database — Commercial Database lookup.",
+    answer:
+      "The total net revenue for BREXIVA across the five EU markets in 2024 is as follows: Germany €4.04 billion, France €5.47 billion, UK €5.63 billion, Spain €5.09 billion, and Italy €4.89 billion.",
+    chart: {
+      type: 'bar',
+      title: 'BREXIVA Total Net Revenue Comparison in EU Markets for 2024',
+      valueUnit: 'M',
+      hideTotal: true,
+      data: [
+        { name: 'Germany', value: 4040, color: '#a855f7' },
+        { name: 'France', value: 5470, color: '#a855f7' },
+        { name: 'UK', value: 5630, color: '#a855f7' },
+        { name: 'Spain', value: 5090, color: '#a855f7' },
+        { name: 'Italy', value: 4890, color: '#a855f7' },
+      ],
+    },
+  },
+
+  {
+    id: 'chat-uk-q1-table',
+    question:
+      "Show BREXIVA's monthly net_revenue_eur, rx_units, gross_price_per_unit, net_price_per_unit, and gtn_discount_pct for the UK across Q1 2023 vs Q1 2024 — one row per month.",
+    thinking:
+      "Analyzing Query\n" +
+      "Detected multi-domain question — will route to 2 tools sequentially and synthesise the results.\n" +
+      "Output format resolved — will render result as a bar chart.\n" +
+      "Parsing request\n" +
+      "Brand: Brexiva\n" +
+      "Market: Uk\n" +
+      "Period: Q1\n" +
+      "Querying Commercial Database\n" +
+      "Building SQL query against sales_data — filtering by brand, country, and period.\n" +
+      "Building SQL query against prescription_data — computing market share with SUM(rx_units) / SUM(market_total_units).\n" +
+      "Applying country filter: Uk.\n" +
+      "Applying period filter: Q1.\n" +
+      "Executing query and retrieving result set.\n" +
+      "Synthesising Results\n" +
+      "Merging outputs from 2 data sources into a unified response.\n" +
+      "Resolving any conflicting values across tables.\n" +
+      "Preparing Response\n" +
+      "Structuring data into bar chart format for the frontend renderer.\n" +
+      "Composing insight headline — 1 sentence, no markdown, all figures in the visualisation block.\n" +
+      "Executing Tool\n" +
+      "Calling query_commercial_database — Commercial Database lookup.\n" +
+      "Executing Tool\n" +
+      "Calling query_commercial_database — Commercial Database lookup.",
+    answer:
+      "Brexiva's monthly net revenue, prescription units, gross price per unit, net price per unit, and GTN discount percentage for the UK across Q1 2023 and Q1 2024 are detailed below.",
+    table: {
+      title: 'BREXIVA UK Q1 2023 vs Q1 2024',
+      headers: [
+        'Month',
+        'Net Revenue Eur',
+        'Rx Units',
+        'Gross Price Per Unit',
+        'Net Price Per Unit',
+        'Gtn Discount Pct',
+      ],
+      rows: [
+        ['Jan 2023', '289,129,419.17', '4,163', '71,391.25', '62,351.08', '12.78'],
+        ['Feb 2023', '508,848,259.53', '7,492', '73,676.84', '63,804.94', '13.43'],
+        ['Mar 2023', '412,285,621.66', '5,864', '72,465.31', '62,978.71', '12.98'],
+        ['Jan 2024', '498,396,899.82', '7,007', '73,422.63', '63,298.99', '13.86'],
+        ['Feb 2024', '383,967,936.65', '5,512', '74,169.12', '64,696.45', '12.71'],
+        ['Mar 2024', '347,759,251.1', '4,833', '73,290', '64,869.84', '11.6'],
+      ],
+    },
+  },
+
+  {
+    id: 'chat-claim-audit',
+    question:
+      'Audit this marketing slogan: "Brenova reduces the risk of disease progression by 42% vs standard of care."',
+    thinking:
+      "Analyzing Query\n" +
+      "Loading conversation context — retrieving the last 5 turns to resolve any follow-up references.\n" +
+      "Routing to promotional claim validation library (MongoDB).\n" +
+      "Parsing request\n" +
+      "Brand: the requested brand\n" +
+      "Market: all markets\n" +
+      "Period: the requested period\n" +
+      "Validating Promotional Copy\n" +
+      "Connecting to the MongoDB claim library.\n" +
+      "Looking up approved claims registered for the requested brand.\n" +
+      "Running exact-match and partial-match audit against the submitted copy.\n" +
+      "Checking alignment with MLR-approved wording and indication scope.\n" +
+      "Preparing Response\n" +
+      "Composing insight headline — 1 sentence, no markdown, all figures in the visualisation block.\n" +
+      "Executing Tool\n" +
+      "Calling query_claim_library — Claim Library lookup.",
+    answer:
+      'The marketing slogan "Brenova reduces the risk of disease progression by 42% vs standard of care" is not approved and requires MLR review.',
+  },
+
+  {
+    id: 'chat-treatment-paradigm',
+    question:
+      "What is the treatment paradigm and guideline positioning for Brenova (BREXIVA) as a second-line therapy in HR+ HER2- metastatic breast cancer across key EU markets?",
+    thinking:
+      "Analyzing Query\n" +
+      "Loading conversation context — retrieving the last 5 turns to resolve any follow-up references.\n" +
+      "Parsing request\n" +
+      "Brand: Brexiva\n" +
+      "Market: all markets\n" +
+      "Period: the requested period\n" +
+      "Preparing Response\n" +
+      "Composing insight headline — 1 sentence, no markdown, all figures in the visualisation block.\n" +
+      "Executing Tool\n" +
+      "Calling query_market_intelligence — Market Intelligence lookup.",
+    answer:
+      "Brexiva (Brenova) is positioned as a second-line monotherapy for HR+ HER2- metastatic breast cancer in Germany. It is recommended by both the ESMO and NCCN guidelines, emphasizing the importance of biomarker testing and indicating its use following the failure of CDK4/6 inhibitors.",
+  },
+
+  {
+    id: 'chat-de-market-share',
+    question:
+      "What is BREXIVA's average market share versus each competitor in Germany for 2024 based on prescription database records?",
+    thinking:
+      "Analyzing Query\n" +
+      "Loading conversation context — retrieving the last 5 turns to resolve any follow-up references.\n" +
+      "Detected multi-domain question — will route to 2 tools sequentially and synthesise the results.\n" +
+      "Output format resolved — will render result as a pie chart.\n" +
+      "Parsing request\n" +
+      "Brand: Brexiva\n" +
+      "Market: Germany\n" +
+      "Period: 2024\n" +
+      "Querying Commercial Database\n" +
+      "Building SQL query against prescription_data — computing market share with SUM(rx_units) / SUM(market_total_units).\n" +
+      "Applying country filter: Germany.\n" +
+      "Applying period filter: 2024.\n" +
+      "Executing query and retrieving result set.\n" +
+      "Pulling Competitive Intelligence\n" +
+      "Querying competitor_sales and competitor_promotional_sov tables.\n" +
+      "Cross-referencing competitor_landscape for product profiles and genericization risk.\n" +
+      "Aligning competitor market share against Brexiva for side-by-side comparison.\n" +
+      "Synthesising Results\n" +
+      "Merging outputs from 2 data sources into a unified response.\n" +
+      "Resolving any conflicting values across tables.\n" +
+      "Preparing Response\n" +
+      "Structuring data into pie chart format for the frontend renderer.\n" +
+      "Composing insight headline — 1 sentence, no markdown, all figures in the visualisation block.\n" +
+      "Executing Tool\n" +
+      "Calling query_competitor_database — Competitor Database lookup.",
+    answer:
+      "Brexiva's average market share in Germany for 2024 is 21.92%, while its competitors have the following market shares: Abeclor at 28.01%, Palbocor at 25.61%, and Ribocept at 28.43%.",
+    chart: {
+      type: 'donut',
+      title: 'Brexiva Market Share vs Competitors in Germany 2024',
+      valueUnit: '%',
+      hideTotal: true,
+      data: [
+        { name: 'Brexiva', value: 21.92, color: '#a855f7' },
+        { name: 'Abeclor', value: 28.01, color: '#c084fc' },
+        { name: 'Palbocor', value: 25.61, color: '#f59e0b' },
+        { name: 'Ribocept', value: 28.43, color: '#7c3aed' },
+      ],
+    },
   },
 ];
