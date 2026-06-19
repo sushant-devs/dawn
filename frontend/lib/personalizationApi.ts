@@ -144,22 +144,37 @@ export interface PersonalizeResponse {
 export async function personalizeTemplateAgent(
   body: PersonalizeRequest,
 ): Promise<PersonalizeResponse> {
-  // Map channels to personalized template files
-  const channelTemplateMap: Record<string, string> = {
-    'Email': '/personalized/Clinical Focus Email (3).html',
-    'Detail Digital Aid': '/personalized/Interactive Slides DDA (1).html',
-    'Congress Poster': '/personalized/Classic Scientific Poster (2) 1.html',
-    'Patient Leaflet': '/personalized/Friendly Patient Guide (1).html',
+  // Map channels to personalized template files from /ouput directory
+  // Note: /ouput is the correct directory name (not a typo)
+  const channelTemplateMap: Record<string, string[]> = {
+    'Email': [
+      '/ouput/Clinical_Focus_Email_v2 (1).html',
+      '/ouput/Clinical_Focus_Email_v3 (1).html',
+    ],
+    'Detail Digital Aid': [
+      '/personalized/Interactive Slides DDA (1).html',
+      '/personalized/Interactive Slides DDA (1).html', // Fallback to same file for v2
+    ],
+    'Congress Poster': [
+      '/ouput/Classic_Scientific_Poster_v2.html',
+      '/ouput/Classic_Scientific_Poster_v3.html',
+    ],
+    'Patient Leaflet': [
+      '/ouput/Friendly_Patient_Guide_v2.html',
+      '/ouput/Friendly_Patient_Guide_v3.html',
+    ],
   };
 
-  const templatePath = channelTemplateMap[body.channel] || channelTemplateMap['Email'];
-
-  // Fetch the HTML content
-  const html = await fetchHtmlContent(templatePath);
+  const templatePaths = channelTemplateMap[body.channel] || channelTemplateMap['Email'];
 
   // Generate variations based on max_variation count
+  // Each variation loads from a different file (v2, v3, etc.)
   const personalized_versions: PersonalizedVersion[] = [];
   for (let i = 1; i <= body.max_variation; i++) {
+    // Map version 1 -> v2 file, version 2 -> v3 file
+    const templatePath = templatePaths[i - 1] || templatePaths[0];
+    const html = await fetchHtmlContent(templatePath);
+
     personalized_versions.push({
       version: i,
       personalization_text: body.personalization_text,
