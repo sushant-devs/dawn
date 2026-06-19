@@ -412,3 +412,104 @@ export interface ChartData {
   valueUnit?: string;
   hideTotal?: boolean;
 }
+
+// ─── MLR Types ────────────────────────────────────────────────────────────────
+
+export interface MLRTableRow {
+  content_type: string;
+  final_risk_tier: string;
+  flags_count: number;
+  status: "Passed" | "Pending" | "Flagged" | "Rejected";
+}
+
+export interface MLRAssetDetail {
+  id: string;
+  name: string;
+  tier: 'Tier 1' | 'Tier 2' | 'Tier 3';
+  status: 'Passed' | 'Pending' | 'Flagged' | 'Rejected';
+  content: string;
+  flags: MLRFlag[];
+  fairBalanceScore: number;
+  isiComplete: boolean;
+  pufferyItems: string[];
+  substantiationCount: string;
+}
+
+export interface MLRFlag {
+  phrase: string;
+  type: 'substantiated' | 'fair-balance' | 'puffery';
+  source?: string;
+  suggestion?: string;
+}
+
+export interface MLRAsset {
+  content_type: string;
+  final_risk_tier?: string | null;
+  flags_count?: number;
+  status?: string;
+  composite_feedback?: Array<{
+    domain?: string;
+    severity?: string;
+    description?: string;
+    suggested_fix?: string;
+    reference_document?: string;
+  }>;
+}
+
+export interface MLRAiInsight {
+  label: string;
+  text: string;
+}
+
+export interface MLRPreScreenAsset {
+  asset_id: string;
+  approved?: boolean;
+  content_type: string;
+  status?: string;
+  final_risk_tier?: string | null;
+  flags_count?: number;
+  substantiation?: string;
+  content_text?: string;
+  fair_balance_score?: string;
+  isi_completeness?: boolean;
+  puffery_detected?: string;
+  ai_insights?: MLRAiInsight[];
+  composite_feedback?: Array<{
+    domain?: string;
+    severity?: string;
+    description?: string;
+    suggested_fix?: string;
+    reference_document?: string;
+  }>;
+}
+
+export interface MLRVeevaIntegration {
+  title: string;
+  description: string;
+  indicators: string[];
+}
+
+export interface MLRPreScreenPayload {
+  mlr_response_id: string;
+  session_id?: string;
+  end_template_id?: string;
+  global_pipeline_status?: string;
+  campaign_cohesion?: Record<string, string>;
+  asset_evaluations: MLRPreScreenAsset[];
+  veeva_integration?: MLRVeevaIntegration;
+}
+
+export interface MLRApprovalDetails {
+  approvedAssets: MLRTableRow[];
+  approver: string;
+  approvalDate: string;
+  comments?: string;
+}
+
+export interface ApprovedAsset {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  fileUrl: string;
+}

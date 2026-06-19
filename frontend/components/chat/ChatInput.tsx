@@ -1,7 +1,11 @@
 'use client';
 
 import { MessageSquare, Send, Zap } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import AgentDropdown, { type AgentKey } from './AgentDropdown';
+import SelectionFlowModal from '@/components/modals/SelectionFlowModal';
+import MLRAgentSelectionModal from '@/components/modals/MLRAgentSelectionModal';
+import PersonalizationAgentModal from '@/components/modals/PersonalizationAgentModal';
 
 export type InputMode = 'campaign' | 'chat';
 
@@ -11,6 +15,8 @@ interface ChatInputProps {
   disabled: boolean;
   mode: InputMode;
   onModeChange: (mode: InputMode) => void;
+  brand?: string;
+  sessionId?: string;
 }
 
 export default function ChatInput({
@@ -19,8 +25,16 @@ export default function ChatInput({
   disabled,
   mode,
   onModeChange,
+  brand,
+  sessionId,
 }: ChatInputProps) {
   const canSend = prePopulatedMessage.length > 0 && !disabled;
+  const [activeAgent, setActiveAgent] = useState<AgentKey | null>(null);
+
+  const handleAgentPick = (key: AgentKey) => {
+    setActiveAgent(key);
+  };
+
 
   const handleSend = () => {
     if (canSend) {
@@ -70,6 +84,7 @@ export default function ChatInput({
 
       {/* Input box */}
       <div className="group relative flex items-start gap-3 rounded-2xl border border-dawn-border bg-white px-5 py-3 shadow-[0_4px_14px_rgba(15,23,42,0.04)] transition-all duration-200 focus-within:border-purple-300 focus-within:shadow-[0_6px_18px_rgba(134,36,255,0.12)] min-h-[52px]">
+        <AgentDropdown onPick={handleAgentPick} disabled={disabled} />
         <div className="flex-1 min-w-0 self-center text-left">
           {prePopulatedMessage ? (
             <p className="text-sm text-dawn-navy whitespace-pre-wrap break-words pr-2 leading-relaxed text-left">
@@ -94,6 +109,22 @@ export default function ChatInput({
           <Send size={14} className={canSend ? 'text-white' : 'text-gray-400'} />
         </button>
       </div>
+      {activeAgent === 'generation' && (
+        <SelectionFlowModal
+          brand={brand}
+          sessionId={sessionId}
+          onClose={() => setActiveAgent(null)}
+        />
+      )}
+      {activeAgent === 'mlr_agent' && (
+        <MLRAgentSelectionModal
+          sessionId={sessionId}
+          onClose={() => setActiveAgent(null)}
+        />
+      )}
+      {activeAgent === 'personalization' && (
+        <PersonalizationAgentModal onClose={() => setActiveAgent(null)} />
+      )}
     </div>
   );
 }
