@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { TypeAnimation } from 'react-type-animation';
+import ThinkingTrace, { THINKING_HEADERS } from './ThinkingTrace';
 
 interface TypingIndicatorProps {
   message?: string;
@@ -9,6 +10,7 @@ interface TypingIndicatorProps {
 
 const THINKING_STREAM_SPEED = 99;
 const THINKING_STREAM_START_DELAY_MS = 300;
+const STRUCTURED_CHAR_MS = 9;
 
 function getDynamicThinkingTitle(message: string): string {
   const lines = message
@@ -31,8 +33,15 @@ export default function TypingIndicator({ message = 'DAWN is thinking…' }: Typ
   // Check if message contains multiple lines (detailed thinking message)
   const isDetailedMessage = message.includes('\n');
 
+  const isStructuredTrace =
+    isDetailedMessage &&
+    message
+      .split('\n')
+      .some((line) => THINKING_HEADERS.has(line.trim()));
+
   const [isMounted, setIsMounted] = useState(false);
   const [dynamicTitle, setDynamicTitle] = useState('Working on it...');
+  const [visibleText, setVisibleText] = useState('');
   const streamingViewportRef = useRef<HTMLDivElement>(null);
 
   // Handle hydration
@@ -43,24 +52,27 @@ export default function TypingIndicator({ message = 'DAWN is thinking…' }: Typ
   useEffect(() => {
     if (!isDetailedMessage) {
       setDynamicTitle('Working on it...');
+      setVisibleText('');
       return;
     }
 
     // Derive title from progressively visible content instead of static storyline labels.
+    const charMs = isStructuredTrace ? STRUCTURED_CHAR_MS : THINKING_STREAM_SPEED;
     const startTime = Date.now();
     const tick = () => {
       const elapsed = Date.now() - startTime;
       const streamElapsed = Math.max(0, elapsed - THINKING_STREAM_START_DELAY_MS);
-      const visibleChars = Math.min(message.length, Math.floor(streamElapsed / THINKING_STREAM_SPEED));
-      const visibleText = message.slice(0, visibleChars);
+      const visibleChars = Math.min(message.length, Math.floor(streamElapsed / charMs));
+      const visible = message.slice(0, visibleChars);
 
-      setDynamicTitle(getDynamicThinkingTitle(visibleText));
+      setDynamicTitle(getDynamicThinkingTitle(visible));
+      setVisibleText(visible);
     };
 
     tick();
-    const interval = setInterval(tick, 120);
+    const interval = setInterval(tick, isStructuredTrace ? 40 : 120);
     return () => clearInterval(interval);
-  }, [message, isDetailedMessage]);
+  }, [message, isDetailedMessage, isStructuredTrace]);
 
   // Keep the fixed-height thinking viewport pinned to the latest streamed text.
   useEffect(() => {
@@ -110,7 +122,25 @@ export default function TypingIndicator({ message = 'DAWN is thinking…' }: Typ
 
       {/* Bubble */}
       <div className="px-4 py-3">
-        {isDetailedMessage ? (
+        {isStructuredTrace ? (
+          <div className="space-y-1 min-w-[20rem]">
+            <div className="flex items-center gap-2 mb-1">
+              <div className="flex gap-1 items-center">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-[typing-dot_1.2s_ease-in-out_infinite]"
+                    style={{ animationDelay: `${i * 0.2}s` }}
+                  />
+                ))}
+              </div>
+              <span className="text-[13px] font-medium text-gray-600 tracking-[0.3px]">
+                DAWN&apos;s thinking
+              </span>
+            </div>
+            <ThinkingTrace text={visibleText} />
+          </div>
+        ) : isDetailedMessage ? (
           // Detailed multiline message with streaming type animation
           <div className="space-y-1">
             <div className="flex items-center gap-3 mb-3">

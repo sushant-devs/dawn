@@ -59,7 +59,7 @@ export default function ChatInput({
           onClick={() => onModeChange('chat')}
           className={`cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
             mode === 'chat'
-              ? 'bg-purple-50 text-purple-600 border border-purple-200'
+              ? 'bg-amber-50 text-amber-600 border border-amber-200'
               : 'bg-transparent text-gray-500 border border-transparent hover:bg-gray-50'
           }`}
         >
