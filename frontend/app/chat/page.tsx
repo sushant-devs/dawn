@@ -17,7 +17,7 @@ import MLRCheckerModal from '@/components/modals/MLRCheckerModal';
 import DistributionModal from '@/components/modals/DistributionModal';
 import FileTransferModal from '@/components/modals/FileTransferModal';
 import EffectivenessModal from '@/components/modals/EffectivenessModal';
-import { Zap, BarChart3 } from 'lucide-react';
+import { Zap, MessageSquare } from 'lucide-react';
 import type { AgentResponseContent, ChatMessage } from '@/lib/types';
 import type { UserProfile } from '@/lib/authApi';
 import type { InputMode } from '@/components/chat/ChatInput';
@@ -156,6 +156,15 @@ function ChatPage() {
     setChatSessions(updated);
   }, []);
 
+  const getChatTypingDelay = (thinkingMessage?: string) => {
+    if (!thinkingMessage || !thinkingMessage.includes('\n')) {
+      return 800 + Math.random() * 600;
+    }
+
+    const chars = thinkingMessage.length;
+    return 300 + chars * 9 + 600;
+  };
+
   const handleSend = (text: string) => {
     if (!text) return;
 
@@ -171,25 +180,27 @@ function ChatPage() {
         timestamp: new Date(),
       };
       setChatMessages((prev) => [...prev, userMsg]);
+      setChatTypingMessage(qa.thinking?.trim() ? qa.thinking : 'DAWN is thinking…');
       setIsChatTyping(true);
+
+      const delay = getChatTypingDelay(qa.thinking);
 
       setTimeout(() => {
         const agentMsg: ChatMessage = {
           id: `chat-agent-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           role: 'agent',
-          // 👇 Added table: qa.table here so the UI can render it
-          content: { 
-            text: qa.answer, 
-            chart: qa.chart, 
+          content: {
+            text: qa.answer,
+            chart: qa.chart,
             table: qa.table,
-            recommendation: qa.recommendation
           } as AgentResponseContent,
+          thinking: qa.thinking,
           timestamp: new Date(),
         };
         setChatMessages((prev) => [...prev, agentMsg]);
         setIsChatTyping(false);
         setChatQAIndex((prev) => prev + 1);
-      }, 800 + Math.random() * 600);
+      }, delay);
       return;
     }
 
@@ -256,6 +267,7 @@ function ChatPage() {
   const [chatQAIndex, setChatQAIndex] = useState(0);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [isChatTyping, setIsChatTyping] = useState(false);
+  const [chatTypingMessage, setChatTypingMessage] = useState('DAWN is thinking…');
 
   const chatPrePopulatedMessage = inputMode === 'chat'
     ? (CHAT_QUESTIONS[chatQAIndex]?.question ?? '')
@@ -263,13 +275,14 @@ function ChatPage() {
 
   const activeMessages = inputMode === 'chat' ? chatMessages : state.messages;
   const isTyping = inputMode === 'chat' ? isChatTyping : state.isAgentTyping;
-  const typingMsg = inputMode === 'chat' ? 'DAWN is thinking…' : state.typingMessage;
+  const typingMsg = inputMode === 'chat' ? chatTypingMessage : state.typingMessage;
 
   const showWelcomeScreen = activeMessages.length === 0;
 
-  const welcomeContent = inputMode === 'chat'
+  const isChatMode = inputMode === 'chat';
+  const welcomeContent = isChatMode
     ? {
-        icon: BarChart3,
+        icon: MessageSquare,
         highlight: 'explore your data',
         subtitle: 'Ask questions about your campaign data — territories, market share, revenue trends, and more.',
       }
@@ -305,8 +318,8 @@ function ChatPage() {
             <div className="flex-1 flex flex-col items-center justify-center px-6 py-10">
               <div className="w-full max-w-2xl flex flex-col items-center text-center">
                 {/* Mode icon block */}
-                <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center mb-6 shadow-sm">
-                  <WelcomeIcon size={24} className="text-purple-600" strokeWidth={2.2} />
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-sm ${isChatMode ? 'bg-amber-100' : 'bg-purple-100'}`}>
+                  <WelcomeIcon size={24} className={isChatMode ? 'text-amber-600' : 'text-purple-600'} strokeWidth={2.2} />
                 </div>
 
                 {/* Headline */}
@@ -314,7 +327,7 @@ function ChatPage() {
                   <span className="text-dawn-navy">
                     {userName ? `Hello, ${userName} — ` : 'Hello — '}
                   </span>
-                  <span className="text-purple-600">{welcomeContent.highlight}</span>
+                  <span className={isChatMode ? 'text-amber-500' : 'text-purple-600'}>{welcomeContent.highlight}</span>
                 </h1>
 
                 {/* Subtitle */}
@@ -352,6 +365,27 @@ function ChatPage() {
                         </button>
                       );
                     })}
+                  </div>
+                )}
+
+                {/* Chat suggestion chips */}
+                {inputMode === 'chat' && (
+                  <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+                    {CHAT_QUESTIONS.map((qa, index) =>
+                      qa.chipLabel ? (
+                        <button
+                          key={qa.id}
+                          onClick={() => setChatQAIndex(index)}
+                          className={`cursor-pointer rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all duration-200 ${
+                            chatQAIndex === index
+                              ? 'border-amber-300 bg-amber-50 text-amber-600 shadow-sm'
+                              : 'border-dawn-border bg-white text-slate-600 hover:border-amber-200 hover:text-amber-600 hover:bg-amber-50/50'
+                          }`}
+                        >
+                          {qa.chipLabel}
+                        </button>
+                      ) : null,
+                    )}
                   </div>
                 )}
               </div>

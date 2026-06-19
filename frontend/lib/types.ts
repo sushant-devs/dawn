@@ -151,6 +151,7 @@ export interface ChatMessage {
   content: string | AgentResponseContent;
   timestamp: Date;
   stepIndex?: number;
+  thinking?: string;
 }
 
 // ─── MLR Types ────────────────────────────────────────────────────────────────
