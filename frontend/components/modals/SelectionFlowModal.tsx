@@ -835,18 +835,26 @@ function ChannelBlock({
               )}
               <div className="mt-auto flex items-center justify-end pt-2">
                 {t.html_code && (
-                  <button
-                    type="button"
+                  <span
+                    role="button"
+                    tabIndex={0}
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       onPreview(t);
                     }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onPreview(t);
+                      }
+                    }}
                     className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold transition-colors hover:bg-[#eef4ff] cursor-pointer"
                     style={{ color: BRAND_BLUE }}
                   >
                     <Eye className="h-3 w-3" /> Open
-                  </button>
+                  </span>
                 )}
               </div>
             </div>
