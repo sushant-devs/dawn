@@ -549,7 +549,7 @@ Design pipeline complete — asset is ready for the compliance review.`,
     agentResponse: {
       text: 'Internal MLR screen completed. It identifies flagged claims, explains tier risk, and shows what needs revision. You will receive a notification once the assets are approved.',
       mlrTable: [
-        { asset: 'Email', tier: 'Tier 3', aiPreScreen: '3 Flags', status: 'Flagged' },
+        { content_type: 'Email', final_risk_tier: 'Tier 3', flags_count: 3, status: 'Flagged' },
       ],
       actionButton: { label: 'Open MLR Pre-Screen →', modal: 'mlrChecker' },
       notification: {
@@ -559,7 +559,7 @@ Design pipeline complete — asset is ready for the compliance review.`,
         timestamp: '2026-06-18 11:05:00',
         details: {
           approvedAssets: [
-            { asset: 'Email', tier: 'Tier 3', aiPreScreen: '3 Flags', status: 'Flagged' },
+            { content_type: 'Email', final_risk_tier: 'Tier 3', flags_count: 3, status: 'Flagged' },
           ],
           approver: 'Sarah Mitchell',
           approvalDate: '2026-06-18',

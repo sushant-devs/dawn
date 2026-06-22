@@ -156,13 +156,6 @@ export interface ChatMessage {
 
 // ─── MLR Types ────────────────────────────────────────────────────────────────
 
-export interface MLRTableRow {
-  asset: string;
-  tier: 'Tier 1' | 'Tier 2' | 'Tier 3';
-  aiPreScreen: string;
-  status: 'Passed' | 'Pending' | 'Flagged' | 'Rejected';
-}
-
 export interface MLRAssetDetail {
   id: string;
   name: string;

@@ -622,7 +622,7 @@ Design pipeline complete — asset is ready for the compliance review.`,
     agentResponse: {
       text: 'Internal MLR screen completed. It identifies flagged claims, explains tier risk, and shows what needs revision. You will receive a notification once the assets are approved.',
       mlrTable: [
-        { asset: 'Patient Leaflet', tier: 'Tier 1', aiPreScreen: '0 Flags', status: 'Passed' },
+        { content_type: 'Patient Leaflet', final_risk_tier: 'Tier 1', flags_count: 0, status: 'Passed' },
       ],
       actionButton: { label: 'Open MLR Pre-Screen →', modal: 'mlrChecker' },
       notification: {
@@ -632,7 +632,7 @@ Design pipeline complete — asset is ready for the compliance review.`,
         timestamp: '2026-07-02 13:40:00',
         details: {
           approvedAssets: [
-            { asset: 'Patient Leaflet', tier: 'Tier 1', aiPreScreen: '0 Flags', status: 'Passed' },
+            { content_type: 'Patient Leaflet', final_risk_tier: 'Tier 1', flags_count: 0, status: 'Passed' },
           ],
           approver: 'Sarah Mitchell',
           approvalDate: '2026-07-02',
