@@ -614,7 +614,7 @@ Design pipeline complete — asset is ready for the compliance review.`,
     agentResponse: {
       text: 'Internal MLR screen completed. It identifies flagged claims, explains tier risk, and shows what needs revision. You will receive a notification once the assets are approved.',
       mlrTable: [
-        { asset: 'Digital Detail Aid', tier: 'Tier 2', aiPreScreen: '2 Flags', status: 'Pending' },
+        { content_type: 'Digital Detail Aid', final_risk_tier: 'Tier 2', flags_count: 2, status: 'Pending' },
       ],
       actionButton: { label: 'Open MLR Pre-Screen →', modal: 'mlrChecker' },
       notification: {
@@ -624,7 +624,7 @@ Design pipeline complete — asset is ready for the compliance review.`,
         timestamp: '2026-07-08 10:20:00',
         details: {
           approvedAssets: [
-            { asset: 'Digital Detail Aid', tier: 'Tier 2', aiPreScreen: '2 Flags', status: 'Pending' },
+            { content_type: 'Digital Detail Aid', final_risk_tier: 'Tier 2', flags_count: 2, status: 'Pending' },
           ],
           approver: 'Sarah Mitchell',
           approvalDate: '2026-07-08',
