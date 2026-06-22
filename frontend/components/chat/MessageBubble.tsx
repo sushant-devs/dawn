@@ -698,17 +698,17 @@ function MLRTableBlock({
           {rows.map((row, i) => (
             <div key={i} className="grid grid-cols-4">
               <div className="px-2 py-1.5 text-sm font-normal text-gray-900 font-body">
-                {row.asset}
+                {row.content_type}
               </div>
               <div className="px-2 py-1.5">
                 <span
-                  className={`inline-flex items-center px-2 py-1 rounded-md text-sm font-medium font-body ${row.tier === "Tier 1" ? "bg-blue-100 text-blue-700" : "bg-purple-100 text-purple-700"}`}
+                  className={`inline-flex items-center px-2 py-1 rounded-md text-sm font-medium font-body ${row.final_risk_tier === "Tier 1" ? "bg-blue-100 text-blue-700" : "bg-purple-100 text-purple-700"}`}
                 >
-                  {row.tier}
+                  {row.final_risk_tier}
                 </span>
               </div>
               <div className="px-2 py-1.5 text-sm font-normal text-gray-700 font-body">
-                {row.aiPreScreen}
+                {row.flags_count}
               </div>
               <div className="px-2 py-1.5">
                 <StatusPill status={row.status} size="sm" />

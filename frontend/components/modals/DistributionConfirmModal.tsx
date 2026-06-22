@@ -21,8 +21,6 @@ import Button from '@/components/ui/Button';
 import { distributeAssets } from '@/lib/distributionApi';
 import FileTransferModal from '@/components/modals/FileTransferModal';
 import { buildPipelineSteps, STEP_INITIAL_DELAY_MS, STEP_INTERVAL_MS } from '@/constants/pipelineSteps';
-import type { PipelineStep } from '@/constants/pipelineSteps';
-import { ICON_MAP, iconKeyForContentType } from '@/constants/iconMap';
 
 export interface DistributionAssetRow {
   mlr_response_id: string;
@@ -220,7 +218,7 @@ export default function DistributionConfirmModal({
   const transferFiles = selectedAssets.map((a) => ({ name: a.content_type }));
 
   if (showTransfer) {
-    return <FileTransferModal files={transferFiles} onComplete={handleTransferComplete} />;
+    return <FileTransferModal  onComplete={handleTransferComplete} />;
   }
 
   return (

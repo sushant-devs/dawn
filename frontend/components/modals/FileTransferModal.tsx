@@ -18,7 +18,7 @@ const ASSET_FILE_META: Record<string, { ext: string; icon: typeof FileText; size
   dda: { ext: 'html', icon: FileText, size: '3.1 MB' },
 };
 
-export default function FileTransferModal({ onComplete }: FileTransferModalProps) {
+export default function FileTransferModal({  onComplete }: FileTransferModalProps) {
   const { generatedAssets } = useCampaignData();
 
   // Build the transfer file list from the campaign's generated assets so only
