@@ -102,7 +102,7 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
                 <label className="block text-xs font-semibold text-dawn-navy mb-1.5">Color Scheme</label>
                 <div className="space-y-1.5">
                   {([['navy-teal', 'Deep Navy + Teal'], ['white-blue', 'Clinical White + Blue'], ['warm-orange', 'Patient Warm + Orange']] as [ColorScheme, string][]).map(([val, label]) => (
-                    <label key={val} className="flex items-center gap-2 cursor-pointer">
+                    <label key={val} className="flex items-center gap-2 cursor-pointer" onClick={() => setColorScheme(val)}>
                       <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${colorScheme === val ? 'border-dawn-teal' : 'border-gray-300'}`}>
                         {colorScheme === val && <div className="w-2 h-2 rounded-full bg-dawn-teal" />}
                       </div>
@@ -127,7 +127,7 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
                 <label className="block text-xs font-semibold text-dawn-navy mb-1.5">Format</label>
                 <div className="space-y-1.5">
                   {(['A0 Congress Poster', 'A4 Print', 'Digital Banner'] as Format[]).map((f) => (
-                    <label key={f} className="flex items-center gap-2 cursor-pointer">
+                    <label key={f} className="flex items-center gap-2 cursor-pointer" onClick={() => setFormat(f)}>
                       <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${format === f ? 'border-dawn-teal' : 'border-gray-300'}`}>
                         {format === f && <div className="w-2 h-2 rounded-full bg-dawn-teal" />}
                       </div>
@@ -177,7 +177,8 @@ export default function ImageGenModal({ onConfirm, onClose }: ImageGenModalProps
                     ) : (
                       // Image-based template preview
                       <>
-                        <img 
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
                           src={v.imageSrc}
                           alt={v.title}
                           className="w-full h-full object-contain"

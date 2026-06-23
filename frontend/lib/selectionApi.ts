@@ -12,8 +12,6 @@
  * backend directly (see next.config rewrites for /process_generation_api_v1).
  */
 
-import { request } from '@/lib/apiClient';
-
 export interface TemplateOption {
   template_name: string;
   description?: string;

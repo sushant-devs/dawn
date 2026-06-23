@@ -65,6 +65,7 @@ export default function DistributionConfirmModal({
   const [selected, setSelected] = useState<Set<string>>(
     () => new Set(assets.map((a) => a.asset_id)),
   );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [deliveryDates, setDeliveryDates] = useState<Record<string, string>>(() =>
     Object.fromEntries(assets.map((a) => [a.asset_id, defaultDeliveryDate()])),
   );
@@ -214,8 +215,6 @@ export default function DistributionConfirmModal({
     }
     onClose();
   }, [distributionResult, onDistributed, onClose]);
-
-  const transferFiles = selectedAssets.map((a) => ({ name: a.content_type }));
 
   if (showTransfer) {
     return <FileTransferModal  onComplete={handleTransferComplete} />;

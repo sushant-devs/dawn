@@ -60,7 +60,6 @@ export default function PersonalizationAgentModal({ onClose }: Props) {
   const [fullScreenIdx, setFullScreenIdx] = useState<number | null>(null);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- SSR mount gate
     setMounted(true);
   }, []);
 

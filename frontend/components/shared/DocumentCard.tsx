@@ -37,7 +37,7 @@ function getRelevanceBadgeBg(score: number) {
   return 'bg-gray-100';
 }
 
-export default function DocumentCard({ id, title, type, relevance, keyFinding, filePath, pageCount, onPreview }: DocumentCardProps) {
+export default function DocumentCard({ title, type, relevance, keyFinding, filePath, pageCount, onPreview }: DocumentCardProps) {
   const cfg = TYPE_CONFIG[type];
   const Icon = cfg.icon;
   // Compliance/brand-standard cards have no relevance score; fall back to 0 and

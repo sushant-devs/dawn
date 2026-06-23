@@ -1,7 +1,7 @@
 'use client';
 
 import { MessageSquare, Send, Zap } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import AgentDropdown, { type AgentKey } from './AgentDropdown';
 import SelectionFlowModal from '@/components/modals/SelectionFlowModal';
 import MLRAgentSelectionModal from '@/components/modals/MLRAgentSelectionModal';
@@ -36,11 +36,11 @@ export default function ChatInput({
   };
 
 
-  const handleSend = () => {
+  const handleSend = useCallback(() => {
     if (canSend) {
       onSend(prePopulatedMessage);
     }
-  };
+  }, [canSend, prePopulatedMessage, onSend]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -52,7 +52,7 @@ export default function ChatInput({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [canSend, prePopulatedMessage, onSend]);
+  }, [canSend, handleSend]);
 
   return (
     <div className="flex flex-col gap-2">

@@ -413,7 +413,6 @@ export default function TemplateSelectorModal({ onConfirm, onClose, readOnly = f
             <div key={recommendation.assetType} className="grid grid-cols-2 gap-4">
               {recommendation.recommendedTemplates.map((template) => {
                 const isSelected = selectedTemplates[recommendation.assetType] === template.id;
-                const isRecommended = template.recommended;
 
                 return (
                   <div

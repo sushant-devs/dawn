@@ -1,5 +1,3 @@
-import { request } from '@/lib/apiClient';
-
 export interface ApprovedTemplateItem {
   approved_content_id: string;
   source_asset_id?: string | null;
@@ -20,8 +18,6 @@ export interface GetTemplatesResponse {
   has_more?: boolean;
   brands: Record<string, ApprovedTemplateItem[]>;
 }
-
-const SUPPORTED_BRANDS = ['zoflevrix', 'corvanta', 'oncorava', 'brexiva'] as const;
 
 // Module-level caches (parallel to MLR side).
 const _listCache = new Map<string, GetTemplatesResponse>();
