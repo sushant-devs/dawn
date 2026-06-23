@@ -86,7 +86,7 @@ export default function ChatInput({
       <div className="group relative flex items-start gap-3 rounded-2xl border border-dawn-border bg-white px-5 py-3 shadow-[0_4px_14px_rgba(15,23,42,0.04)] transition-all duration-200 focus-within:border-purple-300 focus-within:shadow-[0_6px_18px_rgba(134,36,255,0.12)] min-h-[52px]">
         <AgentDropdown onPick={handleAgentPick} disabled={disabled} />
         <div className="flex-1 min-w-0 self-center text-left">
-          {prePopulatedMessage ? (
+          {prePopulatedMessage && !disabled ? (
             <p className="text-sm text-dawn-navy whitespace-pre-wrap break-words pr-2 leading-relaxed text-left">
               {prePopulatedMessage}
             </p>

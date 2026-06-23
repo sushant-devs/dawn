@@ -97,7 +97,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
               <span className="text-white font-serif text-lg font-bold">D</span>
             </div>
             <div>
-              <h2 className="font-serif text-xl text-dawn-navy font-semibold">MLR Pre-Screen</h2>
+              <h2 className="font-serif text-xl text-dawn-navy font-semibold text-left">MLR Pre-Screen</h2>
               <p className="text-sm text-gray-500 mt-0.5">Review AI pre-screen analysis and recommendations</p>
             </div>
           </div>
