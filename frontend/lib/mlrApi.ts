@@ -341,7 +341,9 @@ DATA REFERENCES:
       })
     : allAssets;
 
-  return Promise.resolve({
+  await new Promise((resolve) => setTimeout(resolve, 2600));
+
+  return {
     mlr_response_id: 'mlr-response-brexiva-001',
 
     session_id: body.session_id,
@@ -357,5 +359,5 @@ DATA REFERENCES:
     },
 
     asset_evaluations: selectedAssets,
-  });
+  };
 }
