@@ -128,12 +128,6 @@ export default function ContentEditorModal({ onConfirm, onClose, readOnly = fals
   const [spacing, setSpacing] = useState('Default');
   const [textSection, setTextSection] = useState('');
 
-  // Image editing states
-  const [contrast, setContrast] = useState(50);
-  const [brightness, setBrightness] = useState(50);
-  const [brandOverlay, setBrandOverlay] = useState(false);
-  const [isiFooter, setIsiFooter] = useState(true);
-  const [imageFormat, setImageFormat] = useState<'A0 Poster' | 'A4 Print' | 'Digital Banner'>('A0 Poster');
   const [templateSidebarCollapsed, setTemplateSidebarCollapsed] = useState(false);
   const [contentSidebarCollapsed, setContentSidebarCollapsed] = useState(false);
   const [contentPropertiesCollapsed, setContentPropertiesCollapsed] = useState(false);
@@ -150,7 +144,6 @@ export default function ContentEditorModal({ onConfirm, onClose, readOnly = fals
     });
   };
 
-  const wordCount = currentContent.split(/\s+/).filter(Boolean).length;
 
   // Triggers a native browser download for the currently selected visual template.
   // Templates live under /public/data/... (same origin), so an anchor with the

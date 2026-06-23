@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function proxy(request: NextRequest) {
-  const accessToken = request.cookies.get('access_token')?.value;
-  const isAuthenticated = Boolean(accessToken);
-  const { pathname } = request.nextUrl;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function proxy(_request: NextRequest) {
+  // const accessToken = request.cookies.get('access_token')?.value;
+  // const isAuthenticated = Boolean(accessToken);
+  // const { pathname } = request.nextUrl;
 
   // const isProtectedRoute =
   //   pathname === '/workspace' || pathname.startsWith('/workspace/') || pathname === '/chat' || pathname.startsWith('/chat/');

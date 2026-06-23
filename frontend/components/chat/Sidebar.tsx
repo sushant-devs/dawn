@@ -43,6 +43,7 @@ export default function WorkspaceSidebar({
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     const stored = localStorage.getItem('dawn_user');
     if (stored) {
       try {
@@ -54,6 +55,7 @@ export default function WorkspaceSidebar({
       } catch {}
     }
     setUserName('User');
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   useEffect(() => {

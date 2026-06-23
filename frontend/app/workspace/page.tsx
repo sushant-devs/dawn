@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ComponentProps } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Activity, FolderOpen, MessageSquare, Plus, Sparkles } from 'lucide-react';
@@ -152,8 +152,8 @@ export default function WorkspacePage() {
 
       // Redirect to chat with the new workspace
       router.push(`/chat?workspace=${encodeURIComponent(trimmedName)}`);
-    } catch (error: any) {
-      setWorkspaceError(error.message || 'Failed to create workspace');
+    } catch (error: unknown) {
+      setWorkspaceError(error instanceof Error ? error.message : 'Failed to create workspace');
     } finally {
       setIsCreatingWorkspace(false);
     }
@@ -278,7 +278,7 @@ export default function WorkspacePage() {
                 </div>
 
                 <div className="relative space-y-2">
-                  {workspaceDistribution.map((item, index) => (
+                  {workspaceDistribution.map((item) => (
                     <div
                       key={item.drug}
                       className="group relative overflow-hidden rounded-2xl border border-slate-200/50 bg-gradient-to-r from-white/80 to-slate-50/50 backdrop-blur-sm px-3 py-2 transition-all duration-300 hover:border-indigo-300/60 hover:shadow-lg hover:shadow-indigo-500/10 hover:-translate-y-0.5"
@@ -349,7 +349,7 @@ export default function WorkspacePage() {
                           label={renderDonutLabel}
                           labelLine={false}
                         />
-                        <Tooltip content={renderDonutTooltip as any} wrapperStyle={{ zIndex: 30 }} />
+                        <Tooltip content={renderDonutTooltip as ComponentProps<typeof Tooltip>['content']} wrapperStyle={{ zIndex: 30 }} />
                       </PieChart>
                       <div className="pointer-events-none absolute inset-0 z-0 flex flex-col items-center justify-center text-center">
                         <p className="max-w-[90px] text-xs font-semibold leading-tight text-dawn-navy">{selectedDrug}</p>
@@ -413,7 +413,7 @@ export default function WorkspacePage() {
                 ) : (
                   <div className="max-h-[400px] overflow-y-auto pr-1 thin-x-scroll">
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                      {workspaceList.map((workspace, index) => (
+                      {workspaceList.map((workspace) => (
                       <Link
                         key={workspace.id}
                         href={`/chat?workspace=${encodeURIComponent(workspace.name)}`}

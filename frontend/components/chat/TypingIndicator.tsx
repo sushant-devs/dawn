@@ -46,11 +46,13 @@ export default function TypingIndicator({ message = 'DAWN is thinking…' }: Typ
 
   // Handle hydration
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMounted(true);
   }, []);
 
   useEffect(() => {
     if (!isDetailedMessage) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDynamicTitle('Working on it...');
       setVisibleText('');
       return;

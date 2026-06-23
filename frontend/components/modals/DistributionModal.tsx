@@ -23,7 +23,6 @@ export default function DistributionModal({ onConfirm, onClose }: DistributionMo
   // One distribution row per generated asset for this campaign.
   const assets = generatedAssets;
   const assetCount = assets.length;
-  const assetNames = assets.map((a) => a.title).join(', ');
   const assetTypeLabel = assets.map((a) => a.title.split(' - ')[0]).join(', ').toUpperCase();
 
   const steps = [

@@ -2,10 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import {
-  ExternalLink,
   ChevronDown,
   ChevronUp,
-  CheckCircle,
   Copy,
   RefreshCw,
   Check,
@@ -21,7 +19,6 @@ import type {
   DocumentCard as DocType,
   ModalType,
 } from "@/lib/types";
-import DocumentCard from "@/components/shared/DocumentCard";
 import StatusPill from "@/components/shared/StatusPill";
 import {
   ImageViewerModal,
@@ -853,18 +850,17 @@ export default function MessageBubble({
     });
   };
 
-  const streamText = isUser
-    ? (content as string)
-    : (content as AgentResponseContent).text;
   const agentLines = isUser
     ? []
     : (content as AgentResponseContent).text.split("\n");
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     setHasFinishedStreaming(!shouldStream);
     setCompletedAgentLines([]);
     setCurrentAgentLineIndex(0);
     setShowThinkingMessage(false);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [message.id, shouldStream]);
 
   // Mark user messages as completed immediately since they don't stream

@@ -20,6 +20,7 @@ export function ImageViewerModal({ url, title, onClose }: ViewerProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -82,6 +83,7 @@ export function PdfViewerModal({ url, title, onClose }: ViewerProps) {
   const iframeSrc = `${url}#toolbar=0&navpanes=0&scrollbar=0&zoom=100`;
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();

@@ -26,6 +26,12 @@ import { CAMPAIGN_LIST, getCampaign, type CampaignId } from '@/lib/campaigns';
 
 const CHAT_STORAGE_KEY = 'dawn_chat_sessions';
 
+let idCounter = 0;
+function makeId(prefix: string): string {
+  idCounter += 1;
+  return `${prefix}-${idCounter}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
 function loadSessions(): ChatSession[] {
   const stored = localStorage.getItem(CHAT_STORAGE_KEY);
   return stored ? JSON.parse(stored) : [];
@@ -51,6 +57,12 @@ function ChatPage() {
   const activeChatId = searchParams.get('chatId')?.trim();
   const [userName, setUserName] = useState('');
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
+  const [showFileTransfer, setShowFileTransfer] = useState(false);
+  const [inputMode, setInputMode] = useState<InputMode>('campaign');
+  const [chatQAIndex, setChatQAIndex] = useState(0);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [isChatTyping, setIsChatTyping] = useState(false);
+  const [chatTypingMessage, setChatTypingMessage] = useState('DAWN is thinking…');
   const prevChatIdRef = useRef<string | undefined>(undefined);
 
   const isEffectivenessReopen = useMemo(() => {
@@ -81,6 +93,7 @@ function ChatPage() {
   }, [state.campaignId, state.currentStepIndex]);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     const stored = localStorage.getItem('dawn_user');
     if (stored) {
       try {
@@ -93,26 +106,14 @@ function ChatPage() {
       } catch {}
     }
     setUserName('User');
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   // Load chat sessions from localStorage on mount
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setChatSessions(loadSessions());
   }, []);
-
-  // Find the latest notification from messages
-  const latestNotification = useMemo(() => {
-    for (let i = state.messages.length - 1; i >= 0; i--) {
-      const msg = state.messages[i];
-      if (msg.role === 'agent') {
-        const content = msg.content as AgentResponseContent;
-        if (content.notification) {
-          return content.notification;
-        }
-      }
-    }
-    return null;
-  }, [state.messages]);
 
   // Reset conversation when chatId changes and reload sessions
   useEffect(() => {
@@ -121,6 +122,7 @@ function ChatPage() {
       prevChatIdRef.current = activeChatId;
 
       // Reload sessions from localStorage to stay in sync
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setChatSessions(loadSessions());
 
       // Only reset if not the first mount
@@ -174,7 +176,7 @@ function ChatPage() {
       if (!qa) return;
 
       const userMsg: ChatMessage = {
-        id: `chat-user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        id: makeId('chat-user'),
         role: 'user',
         content: qa.question,
         timestamp: new Date(),
@@ -187,7 +189,7 @@ function ChatPage() {
 
       setTimeout(() => {
         const agentMsg: ChatMessage = {
-          id: `chat-agent-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          id: makeId('chat-agent'),
           role: 'agent',
           content: {
             text: qa.answer,
@@ -207,7 +209,7 @@ function ChatPage() {
     if (state.isAgentTyping) return;
 
     if (!activeChatId) {
-      const newChatId = `chat-${Date.now()}`;
+      const newChatId = makeId('chat');
       addSession(newChatId, text);
       sendMessage(text);
       router.push(`/chat?chatId=${newChatId}`);
@@ -219,7 +221,7 @@ function ChatPage() {
   };
 
   const handleNewChat = useCallback(() => {
-    const newChatId = `chat-${Date.now()}`;
+    const newChatId = makeId('chat');
     router.push(`/chat?chatId=${newChatId}`);
   }, [router]);
 
@@ -261,13 +263,6 @@ function ChatPage() {
     if (chatId === activeChatId) return;
     router.push(`/chat?chatId=${chatId}`);
   }, [activeChatId, router]);
-
-  const [showFileTransfer, setShowFileTransfer] = useState(false);
-  const [inputMode, setInputMode] = useState<InputMode>('campaign');
-  const [chatQAIndex, setChatQAIndex] = useState(0);
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
-  const [isChatTyping, setIsChatTyping] = useState(false);
-  const [chatTypingMessage, setChatTypingMessage] = useState('DAWN is thinking…');
 
   const chatPrePopulatedMessage = inputMode === 'chat'
     ? (CHAT_QUESTIONS[chatQAIndex]?.question ?? '')

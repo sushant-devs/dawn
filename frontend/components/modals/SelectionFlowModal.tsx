@@ -46,7 +46,6 @@ function Pager({
   end,
   onPrev,
   onNext,
-  onJump,
   label,
 }: {
   page: number;
@@ -657,7 +656,6 @@ function BriefField({
   placeholder,
   rows = 3,
   className = '',
-  required = false,
 }: {
   label: string;
   hint?: string;
@@ -767,9 +765,6 @@ function ChannelBlock({
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {pager.slice.map((t) => {
         const selected = selectedNames.has(t.template_name);
-        const img = Array.isArray(t.template_image)
-          ? t.template_image[0]
-          : t.template_image;
         return (
           <button
             type="button"
@@ -1379,12 +1374,10 @@ function Skeleton() {
 function Footer({
   step,
   canConfirm,
-  onClose,
   onConfirm,
   done,
   canRunMlr,
   onRunMlr,
-  summary,
 }: {
   step: Step;
   canConfirm: boolean;

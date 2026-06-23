@@ -1,4 +1,3 @@
-import { request } from '@/lib/apiClient';
 import type { MLRPreScreenPayload } from '@/lib/types';
 
 export interface MlrAgentRequest {

@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import {
   X, Check, ChevronLeft, ChevronRight,
-  AlertTriangle, FileText, Zap, Sparkles, ShieldCheck,
+  FileText, Zap, Sparkles, ShieldCheck,
 } from 'lucide-react';
 import type { MLRPreScreenAsset, MLRPreScreenPayload } from '@/lib/types';
 
@@ -44,13 +44,6 @@ function statusLabel(asset: MLRPreScreenAsset) {
   return asset.approved ? 'Passed' : 'Pending';
 }
 
-function severityColor(severity?: string) {
-  switch ((severity || '').toUpperCase()) {
-    case 'HIGH':   return 'bg-rose-100 text-rose-700';
-    case 'MEDIUM': return 'bg-amber-100 text-amber-700';
-    default:       return 'bg-zinc-100 text-zinc-700';
-  }
-}
 
 function cohesionPct(value: string | undefined): number {
   if (!value) return 0;

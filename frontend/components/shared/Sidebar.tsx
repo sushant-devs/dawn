@@ -25,6 +25,7 @@ export default function Sidebar() {
   const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     const stored = localStorage.getItem('dawn_user');
     if (!stored) return;
     try {
@@ -38,6 +39,7 @@ export default function Sidebar() {
     } catch {
       setUserName('User');
     }
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   const userInitial = useMemo(() => {
@@ -77,7 +79,6 @@ export default function Sidebar() {
           const isCompleted = state.completedStages.includes(stage.id);
           const isActive = state.currentStage === stage.id && state.hasStarted;
           const isPending = !isCompleted && !isActive;
-          const Icon = stage.icon;
 
           return (
             <div

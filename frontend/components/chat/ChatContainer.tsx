@@ -18,6 +18,7 @@ export default function ChatContainer({ messages, isTyping, typingMessage }: Cha
   const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCompletedMessageIds((prev) => {
       const next = new Set<string>();
       const existingIds = new Set(messages.map((m) => m.id));

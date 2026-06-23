@@ -20,7 +20,6 @@ import {
   Users,
   Tags,
   Lightbulb,
-  Activity,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import Button from '@/components/ui/Button';
@@ -89,9 +88,7 @@ function marketPill(val: string, colIndex: number) {
 const SEGMENT_COLORS = ['bg-dawn-navy', 'bg-dawn-teal', 'bg-dawn-purple/40'];
 
 function SectionHeader({
-  icon: Icon,
   title,
-  subtitle,
 }: {
   icon: typeof BarChart3;
   title: string;

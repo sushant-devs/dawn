@@ -264,12 +264,12 @@ export default function ManualBriefInputModal({ onConfirm, onClose, readOnly = f
                 <h4 className="text-xs font-semibold text-dawn-navy mb-2">Examples:</h4>
                 <div className="space-y-2 text-xs text-gray-600">
                   <div>
-                    <span className="font-medium text-dawn-navy">Title:</span> "Multi-Deliverable Campaign"<br />
-                    <span className="font-medium text-dawn-navy">Content:</span> "Create a global multi-deliverable campaign for Brexiva in HR+/HER2− metastatic breast cancer, targeting oncologists and breast cancer specialists through congress posters, HCP emails, patient education leaflets, digital banners, and clinic discussion guides."
+                    <span className="font-medium text-dawn-navy">Title:</span> &ldquo;Multi-Deliverable Campaign&rdquo;<br />
+                    <span className="font-medium text-dawn-navy">Content:</span> &ldquo;Create a global multi-deliverable campaign for Brexiva in HR+/HER2− metastatic breast cancer, targeting oncologists and breast cancer specialists through congress posters, HCP emails, patient education leaflets, digital banners, and clinic discussion guides.&rdquo;
                   </div>
                   <div>
-                    <span className="font-medium text-dawn-navy">Title:</span> "Congress Engagement Campaign"<br />
-                    <span className="font-medium text-dawn-navy">Content:</span> "Create a congress engagement campaign for Zoflevrix focused on chronic migraine prevention, patient burden education, specialist engagement, preventive care planning, and post-congress follow-up materials for neurologists and headache specialists."
+                    <span className="font-medium text-dawn-navy">Title:</span> &ldquo;Congress Engagement Campaign&rdquo;<br />
+                    <span className="font-medium text-dawn-navy">Content:</span> &ldquo;Create a congress engagement campaign for Zoflevrix focused on chronic migraine prevention, patient burden education, specialist engagement, preventive care planning, and post-congress follow-up materials for neurologists and headache specialists.&rdquo;
                   </div>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { X, CheckCircle, XCircle, Brain, FileCheck, Zap, ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { X, CheckCircle, XCircle, Brain, Zap, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import { useCampaignData } from '@/context/DAWNContext';
 import StatusPill from '@/components/shared/StatusPill';
 import type { MLRAssetDetail } from '@/lib/types';
@@ -82,13 +82,9 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
   );
 
   const [selectedAsset, setSelectedAsset] = useState<MLRAssetDetail>(MLR_ASSETS[0]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showTransparency, setShowTransparency] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-
-  const passedCount = MLR_ASSETS.filter((a) => a.status === 'Passed').length;
-  const pendingCount = MLR_ASSETS.filter((a) => a.status === 'Pending').length;
-  const tier1Count = MLR_ASSETS.filter((a) => a.tier === 'Tier 1').length;
-  const tier2Count = MLR_ASSETS.filter((a) => a.tier === 'Tier 2').length;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -266,7 +262,7 @@ export default function MLRCheckerModal({ onConfirm, onClose }: MLRCheckerModalP
 
                 <div className="bg-purple-100 rounded-lg p-2 text-[10px] text-purple-900">
                   <p className="font-semibold">You are in control:</p>
-                  <p className="mt-1">This process is deterministic and traceable. No "magic button" — every validation
+                  <p className="mt-1">This process is deterministic and traceable. No &ldquo;magic button&rdquo; — every validation
                   step references specific documents and follows defined MLR protocols.</p>
                 </div>
               </div>
