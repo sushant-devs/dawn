@@ -89,6 +89,13 @@ async function fetchHtmlContent(path: string): Promise<string> {
   }
 }
 
+const PREVIEW_TEMPLATE_PATHS: Record<string, string> = {
+  'brexiva-template-001': '/personalized/Clinical Focus Email (3).html',
+  'brexiva-template-002': '/personalized/Interactive Slides DDA (1).html',
+  'brexiva-template-003': '/personalized/Classic Scientific Poster (2) 1.html',
+  'brexiva-template-004': '/personalized/Friendly Patient Guide (1).html',
+};
+
 // Reuse the existing /end-templates/{id} endpoint — already implemented and
 // covered by the same in-process backend cache as the MLR list path.
 export async function getTemplatePreview(
@@ -104,8 +111,9 @@ export async function getTemplatePreview(
   const inflight = _previewInflight.get(cacheKey);
   if (inflight) return inflight;
 
-  // Default to first personalized template
-  const templatePath = '/personalized/Clinical Focus Email (3).html';
+  const templatePath =
+    PREVIEW_TEMPLATE_PATHS[endTemplateId] ??
+    '/personalized/Clinical Focus Email (3).html';
 
   // Fetch and cache
   const promise = fetchHtmlContent(templatePath).then((html) => {
