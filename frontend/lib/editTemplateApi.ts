@@ -100,6 +100,26 @@ export interface EndTemplateItem {
   error?: string | null;
 }
 
+// Map content types to static file paths explicitly to prevent accidental fallback loops
+const TEMPLATE_MAPPING: Record<string, { file: string; name: string }> = {
+  'Email': {
+    file: '/personalized/Clinical Focus Email (3).html',
+    name: 'Clinical Focus Email',
+  },
+  'Detail Digital Aid': {
+    file: '/personalized/Interactive Slides DDA (1).html',
+    name: 'Interactive Slides DDA',
+  },
+  'Congress Poster': {
+    file: '/personalized/Classic Scientific Poster (2) 1.html',
+    name: 'Classic Scientific Poster',
+  },
+  'Patient Leaflet': {
+    file: '/personalized/Friendly Patient Guide (1).html',
+    name: 'Friendly Patient Guide',
+  },
+};
+
 async function fetchHtmlContent(path: string): Promise<string> {
   try {
     const response = await fetch(path);
@@ -118,35 +138,13 @@ export async function fetchEndTemplate(
   endTemplateId: string,
   selectedContentTypes?: string[],
 ): Promise<EndTemplateItem[]> {
-  // Map content types to personalized HTML files and template names
-  const contentTypeMap: Record<string, { file: string; name: string }> = {
-    'Email': {
-      file: '/personalized/Clinical Focus Email (3).html',
-      name: 'Clinical Focus Email'
-    },
-    'Detail Digital Aid': {
-      file: '/personalized/Interactive Slides DDA (1).html',
-      name: 'Interactive Slides DDA'
-    },
-    'Congress Poster': {
-      file: '/personalized/Classic Scientific Poster (2) 1.html',
-      name: 'Classic Scientific Poster'
-    },
-    'Patient Leaflet': {
-      file: '/personalized/Friendly Patient Guide (1).html',
-      name: 'Friendly Patient Guide'
-    },
-  };
-
-  // Determine which content types to fetch
   const contentTypesToFetch = selectedContentTypes && selectedContentTypes.length > 0
     ? selectedContentTypes
-    : Object.keys(contentTypeMap);
+    : Object.keys(TEMPLATE_MAPPING);
 
-  // Fetch HTML for each selected content type
   const items = await Promise.all(
     contentTypesToFetch.map(async (contentType) => {
-      const mapping = contentTypeMap[contentType];
+      const mapping = TEMPLATE_MAPPING[contentType];
       if (!mapping) {
         return {
           content_type: contentType,
@@ -178,7 +176,6 @@ export interface EndTemplateListEntry {
   approved_asset_id?: string | null;
   content_document_id?: string | null;
   template_document_id?: string | null;
-  // IDs the MLR agent (/mlr-agent/process) consumes.
   mlr_collection_id?: string | null;
   chunk_id?: string | null;
   claim_id?: string | null;
@@ -202,9 +199,6 @@ export async function countEndTemplates(): Promise<number> {
   return resp?.total ?? 0;
 }
 
-// Module-level cache for paginated list responses. Keyed by (limit, skip).
-// Backend already caches in-process; this short-circuits the network round-trip
-// entirely on revisits. In-flight dedupe avoids parallel duplicate calls.
 const _listCache = new Map<string, EndTemplateListResponse>();
 const _listInflight = new Map<string, Promise<EndTemplateListResponse>>();
 
@@ -217,32 +211,30 @@ export async function listEndTemplates(
   limit = 20,
   skip = 0,
 ): Promise<EndTemplateListResponse> {
-  // Map personalized template files
   const personalizedTemplates = [
     {
       file: '/personalized/Clinical Focus Email (3).html',
       content_type: 'Email',
-      template_name: 'Clinical Focus Email  ',
+      template_name: 'Clinical Focus Email',
     },
     {
       file: '/personalized/Interactive Slides DDA (1).html',
       content_type: 'Detail Digital Aid',
-      template_name: 'Interactive Slides DDA  ',
+      template_name: 'Interactive Slides DDA',
     },
     {
       file: '/personalized/Classic Scientific Poster (2) 1.html',
       content_type: 'Congress Poster',
-      template_name: 'Classic Scientific Poster  ',
+      template_name: 'Classic Scientific Poster',
     },
     {
       file: '/personalized/Friendly Patient Guide (1).html',
       content_type: 'Patient Leaflet',
-      template_name: 'Friendly Patient Guide  ',
+      template_name: 'Friendly Patient Guide',
     },
   ];
 
-  // Fetch HTML content for all personalized templates and create separate items
-  const items = await Promise.all(
+  const allItems = await Promise.all(
     personalizedTemplates.map(async (template, index) => {
       try {
         const html = await fetchHtmlContent(template.file);
@@ -291,18 +283,19 @@ export async function listEndTemplates(
     })
   );
 
+  // Apply actual mathematical slicing rules for the pagination simulation
+  const paginatedItems = allItems.slice(skip, skip + limit);
+
   return Promise.resolve({
-    count: items.length,
-    total: items.length,
+    count: paginatedItems.length,
+    total: allItems.length,
     skip,
     limit,
-    has_more: false,
-    items,
+    has_more: skip + limit < allItems.length,
+    items: paginatedItems,
   });
 }
 
-// Module-level cache so paging back/forward (or reopening the modal in the
-// same session) does not refetch HTML blobs we already have.
 const _outputHtmlCache = new Map<string, string>();
 const _outputHtmlInflight = new Map<string, Promise<string>>();
 
@@ -312,15 +305,18 @@ export async function fetchEndTemplateOutputHtml(
 ): Promise<string> {
   const cacheKey = `${endTemplateId}:${index}`;
 
-  // Check cache first
   const cached = _outputHtmlCache.get(cacheKey);
   if (cached) return cached;
 
-  // Check if already in-flight
   const inflight = _outputHtmlInflight.get(cacheKey);
   if (inflight) return inflight;
 
-  // Map index to personalized template files
+  // Extract the ID number from "brexiva-personalized-00X" safely
+  const numericId = parseInt(endTemplateId.split('-').pop() || '1', 10);
+
+  // Tie the lookup directly to its assigned data file index, not the layout grid index
+  const resolvedDataIndex = isNaN(numericId) ? 0 : numericId - 1;
+
   const personalizedTemplates = [
     '/personalized/Clinical Focus Email (3).html',
     '/personalized/Interactive Slides DDA (1).html',
@@ -328,9 +324,8 @@ export async function fetchEndTemplateOutputHtml(
     '/personalized/Friendly Patient Guide (1).html',
   ];
 
-  const templatePath = personalizedTemplates[index] || personalizedTemplates[0];
+  const templatePath = personalizedTemplates[resolvedDataIndex] || personalizedTemplates[0];
 
-  // Fetch and cache
   const promise = fetchHtmlContent(templatePath).then((html) => {
     _outputHtmlCache.set(cacheKey, html);
     _outputHtmlInflight.delete(cacheKey);
