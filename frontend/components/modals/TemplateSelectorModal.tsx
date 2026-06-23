@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { X, Eye, Check, Loader2 } from 'lucide-react';
+import { X, Eye, Check, Loader2, Lock } from 'lucide-react';
 import { TemplateResponse } from '@/lib/types';
 import { useCampaignData } from '@/context/DAWNContext';
 import Button from '@/components/ui/Button';
@@ -283,6 +283,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose, readOnly = f
   const { templates: templateData } = useCampaignData();
 
   const [selectedTemplates, setSelectedTemplates] = useState<Record<string, string>>({});
+  const [lockedAssets, setLockedAssets] = useState<Record<string, boolean>>({});
   const [activeTab, setActiveTab] = useState<string>('');
   const [previewTemplate, setPreviewTemplate] = useState<TemplateResponse | null>(null);
   // Fetched HTML for the currently previewed template file.
@@ -310,9 +311,27 @@ export default function TemplateSelectorModal({ onConfirm, onClose, readOnly = f
   const assetTypes = templateData.map(r => r.assetType);
 
   const handleTemplateSelect = (assetType: string, templateId: string) => {
+    // Block changes if in readOnly mode, or if currently previewing
+    if (readOnly || previewTemplate) return;
+
+    // Allow toggling unlock by clicking the already selected, locked card
+    if (selectedTemplates[assetType] === templateId && lockedAssets[assetType]) {
+      setLockedAssets((prev) => ({ ...prev, [assetType]: false }));
+      return;
+    }
+
+    // Do not allow selection change if the asset type is locked
+    if (lockedAssets[assetType]) return;
+
     setSelectedTemplates((prev) => ({
       ...prev,
       [assetType]: templateId,
+    }));
+    
+    // Lock upon selection
+    setLockedAssets((prev) => ({
+      ...prev,
+      [assetType]: true,
     }));
   };
 
@@ -413,20 +432,27 @@ export default function TemplateSelectorModal({ onConfirm, onClose, readOnly = f
             <div key={recommendation.assetType} className="grid grid-cols-2 gap-4">
               {recommendation.recommendedTemplates.map((template) => {
                 const isSelected = selectedTemplates[recommendation.assetType] === template.id;
+                const isLocked = lockedAssets[recommendation.assetType] || readOnly;
+                const isDisabled = isLocked && !isSelected;
 
                 return (
                   <div
                     key={template.id}
-                    className={`group relative flex w-full flex-col overflow-hidden rounded-xl border-2 text-left transition-all duration-200 cursor-pointer ${
+                    className={`group relative flex w-full flex-col overflow-hidden rounded-xl border-2 text-left transition-all duration-200${
                       isSelected
-                        ? 'border-[#8624FF] shadow-[0_8px_24px_rgba(134,36,255,0.18)]'
-                        : 'border-gray-200 hover:border-[#8624FF]/40 hover:shadow-[0_8px_20px_rgba(134,36,255,0.14)]'
+                        ? 'border-[#8624FF] shadow-[0_8px_24px_rgba(134,36,255,0.18)] cursor-pointer' : isDisabled
+                        ? 'border-gray-100 bg-gray-50/50 cursor-not-allowed'
+                        : 'border-gray-200 hover:border-[#8624FF]/40 hover:shadow-[0_8px_20px_rgba(134,36,255,0.14)] cursor-pointer'
                     }`}
-                    onClick={() => handleTemplateSelect(recommendation.assetType, template.id)}
-                  >
+                    onClick={() => { if(!isDisabled) handleTemplateSelect(recommendation.assetType, template.id); }}>
                     {isSelected && (
-                      <div className="absolute top-3 left-3 w-6 h-6 bg-[#8624FF] rounded-full flex items-center justify-center shadow-md z-10">
-                        <Check size={14} className="text-white" strokeWidth={3} />
+                      <div className="absolute top-3 left-3 h-6 bg-[#8624FF] rounded-full flex items-center justify-center px-2 shadow-md z-10"
+                        title={isLocked && !readOnly ? 'Click to unlock' : 'Selected'}>
+                          {isLocked ? (
+                             <Lock size={12} className="text-white" strokeWidth={2.5} />
+                          ) : (
+                             <Check size={14} className="text-white" strokeWidth={3} />
+                          )}
                       </div>
                     )}
 
@@ -475,6 +501,7 @@ export default function TemplateSelectorModal({ onConfirm, onClose, readOnly = f
                   }
                 });
                 setSelectedTemplates(defaultSelections);
+                setLockedAssets({});
               }}
               className="text-xs text-dawn-teal hover:text-dawn-teal/80 font-medium cursor-pointer"
             >

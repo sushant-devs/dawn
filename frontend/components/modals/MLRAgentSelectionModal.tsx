@@ -242,7 +242,7 @@ export default function MLRAgentSelectionModal({ sessionId, onClose }: Props) {
 
   const body = (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-6 backdrop-blur-sm"
+      className="fixed text-left inset-0 z-[100] flex items-center justify-center bg-black/50 p-6 backdrop-blur-sm"
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -500,7 +500,7 @@ function PreviewModal({
 }) {
   return createPortal(
     <div
-      className="fixed inset-0 z-[110] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm animate-fade-in-up"
+      className="fixed inset-0 z-[110] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm animate-fade-in-up text-left"
       onClick={onClose}
     >
       <div
