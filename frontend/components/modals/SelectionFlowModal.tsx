@@ -299,11 +299,15 @@ export default function SelectionFlowModal({
       'Rendering HTML output…',
       'Finalizing assets…',
     ];
+    const STAGE_INTERVAL = 450;
     stages.forEach((text, i) => {
       setTimeout(() => {
         setStreamLines((prev) => [...prev, { id: `s${i}`, text }]);
-      }, 450 * i);
+      }, STAGE_INTERVAL * i);
     });
+    const stagesShown = new Promise<void>((resolve) =>
+      setTimeout(resolve, STAGE_INTERVAL * (stages.length - 1) + 700),
+    );
     try {
       const channels = Object.keys(selectedTemplates);
       // Split multi-line fields into arrays; drop blank lines.
@@ -324,11 +328,8 @@ export default function SelectionFlowModal({
         query: query.trim(),
         thread_id: sessionId || null,
       });
+      await stagesShown;
       setGenResp(result);
-      setStreamLines((prev) => [
-        ...prev,
-        { id: 'done', text: 'Generation complete.' },
-      ]);
       onComplete?.(result);
     } catch (e) {
       setError(sanitizeError((e as Error).message));
@@ -380,21 +381,10 @@ export default function SelectionFlowModal({
               toggleTemplate={(channel, name) =>
                 setSelectedTemplates((p) => {
                   const next = { ...p };
-                  if (!next[channel]) {
-                    next[channel] = new Set([name]);
+                  if (next[channel]?.has(name)) {
+                    delete next[channel];
                   } else {
-                    const channelSet = new Set(next[channel]);
-                    if (channelSet.has(name)) {
-                      channelSet.delete(name);
-                      if (channelSet.size === 0) {
-                        delete next[channel];
-                      } else {
-                        next[channel] = channelSet;
-                      }
-                    } else {
-                      channelSet.add(name);
-                      next[channel] = channelSet;
-                    }
+                    next[channel] = new Set([name]);
                   }
                   return next;
                 })
@@ -848,7 +838,7 @@ function ChannelBlock({
                     className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-semibold transition-colors hover:bg-[#eef4ff] cursor-pointer"
                     style={{ color: BRAND_BLUE }}
                   >
-                    <Eye className="h-3 w-3" /> Open
+                    <Eye className="h-3 w-3" /> Preview
                   </span>
                 )}
               </div>
