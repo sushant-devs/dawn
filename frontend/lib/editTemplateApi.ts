@@ -100,24 +100,41 @@ export interface EndTemplateItem {
   error?: string | null;
 }
 
-// Map content types to static file paths explicitly to prevent accidental fallback loops
-const TEMPLATE_MAPPING: Record<string, { file: string; name: string }> = {
-  'Email': {
-    file: '/personalized/Clinical Focus Email (3).html',
-    name: 'Clinical Focus Email',
-  },
-  'Detail Digital Aid': {
-    file: '/personalized/Interactive Slides DDA (1).html',
-    name: 'Interactive Slides DDA',
-  },
-  'Congress Poster': {
-    file: '/personalized/Classic Scientific Poster (2) 1.html',
-    name: 'Classic Scientific Poster',
-  },
-  'Patient Leaflet': {
-    file: '/personalized/Friendly Patient Guide (1).html',
-    name: 'Friendly Patient Guide',
-  },
+const DEFAULT_TEMPLATE_BY_CONTENT_TYPE: Record<string, string> = {
+  'Email': 'Clinical Focus Email',
+  'Detail Digital Aid': 'Interactive Slides DDA',
+  'Congress Poster': 'Classic Scientific Poster',
+  'Patient Leaflet': 'Friendly Patient Guide',
+};
+
+const GENERATED_ROOT = '/data/brexiva/Generated Template';
+const genFile = (subdir: string, name: string) =>
+  `${GENERATED_ROOT}/${encodeURIComponent(subdir)}/${encodeURIComponent(name)}.html`;
+
+const TEMPLATE_FILE_BY_NAME: Record<string, { file: string; contentType: string }> = {
+  // Email
+  'Clinical Focus Email': { file: genFile('Email', 'Clinical Focus Email'), contentType: 'Email' },
+  'Data Highlight Email': { file: genFile('Email', 'Data Highlight Email'), contentType: 'Email' },
+  'Newsletter Email': { file: genFile('Email', 'Newsletter Email'), contentType: 'Email' },
+  'Product Update Email': { file: genFile('Email', 'Product Update Email'), contentType: 'Email' },
+  // Digital Detail Aid
+  'Interactive Slides DDA': { file: genFile('Digital Detail Aid', 'Interactive Slides DDA'), contentType: 'Detail Digital Aid' },
+  'Tabbed Sidebar DDA': { file: genFile('Digital Detail Aid', 'Tabbed Sidebar DDA'), contentType: 'Detail Digital Aid' },
+  'Storytelling Flow DDA': { file: genFile('Digital Detail Aid', 'Storytelling Flow DDA'), contentType: 'Detail Digital Aid' },
+  'Card Carousel DDA': { file: genFile('Digital Detail Aid', 'Card Carousel DDA'), contentType: 'Detail Digital Aid' },
+  'Fullscreen Immersive DDA': { file: genFile('Digital Detail Aid', 'Fullscreen Immersive DDA'), contentType: 'Detail Digital Aid' },
+  // Congress Poster
+  'Classic Scientific Poster': { file: genFile('Congress Poster', 'Classic Scientific Poster'), contentType: 'Congress Poster' },
+  'Visual Impact Poster': { file: genFile('Congress Poster', 'Visual Impact Poster'), contentType: 'Congress Poster' },
+  'Infographic Style Poster': { file: genFile('Congress Poster', 'Infographic Style Poster'), contentType: 'Congress Poster' },
+  'Modular Grid Poster': { file: genFile('Congress Poster', 'Modular Grid Poster'), contentType: 'Congress Poster' },
+  'Landscape Widescreen Poster': { file: genFile('Congress Poster', 'Landscape Widescreen Poster'), contentType: 'Congress Poster' },
+  // Patient Leaflet
+  'Friendly Patient Guide': { file: genFile('Patient Leaflet', 'Friendly Patient Guide'), contentType: 'Patient Leaflet' },
+  'Step-by-Step Guide': { file: genFile('Patient Leaflet', 'Step-by-Step Guide'), contentType: 'Patient Leaflet' },
+  'Foldable Brochure': { file: genFile('Patient Leaflet', 'Foldable Brochure'), contentType: 'Patient Leaflet' },
+  'Condition Awareness Leaflet': { file: genFile('Patient Leaflet', 'Condition Awareness Leaflet'), contentType: 'Patient Leaflet' },
+  'Treatment Diary': { file: genFile('Patient Leaflet', 'Treatment Diary'), contentType: 'Patient Leaflet' },
 };
 
 async function fetchHtmlContent(path: string): Promise<string> {
@@ -137,19 +154,23 @@ async function fetchHtmlContent(path: string): Promise<string> {
 export async function fetchEndTemplate(
   endTemplateId: string,
   selectedContentTypes?: string[],
+  selectedTemplateNames?: string[],
 ): Promise<EndTemplateItem[]> {
-  const contentTypesToFetch = selectedContentTypes && selectedContentTypes.length > 0
-    ? selectedContentTypes
-    : Object.keys(TEMPLATE_MAPPING);
+  const namesToFetch = selectedTemplateNames && selectedTemplateNames.length > 0
+    ? selectedTemplateNames
+    : (selectedContentTypes && selectedContentTypes.length > 0
+        ? selectedContentTypes
+        : Object.keys(DEFAULT_TEMPLATE_BY_CONTENT_TYPE)
+      ).map((ct) => DEFAULT_TEMPLATE_BY_CONTENT_TYPE[ct]).filter(Boolean);
 
   const items = await Promise.all(
-    contentTypesToFetch.map(async (contentType) => {
-      const mapping = TEMPLATE_MAPPING[contentType];
+    namesToFetch.map(async (templateName) => {
+      const mapping = TEMPLATE_FILE_BY_NAME[templateName];
       if (!mapping) {
         return {
-          content_type: contentType,
-          template_name: contentType,
-          processed_html: `<div style="padding:24px;"><h2>${contentType}</h2><p>Template not found.</p></div>`,
+          content_type: templateName,
+          template_name: templateName,
+          processed_html: `<div style="padding:24px;"><h2>${templateName}</h2><p>Template not found.</p></div>`,
           status: 'error',
           error: 'Template mapping not found',
         };
@@ -158,9 +179,9 @@ export async function fetchEndTemplate(
       const html = await fetchHtmlContent(mapping.file);
 
       return {
-        content_type: contentType,
-        template_name: mapping.name,
-        processed_html: html || `<div style="padding:24px;"><h2>${contentType}</h2><p>Failed to load template.</p></div>`,
+        content_type: mapping.contentType,
+        template_name: templateName,
+        processed_html: html || `<div style="padding:24px;"><h2>${templateName}</h2><p>Failed to load template.</p></div>`,
         status: html ? 'completed' : 'error',
         error: html ? null : 'Failed to fetch HTML content',
       };

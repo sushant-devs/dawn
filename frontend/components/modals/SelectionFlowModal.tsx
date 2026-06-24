@@ -415,6 +415,9 @@ export default function SelectionFlowModal({
               streamLines={streamLines}
               result={genResp}
               selectedContentTypes={Object.keys(selectedTemplates)}
+              selectedTemplateNames={Object.values(selectedTemplates).flatMap(
+                (set) => Array.from(set),
+              )}
             />
           )}
         </div>
@@ -1115,10 +1118,12 @@ function GenerateStep({
   streamLines,
   result,
   selectedContentTypes,
+  selectedTemplateNames,
 }: {
   streamLines: StreamLine[];
   result: GenerationAgentResponse | null;
   selectedContentTypes: string[];
+  selectedTemplateNames: string[];
 }) {
   const endTemplateId = result?.end_template_id;
   type TplState =
@@ -1141,10 +1146,11 @@ function GenerateStep({
   const tplLoading = tpl.status === 'loading';
   const tplError = tpl.status === 'error' ? tpl.error : null;
 
+  const selectedTemplateNamesKey = selectedTemplateNames.join('|');
   useEffect(() => {
     if (!endTemplateId) return;
     let cancelled = false;
-    fetchEndTemplate(endTemplateId, selectedContentTypes)
+    fetchEndTemplate(endTemplateId, selectedContentTypes, selectedTemplateNames)
       .then((items) => {
         if (!cancelled) setTpl({ status: 'ready', id: endTemplateId, items });
       })
@@ -1159,7 +1165,8 @@ function GenerateStep({
     return () => {
       cancelled = true;
     };
-  }, [endTemplateId, selectedContentTypes]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endTemplateId, selectedContentTypes, selectedTemplateNamesKey]);
 
   const lastIdx = streamLines.length - 1;
   return (
