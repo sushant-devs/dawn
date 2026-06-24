@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Loader2, Sparkles, X, AlertTriangle } from 'lucide-react';
-import { runMlrAgent, type MlrAgentRequest } from '@/lib/mlrApi';
+import { runGenerationMlr, type MlrAgentRequest } from '@/lib/mlrApi';
 import type { MLRPreScreenPayload } from '@/lib/types';
 import MLRPreScreenModal from '@/components/modals/MLRPreScreenModal';
 
@@ -30,7 +30,7 @@ export default function MLRAgentRunModal({ request, onClose }: Props) {
   useEffect(() => {
     if (startedRef.current) return; 
     startedRef.current = true;
-    runMlrAgent(requestRef.current)
+    runGenerationMlr(requestRef.current)
       .then((res) => setPayload(res))
       .catch((e) =>
         setError((e as Error).message ?? 'Failed to run MLR agent.'),

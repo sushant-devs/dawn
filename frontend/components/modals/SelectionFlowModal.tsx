@@ -236,6 +236,9 @@ export default function SelectionFlowModal({
 
     // Get selected content types from selectedTemplates
     const selected_content_types = Object.keys(selectedTemplates);
+    const selected_template_names = selected_content_types.flatMap((channel) =>
+      Array.from(selectedTemplates[channel] ?? []),
+    );
 
     const req: MlrAgentRequest = {
       session_id,
@@ -245,8 +248,20 @@ export default function SelectionFlowModal({
       claim_id: genResp.claim_id ?? '',
       content_id: genResp.content_id ?? '',
       selected_content_types,
+      selected_template_names,
     };
-    const complete = Object.values(req).every((v) => v && v.length > 0);
+    const idsComplete = [
+      req.session_id,
+      req.end_template_id,
+      req.mlr_collection_id,
+      req.chunks_id,
+      req.claim_id,
+      req.content_id,
+    ].every((v) => v && v.length > 0);
+    const complete =
+      idsComplete &&
+      selected_content_types.length > 0 &&
+      selected_template_names.length > 0;
     return complete ? req : null;
   }, [genResp, sessionId, selectedTemplates]);
 
