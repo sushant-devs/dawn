@@ -238,26 +238,26 @@ export default function MLRPreScreenModal({
                 )}
 
                 {/* ── AI Pre-Screen Report ──────────────────────────────────── */}
-                <div className="rounded-xl border border-zinc-200 bg-white p-5 space-y-4 text-left">
-                  <p className="text-[12px] font-semibold uppercase tracking-wider text-zinc-500">AI Pre-Screen Report</p>
+                <div className="rounded-xl border border-zinc-200 bg-white p-4 space-y-3 text-left">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-500">AI Pre-Screen Report</p>
 
                   {/* Fair Balance Score + ISI Completeness */}
-                  <div className="space-y-1.5">
-                    <p className="text-[12px] text-zinc-500">Fair Balance Score</p>
-                    <div className="flex items-center gap-4">
-                      <div className="flex-1 h-2.5 rounded-full bg-zinc-100 overflow-hidden">
+                  <div className="space-y-1">
+                    <p className="text-[10px] text-zinc-500">Fair Balance Score</p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 h-2 rounded-full bg-zinc-100 overflow-hidden">
                         <div
                           className="h-full rounded-full bg-amber-400 transition-all"
                           style={{ width: `${fbPct}%` }}
                         />
                       </div>
-                      <span className="text-[15px] font-bold text-zinc-800 shrink-0">
+                      <span className="text-[12px] font-semibold text-zinc-700 shrink-0">
                         {selected.fair_balance_score != null ? `${selected.fair_balance_score}/100` : '—'}
                       </span>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-[12px] text-zinc-500">ISI Completeness</span>
-                        <span className={`flex h-5 w-5 items-center justify-center rounded-full shrink-0 ${isiComplete ? 'bg-emerald-100' : 'bg-zinc-100'}`}>
-                          <Check size={12} className={isiComplete ? 'text-emerald-600' : 'text-zinc-300'} strokeWidth={3} />
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <span className="text-[10px] text-zinc-500">ISI Completeness</span>
+                        <span className={`flex h-4 w-4 items-center justify-center rounded-full shrink-0 ${isiComplete ? 'bg-emerald-100' : 'bg-zinc-100'}`}>
+                          <Check size={10} className={isiComplete ? 'text-emerald-600' : 'text-zinc-300'} strokeWidth={3} />
                         </span>
                       </div>
                     </div>
@@ -265,8 +265,8 @@ export default function MLRPreScreenModal({
 
                   {/* Puffery Detected */}
                   <div>
-                    <p className="text-[12px] text-zinc-500 mb-0.5">Puffery Detected</p>
-                    <p className={`text-[14px] font-bold ${pufferyColor(selected.puffery_detected)}`}>
+                    <p className="text-[10px] text-zinc-500 mb-0.5">Puffery Detected</p>
+                    <p className={`text-[12px] font-semibold ${pufferyColor(selected.puffery_detected)}`}>
                       {selected.puffery_detected || 'None'}
                     </p>
                   </div>
