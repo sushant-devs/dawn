@@ -509,11 +509,12 @@ function ConfigureStage({
                 key={n}
                 type="button"
                 onClick={() => setMaxVariation(n as 1 | 2)}
-                className={`rounded-lg border px-3 py-2 text-sm font-semibold transition-all cursor-pointer ${
+                disabled={generating}
+                className={`rounded-lg border px-3 py-2 text-sm font-semibold transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
                   on
                     ? 'border-[#8624FF] bg-[#8624FF] text-white shadow-[0_0_18px_rgba(134,36,255,0.25)]'
                     : 'border-zinc-200 bg-white text-zinc-600 hover:border-[#b47cff]'
-                }`}
+                } ${generating ? '' : 'cursor-pointer'}`}
               >
                 {n} {n === 1 ? 'Version' : 'Versions'}
               </button>
