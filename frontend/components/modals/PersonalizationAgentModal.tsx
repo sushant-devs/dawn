@@ -588,17 +588,6 @@ function VariationCard({
   onFullScreen: () => void;
   onSelect: () => void;
 }) {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  useEffect(() => {
-    const ifr = iframeRef.current;
-    if (!ifr) return;
-    const doc = ifr.contentDocument;
-    if (!doc) return;
-    doc.open();
-    doc.write(variation.html || '<!doctype html><body></body>');
-    doc.close();
-  }, [variation.html]);
-
   return (
     <div className="flex flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white">
       <div className="flex items-center justify-between border-b border-zinc-200 bg-white px-4 py-2.5">
@@ -621,9 +610,9 @@ function VariationCard({
       </div>
       <div className="h-[420px] bg-zinc-50">
         <iframe
-          ref={iframeRef}
           title={`Version ${variation.version}`}
-          sandbox="allow-same-origin"
+          srcDoc={variation.html || ''}
+          sandbox="allow-same-origin allow-scripts"
           className="h-full w-full border-0 bg-white"
         />
       </div>
