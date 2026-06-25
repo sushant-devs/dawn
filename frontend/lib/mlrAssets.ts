@@ -114,13 +114,9 @@ DATA REFERENCES:
 - Prior CDK4/6 inhibitor exposure: 69.6%
     `,
     fair_balance_score: '82',
-    isi_completeness: false,
+    isi_completeness: true,
     puffery_detected: 'None',
     ai_insights: [
-      {
-        label: 'Missing ISI Content',
-        text: 'Ensure that the Important Safety Information (ISI) section is completed with relevant safety findings.',
-      },
       {
         label: 'Data Presentation Improvement',
         text: 'Consider providing clearer context for the statistics presented in the Data References section.',
@@ -130,15 +126,7 @@ DATA REFERENCES:
         text: 'Enhance the clarity of the Key Message section to ensure it effectively communicates the treatment\'s benefits.',
       },
     ],
-    composite_feedback: [
-      {
-        domain: 'REGULATORY',
-        severity: 'MINOR',
-        description: 'The Important Safety Information (ISI) section is incomplete and requires additional safety information.',
-        suggested_fix: 'Complete the ISI section with all relevant safety warnings and precautions.',
-        reference_document: 'Prescribing Information',
-      },
-    ],
+    composite_feedback: [],
   },
   {
     asset_id: 'brexiva-poster-001',
