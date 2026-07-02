@@ -705,7 +705,7 @@ function MLRTableBlock({
                 </span>
               </div>
               <div className="px-2 py-1.5 text-sm font-normal text-gray-700 font-body">
-                {row.flags_count}
+                {row.flags_count} flags
               </div>
               <div className="px-2 py-1.5">
                 <StatusPill status={row.status} size="sm" />
