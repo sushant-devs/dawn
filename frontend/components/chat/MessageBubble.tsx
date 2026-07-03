@@ -5,7 +5,6 @@ import {
   ChevronDown,
   ChevronUp,
   Copy,
-  RefreshCw,
   Check,
   Lightbulb,
   Sparkles,
@@ -1231,45 +1230,6 @@ export default function MessageBubble({
             )}
           </div>
 
-          {/* Timestamp + action buttons */}
-          <div className="flex items-center gap-2 mt-1 pl-1">
-            <p className="text-[10px] text-gray-400">
-              {formatTime(message.timestamp)}
-            </p>
-
-            <div
-              className={`flex items-center gap-1 transition-opacity duration-150 ${hovered ? "opacity-100" : "opacity-0"}`}
-            >
-              <button
-                onClick={handleCopy}
-                title="Copy response"
-                className="flex items-center gap-1 px-2 py-1 rounded-lg text-gray-400 hover:text-dawn-navy hover:bg-gray-100 transition-colors text-[11px]"
-              >
-                {copied ? (
-                  <>
-                    <Check size={12} className="text-dawn-green" />
-                    <span className="text-dawn-green">Copied</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy size={12} />
-                    <span>Copy</span>
-                  </>
-                )}
-              </button>
-
-              <button
-                onClick={() => {
-                  /* regenerate is a demo no-op */
-                }}
-                title="Regenerate response"
-                className="flex items-center gap-1 px-2 py-1 rounded-lg text-gray-400 hover:text-dawn-navy hover:bg-gray-100 transition-colors text-[11px]"
-              >
-                <RefreshCw size={12} />
-                <span>Regenerate</span>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </>
