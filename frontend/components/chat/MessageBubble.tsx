@@ -705,7 +705,7 @@ function MLRTableBlock({
                 </span>
               </div>
               <div className="px-2 py-1.5 text-sm font-normal text-gray-700 font-body">
-                {row.flags_count} flags
+                {row.flags_count} flag
               </div>
               <div className="px-2 py-1.5">
                 <StatusPill status={row.status} size="sm" />
@@ -812,7 +812,7 @@ function StatusSummaryBlock({
       )}
       {summary.flagged > 0 && (
         <span className="bg-dawn-red/10 text-dawn-red rounded-full px-3 py-1 text-xs font-medium">
-          {summary.flagged} Flags
+          {summary.flagged} Flag
         </span>
       )}
     </div>
